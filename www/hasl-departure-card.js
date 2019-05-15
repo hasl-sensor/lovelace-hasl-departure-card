@@ -1,4 +1,4 @@
-class HASLCombCard extends HTMLElement {
+class HASLDepartureCard extends HTMLElement {
     set hass(hass) {
         if (!this.content) {
             const card = document.createElement('ha-card');
@@ -349,4 +349,4 @@ class HASLCombCard extends HTMLElement {
     }
 }
 
-customElements.define('hasl-comb-card', HASLCombCard);
+customElements.define('hasl-departure-card', HASLDepartureCard);
