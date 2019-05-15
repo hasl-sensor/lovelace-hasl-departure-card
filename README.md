@@ -9,7 +9,7 @@ Present departure times from HASL Combination sensors. Huge thanks to [@dimmanra
 ![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
 
 ## Installation
-Copy [`www/hasl-departure-card.js`](https://github.com/DSorlov/ha-cards/blob/master/www/hasl-departure-card.js) to `<config>/www/hasl-comb-card.js`  
+Copy [`www/hasl-departure-card.js`](https://github.com/DSorlov/hasl-cards/blob/master/www/hasl-departure-card.js) to `<config>/www/hasl-comb-card.js`  
 
 where `<config>` is your Home Assistant configuration directory.
 Then use the following in your ui-lovelace.yaml file:
