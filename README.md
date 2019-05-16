@@ -3,12 +3,12 @@ Home Assistant SL Sensor (HASL) Cards
 
 These cards can be used in HomeAssistant together with [Home Assistant SL Sensor](https://github.com/DSorlov/hasl-platform/blob/hasl/README.md)
 
-## SL Departure Lovelace Card (hasl-departure-card.js)
+# SL Departure Lovelace Card (hasl-departure-card.js)
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
 
 ![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
 
-# Installation
+## Installation
 Copy [`www/hasl-departure-card.js`](https://github.com/DSorlov/hasl-cards/blob/master/www/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`  
 
 where `<config>` is your Home Assistant configuration directory.
@@ -38,7 +38,7 @@ cards:
       - sensor.hasl_name
 ```
 
-# SL Departure Lovelace Card (hasl-departure-card.js) Configuration variables
+## SL Departure Lovelace Card (hasl-departure-card.js) Configuration variables
 
 - **header**: Render headers in the such as "line", "destination" and "time"
 
@@ -64,12 +64,12 @@ cards:
 
 - **compact** (*Optional*): Compact style of the card. Default value is `true`
 
-## SL Traffic Status Lovelace Card (hasl-departure-card.js)
+# SL Traffic Status Lovelace Card (hasl-departure-card.js)
 Present traffic status from HASL Combination sensors.
 
 ![card](https://user-images.githubusercontent.com/1217994/57677754-e1773980-7627-11e9-81e7-4b991a6e4dc1.png)
 
-# Installation
+## Installation
 Copy [`www/hasl-traffic-status-card.js`](https://github.com/DSorlov/hasl-cards/blob/master/www/hasl-traffic-status-card.js) to `<config>/www/hasl-traffic-status-card.js`  
 
 where `<config>` is your Home Assistant configuration directory.
@@ -95,7 +95,7 @@ cards:
           - sensor.traffic_status
 ```
 
-# SL Traffic Status Lovelace Card (hasl-traffic-status-card.js) Configuration variables
+## SL Traffic Status Lovelace Card (hasl-traffic-status-card.js) Configuration variables
 
 - **name** (*Optional*): If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name
 
@@ -107,7 +107,7 @@ cards:
 
 - **show_only_disturbances** (*Optional*): Renders just disturbances in the traffic, default `false`
 
-## Automatic update of cards
+# Automatic update of cards
 For update check of cards, add the following to your `configuration.yaml`.
 
 ```yaml
