@@ -6,5 +6,13 @@
       "remote_location": "https://raw.githubusercontent.com/DSorlov/hasl-cards/master/www/hasl-departure-card.js",
       "visit_repo": "https://github.com/DSorlov/hasl-cards",
       "changelog": "https://github.com/DSorlov/hasl-cards/blob/master/CHANGELOG.md"
+    },
+    "hasl.cards.traffic-status-card": {
+      "updated_at": "2019-05-16",
+      "version": "0.1.0",
+      "local_location": "/www/hasl-traffic-status-card.js",
+      "remote_location": "https://raw.githubusercontent.com/DSorlov/hasl-cards/master/www/hasl-traffic-status-card.js",
+      "visit_repo": "https://github.com/DSorlov/hasl-cards",
+      "changelog": "https://github.com/DSorlov/hasl-cards/blob/master/CHANGELOG.md"
     }
 }
