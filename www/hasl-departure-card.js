@@ -59,8 +59,8 @@ class HASLDepartureCard extends HTMLElement {
 
             ha-icon {
                 transition: color 0.3s ease-in-out, filter 0.3s ease-in-out;
-                width: 24px; 
-                height: 24px; 
+                width: 24px;
+                height: 24px;
                 color: var(--paper-item-icon-color);
             }
 
@@ -93,8 +93,8 @@ class HASLDepartureCard extends HTMLElement {
 
             /* Icons - Default for Boats and Metro Blue Line */
             .line-icon {
-                width: auto;                
-                border-radius: 2px;                
+                width: auto;
+                border-radius: 2px;
                 background: #0089ca;
                 padding: 3px 3px 0 3px;
                 color: #fff;
@@ -114,7 +114,7 @@ class HASLDepartureCard extends HTMLElement {
             /* Buses and Metro Red Line */
             .line-icon.bus_red, .line-icon.met_red {
                 background-color: #d71d24;
-            }            
+            }
 
             /* Commuter Trains */
             .line-icon.trn {
@@ -142,15 +142,15 @@ class HASLDepartureCard extends HTMLElement {
                 background-color: #d77d00;
             }
 
-             th.loose-icon, td.loose-icon {
+            th.loose-icon, td.loose-icon {
                 width: 40px;
                 height: 40px;
             }
 
             th.loose-cell, td.loose-cell {
-                line-height: 20px;    
+                line-height: 20px;
             }
-            
+
             th.loose-padding, td.loose-padding {
                 padding-left:16px;
             }
@@ -176,7 +176,7 @@ class HASLDepartureCard extends HTMLElement {
                     if (config.departures === true) {
                         if (config.header === true) {
                             html += `
-                               <tr>
+                                <tr>
                                     <th class="col1">${lang[culture].line}</th>
                                     <th class="col2">${lang[culture].destination}</th>
                                     <th class="col3">${lang[culture].departure}</th>
@@ -241,12 +241,19 @@ class HASLDepartureCard extends HTMLElement {
                                 }
 
                                 var lineNumber = entity_data.attributes.departures[j].line;
+                                var groupOfLine = entity_data.attributes.departures[j].groupofline;
 
                                 var typeClass = '';
 
                                 switch (entity_data.attributes.departures[j].type) {
                                     case 'Buses':
-                                        typeClass = ' ' + 'bus_red bus_red_' + lineNumber;
+                                        switch(groupOfLine) {
+                                            case 'blåbuss':
+                                                typeClass = ' ' + 'bus_blue bus_blue_' + lineNumber;
+                                                break;
+                                            default:
+                                                typeClass = ' ' + 'bus_red bus_red_' + lineNumber;
+                                        }
                                         break;
                                     case 'Trams':
                                         typeClass = ' ' + 'trm trm_' + lineNumber;
@@ -296,13 +303,13 @@ class HASLDepartureCard extends HTMLElement {
                             for (var k = 0; k < maxDeviations; k++) {
                                 if (compact === false) {
                                     html += `
-                                        <tr>	
-                                            <td align="left">&nbsp;</td>	
+                                        <tr>
+                                            <td align="left">&nbsp;</td>
                                         </tr>
                                     `
                                 }
 
-                                html += `                                        
+                                html += `
                                     <tr>
                                         <td class="col1" valign="top"><ha-icon class="alert" icon="mdi:alert-outline"></td>
                                         <td class="col2"><b>${entity_data.attributes.deviations[k].title}</b><br/><i>${entity_data.attributes.deviations[k].details}</i></td>
