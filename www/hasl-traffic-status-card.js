@@ -1,5 +1,5 @@
 const lang = {
-  'sv-SE': {        
+  'sv-SE': {
     entity_missing: 'Ingen data hittades', bus: 'Buss',
     metro: 'Tunnelbana',
     light_railway: 'Lokalbana',
@@ -7,14 +7,14 @@ const lang = {
     tram: 'Spårvagn',
     ferry: 'Båt'
   },
-  'en-EN': {        
+  'en-EN': {
     entity_missing: 'Entity data missing',
     bus: 'Bus',
     metro: 'Subway',
     light_railway: 'Light Railway',
     commuter_train: 'Commuter Train',
     tram: 'Tram',
-    ferry: 'Ferry'       
+    ferry: 'Ferry'
   }
 }
 
@@ -28,12 +28,12 @@ class HASLTrafficStatusCard extends HTMLElement {
     }
 
     const config = this.config;
-        
+
     function getEntitiesContent(data) {
       var html = `<style>
           ha-card {
             padding: 16px;
-          } 
+          }
 
           .header {
             font-family: var(--paper-font-headline_-_font-family);
@@ -51,8 +51,8 @@ class HASLTrafficStatusCard extends HTMLElement {
 
           ha-icon {
             transition: color 0.3s ease-in-out, filter 0.3s ease-in-out;
-            width: 24px; 
-            height: 24px; 
+            width: 24px;
+            height: 24px;
             color: var(--paper-item-icon-color);
           }
 
@@ -76,82 +76,88 @@ class HASLTrafficStatusCard extends HTMLElement {
             box-sizing: border-box;
           }
 
-           table.sl-traffic-status-table {
-                width: 100%;
-                border-spacing: 0px 8px;
-            }
+          table.sl-traffic-status-table {
+              width: 100%;
+              border-spacing: 0px 8px;
+          }
 
-            th.col1, td.col1 {
-                text-align: center;
-                width: 24px;
-                height: 30px;
-            }
-
-            th.col2, td.col2 {
-                padding-left:10px;
-                text-align: left;
-                line-height: 18px;
-            }
-
-            th.col2{
-              font-size: 18px;
-              font-weight: 400;
-            }
-
-            th.col3, td.col3 {
-                text-align: right;
-                line-height: 18px;
-            }
-
-            .line-icon {
-              width: auto;                
-              border-radius: 2px;                
-              background: #0089ca;
-              padding: 3px 3px 0 3px;
-              margin-bottom: 3px;
-              color: #fff;
-              min-width: 22px;
-              height: 22px;
-              font-weight: 500;
-              display: inline-block;
+          th.col1, td.col1 {
               text-align: center;
-              text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            }
+              width: 24px;
+              height: 30px;
+          }
 
-            /* Metros */
-            .line-icon.met_green {
-                background-color: #179d4d;
-            }
+          th.col2, td.col2 {
+              padding-left:10px;
+              text-align: left;
+              line-height: 18px;
+          }
 
-            /* Buses and Metro Red Line */
-            .line-icon.bus_red, .line-icon.met_red {
-                background-color: #d71d24;
-            }            
+          th.col2{
+            font-size: 18px;
+            font-weight: 400;
+          }
 
-            /* Commuter Trains */
-            .line-icon.trn {
-                background-color: #ec619f;
-            }
+          th.col3, td.col3 {
+              text-align: right;
+              line-height: 18px;
+          }
 
-            /* Trams */
-            .line-icon.trm {
-                background-color: #985141;
-            }
+          .line-icon {
+            width: auto;
+            border-radius: 2px;
+            background: #0089ca;
+            padding: 3px 3px 0 3px;
+            margin-bottom: 3px;
+            color: #fff;
+            min-width: 22px;
+            height: 22px;
+            font-weight: 500;
+            display: inline-block;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+          }
 
-            .line-icon.trm.trm_7 {
-                background-color: #878a83;
-            }
+          /* Metros */
+          .line-icon.met_green {
+              background-color: #179d4d;
+          }
 
-            .line-icon.trm.trm_variant {
-                background-color: #b76020;
-            }
+          /* Buses and Metro Red Line */
+          .line-icon.bus_red, .line-icon.met_red {
+              background-color: #d71d24;
+          }
 
-            .line-icon.trm.trm_22 {
-                background-color: #d77d00;
-            }
+          /* Commuter Trains */
+          .line-icon.trn {
+              background-color: #ec619f;
+          }
 
-          </style>
-          `;
+          /* Trams */
+          .line-icon.trm {
+              background-color: #985141;
+          }
+
+          .line-icon.trm.trm_7 {
+              background-color: #878a83;
+          }
+
+          .line-icon.trm.trm_variant {
+              background-color: #b76020;
+          }
+
+          .line-icon.trm.trm_22 {
+              background-color: #d77d00;
+          }
+
+        </style>
+        `;
+
+      var showCardName = true;
+
+      if (config.show_cardname === false) {
+          showCardName = false;
+      }
 
       var culture = "";
       config.language ? culture = config.language : culture = navigator.language || navigator.userLanguage
@@ -170,7 +176,9 @@ class HASLTrafficStatusCard extends HTMLElement {
               minute: "numeric"
           })
 
-          if (config.name) html += "<div class=\"header\"><div class=\"name\">" + config.name + (config.show_time === true ? ' '  + updated : '') + "</div></div>"
+          if(showCardName === true) {
+            if (config.name) html += "<div class=\"header\"><div class=\"name\">" + config.name + (config.show_time === true ? ' '  + updated : '') + "</div></div>"
+          }
 
           html += getTableRow('bus', entity_data.attributes, culture);
           html += getTableRow('metro', entity_data.attributes, culture);
@@ -192,7 +200,7 @@ class HASLTrafficStatusCard extends HTMLElement {
       var type_icon = attributes.metro_icon;
       var events = attributes.metro_events;
       var iconClass = '';
-    
+
       switch (trafficType) {
         case 'bus':
           status = attributes.bus_status;
@@ -229,24 +237,24 @@ class HASLTrafficStatusCard extends HTMLElement {
           iconClass = ' trm trm_21';
           break;
       }
-    
+
       var trafficTypeLang = lang[culture][trafficType];
-    
+
       var html = '';
-    
+
       if (typeof status !== 'undefined') {
         html += "<table class=\"sl-traffic-status-table\">"
         html += `
             <tr>
                 <th class="col1"><ha-icon icon="${type_icon}"></ha-icon></th>
-                <th class="col2">${trafficTypeLang}</th>      
+                <th class="col2">${trafficTypeLang}</th>
                 <th class="col3"><ha-icon class="${status.toLowerCase()}" icon="${status_icon}"></ha-icon></td>                    
             </tr>
             `
-    
+
         if (events.length > 0 && config.hide_events !== true) {
           for (var j = 0; j < events.length; j++) {
-    
+
             switch (events[j].TrafficLine) {
               case 'Spårväg City':
                 iconClass = " trm trm_7";
@@ -258,10 +266,10 @@ class HASLTrafficStatusCard extends HTMLElement {
                 iconClass = " met_green"
                 break;
               case 'Röda linjen':
-               iconClass = " met_red"
+                iconClass = " met_red"
                 break;
             }
-            
+
             var showEvent = true;
 
             if(config.show_only_disturbances === true && events[j].Status === "Good")
@@ -277,12 +285,12 @@ class HASLTrafficStatusCard extends HTMLElement {
                         `<span class="line-icon${iconClass}"><b>${events[j].TrafficLine}</b></span><br/>` : ''} ${events[j].Message.replace("Övriga linjer:", "<span class=\"line-icon\"><b>Övriga linjer</b></span><br/>").replace("inga större störningar", "Inga större störningar")}</td>` 
                 html += `<td class="col3" valign="top"><ha-icon class="${events[j].Status.toLowerCase()}" icon="${events[j].StatusIcon}"></ha-icon></td>`  
               html += `</tr>`
-            }            
+            }
           }
         }
         html += "</table>"
       }
-    
+
       return html;
     }
   }

@@ -8,6 +8,7 @@ class HASLDepartureCard extends HTMLElement {
         }
 
         const config = this.config;
+
         const lang = {
             'sv-SE': {
                 entity_missing: 'Ingen data hittades',
@@ -32,6 +33,11 @@ class HASLDepartureCard extends HTMLElement {
         }
 
         var compact = false;
+        var showCardName = true;
+
+        if (config.show_cardname === false) {
+            showCardName = false;
+        }
 
         if (config.compact === true) {
             compact = true;
@@ -170,8 +176,10 @@ class HASLDepartureCard extends HTMLElement {
                     console.log(str)
                 }
                 else {
-                    if (!config.name) html += "<div class=\"header\">" + entity_data.attributes.friendly_name + "</div>"
-                    html += "<table class=\"sl-table\">"
+                    if(showCardName === true) {
+                        if (!config.name) html += "<div class=\"header\">" + entity_data.attributes.friendly_name + "</div>"
+                    }
+                        html += "<table class=\"sl-table\">"
 
                     if (config.departures === true) {
                         if (config.header === true) {
