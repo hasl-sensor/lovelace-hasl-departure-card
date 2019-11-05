@@ -234,7 +234,7 @@ class HASLTrafficStatusCard extends HTMLElement {
     
       var html = '';
     
-      if (status !== 'undefined') {
+      if (typeof status !== 'undefined') {
         html += "<table class=\"sl-traffic-status-table\">"
         html += `
             <tr>
