@@ -164,7 +164,9 @@ class HASLDepartureCard extends HTMLElement {
             // Add data to table.
             var updatedDate = "";
             var culture = "";
-            if (config.name) html += " <div class=\"header\"><div class=\"name\">" + config.name + "</div></div>"
+            if(showCardName === true) {
+                if (config.name) html += " <div class=\"header\"><div class=\"name\">" + config.name + "</div></div>"
+            }
             config.language ? culture = config.language : culture = navigator.language || navigator.userLanguage
             if (!lang.hasOwnProperty(culture)) culture = 'sv-SE'
 
