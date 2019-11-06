@@ -306,7 +306,7 @@ class HASLDepartureCard extends HTMLElement {
                         if (typeof entity_data.attributes.deviations !== 'undefined') {
                             var maxDeviations = entity_data.attributes.deviations.length;
 
-                            if (config.max_deviations && config.max_deviations > maxDeviations) {
+                            if (config.max_deviations && maxDeviations > config.max_deviations) {
                                 maxDeviations = config.max_deviations;
                             }
 
