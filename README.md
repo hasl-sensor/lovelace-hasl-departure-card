@@ -1,7 +1,7 @@
 Home Assistant SL Sensor (HASL) Cards
 ===============================
 
-These cards can be used in HomeAssistant together with [Home Assistant SL Sensor](https://github.com/DSorlov/hasl-platform/blob/hasl/README.md)
+These cards can be used in Home Assistant together with [Home Assistant SL Sensor](https://github.com/DSorlov/hasl-platform/blob/hasl/README.md)
 
 # SL Departure Lovelace Card (hasl-departure-card.js)
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
