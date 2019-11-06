@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ### Changed
 - Added show card name config variable in both cards
-- Bufixes
+- Bugfixes
 
 ## [2.1.0] (2019-05-15)
 
