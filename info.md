@@ -1,17 +1,12 @@
-Home Assistant SL Sensor (HASL) Cards
-===============================
-
-These cards can be used in Home Assistant together with [Home Assistant SL Sensor](https://github.com/DSorlov/hasl-platform/blob/hasl/README.md)
-
-# SL Departure Lovelace Card (hasl-departure-card.js)
+# SL Departure Lovelace Card
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
 
 ![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
 
-## Installation
-Copy [`www/hasl-departure-card.js`](https://github.com/DSorlov/hasl-cards/blob/master/www/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
+## Manual Installation
+Copy [`hasl-departure-card.js`](https://github.com/hasl-platform/lovelace-hasl-departure-card/blob/master/dist/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
 
-where `<config>` is your Home Assistant configuration directory.
+Where `<config>` is your Home Assistant configuration directory.
 Then use the following in your ui-lovelace.yaml file:
 
 ```yaml
@@ -38,7 +33,7 @@ cards:
       - sensor.hasl_name
 ```
 
-## SL Departure Lovelace Card (hasl-departure-card.js) Configuration variables
+## Configuration variables
 - **show_cardname**: Render card name, default `true`
 
 - **header**: Render headers in the such as "line", "destination" and "time"
@@ -64,48 +59,3 @@ cards:
 - **max_deviations** (*Optional*): Max deviations to show, defaults to all.
 
 - **compact** (*Optional*): Compact style of the card. Default value is `true`
-
-# SL Traffic Status Lovelace Card (hasl-departure-card.js)
-Present traffic status from HASL Combination sensors.
-
-![card](https://user-images.githubusercontent.com/1217994/57677754-e1773980-7627-11e9-81e7-4b991a6e4dc1.png)
-
-## Installation
-Copy [`www/hasl-traffic-status-card.js`](https://github.com/DSorlov/hasl-cards/blob/master/www/hasl-traffic-status-card.js) to `<config>/www/hasl-traffic-status-card.js`
-
-where `<config>` is your Home Assistant configuration directory.
-Then use the following in your ui-lovelace.yaml file:
-
-```yaml
-resources:
-  - url: /local/hasl-traffic-status-card.js
-    type: js
-```
-
-and use the card through this example:
-
-```yaml
-cards:
-  - type: custom:hasl-traffic-status-card
-        name: Traffic Status
-        language: en-EN
-        show_time: false
-        hide_events: false
-        show_only_disturbances: false
-        entities:
-          - sensor.traffic_status
-```
-
-## SL Traffic Status Lovelace Card (hasl-traffic-status-card.js) Configuration variables
-
-- **name** (*Optional*): If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name
-
-- **show_cardname**: Render card name, default `true`
-
-- **language** (*Optional*): The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`
-
-- **show_time** (*Optional*): Render the time beside the name of the card, default `false`
-
-- **hide_events** (*Optional*): Hide all events and renders just the headers, default `false`
-
-- **show_only_disturbances** (*Optional*): Renders just disturbances in the traffic, default `false`
