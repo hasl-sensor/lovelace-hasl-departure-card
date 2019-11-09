@@ -5,7 +5,7 @@ Changelog for HASL departure card
 The format is based on [Keep a Changelog][keep-a-changelog]
 <!-- and this project adheres to [Semantic Versioning][semantic-versioning]. -->
 
-## [2.3.0] (2019-11-05)
+## [2.3.0] (2019-11-09)
 
 ### Changed
 - Migrated to HACS
