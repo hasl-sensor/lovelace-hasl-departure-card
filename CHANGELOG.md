@@ -1,6 +1,6 @@
 # hasl-cards
 
-Changelog for HomeAssistant SL Sensor (HASL) Cards.
+Changelog for HASL departure card
 
 The format is based on [Keep a Changelog][keep-a-changelog]
 <!-- and this project adheres to [Semantic Versioning][semantic-versioning]. -->
