@@ -1,0 +1,8 @@
+{
+    "name": "HASL Departure Card",
+    "content_in_root": false,
+    "render_readme": false,
+    "filename": "hasl-departure-card.js",
+    "homeassistant": "0.92",
+    "zip_release": false
+}
