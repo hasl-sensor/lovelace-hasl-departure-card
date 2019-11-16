@@ -56,7 +56,7 @@ cards:
 
 - **hide_departed** (*Optional*): This can hide already departured transports
 
-- **language** (*Optional*): The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`-
+- **language** (*Optional*): The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`
 
 - **name** (*Optional*): If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name
 
@@ -64,4 +64,24 @@ cards:
 
 - **max_deviations** (*Optional*): Max deviations to show, defaults to all.
 
-- **compact** (*Optional*): Compact style of the card. Default value is `true`
+- **compact** (*Optional*): Compact style of the card, default `true`
+
+- **tap_action** (*Optional*): Action when tapping the card. Choose between `info` or `service`, default `info`
+
+- **tap_action_entity** (*Optional*): The entity that the info dialog is going to show, default is the first entity of the card
+
+```yaml
+tap_action: info
+tap_action_entity: info
+```
+
+- **service_config** (*Optional*): If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.
+
+```yaml
+tap_action: service
+service_config:
+  domain: light
+  service: turn_on
+  data:
+    entity_id: light.living_room
+```

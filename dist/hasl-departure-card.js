@@ -7,7 +7,7 @@ class HASLDepartureCard extends HTMLElement {
         this.config = config;
 
         if (!config.tap_action) config.tap_action = 'info';
-        if (!config.entity) config.entity = config.entities[0];
+        if (!config.tap_action_entity) config.tap_action_entity = config.entities[0];
         config.show_cardname ? config.show_cardname = true : config.show_cardname = config.show_cardname;
         config.compact ? config.compact = false : config.compact = config.compact;
     }
@@ -234,10 +234,10 @@ class HASLDepartureCard extends HTMLElement {
     _handleClick() {
         switch (this.config.tap_action) {
             case 'info':
-                this._showAttributes(this, "hass-more-info", { entityId: this.config.entity });
+                this._showAttributes(this, "hass-more-info", { entityId: this.config.tap_action_entity });
                 break
             case 'service':
-                this._serviceCall(this.config.service_options.domain, this.config.service_options.service, this.config.service_options.data)
+                this._serviceCall(this.config.service_config.domain, this.config.service_config.service, this.config.service_config.data)
                 break
         }
     }
