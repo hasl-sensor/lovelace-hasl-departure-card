@@ -1,170 +1,42 @@
 class HASLDepartureCard extends HTMLElement {
+    setConfig(config) {
+        if (!config.entities) {
+            throw new Error('You need to define one or more entities');
+        }
+
+        this.config = config;
+
+        if (!config.tap_action) config.tap_action = 'info';
+        if (!config.entity) config.entity = config.entities[0];
+        config.show_cardname ? config.show_cardname = true : config.show_cardname = config.show_cardname;
+        config.compact ? config.compact = false : config.compact = config.compact;
+    }
+
     set hass(hass) {
+        this._hass = hass;
+
         if (!this.content) {
             const card = document.createElement('ha-card');
+            card.addEventListener("click", event => {
+                this._handleClick()});
             this.content = document.createElement('div');
+            const style = document.createElement('style');
+            style.textContent = this._cssStyles();
+            card.appendChild(style);
             card.appendChild(this.content);
             this.appendChild(card);
         }
 
         const config = this.config;
-
-        const lang = {
-            'sv-SE': {
-                entity_missing: 'Ingen data hittades',
-                line: 'Linje',
-                destination: 'Till',
-                departure: 'Avg&aring;ng',
-                min: 'min',
-                last_updated: 'Senast uppdaterad ',
-                now: 'Nu',
-                departed: 'Avg&aring;tt',
-            },
-            'en-EN': {
-                entity_missing: 'Entity data missing',
-                line: 'Line',
-                destination: 'Destination',
-                departure: 'Departure',
-                min: 'min',
-                last_updated: 'Last updated ',
-                now: 'Now',
-                departed: 'Departed',
-            }
-        }
-
-        var compact = false;
-        var showCardName = true;
-
-        if (config.show_cardname === false) {
-            showCardName = false;
-        }
-
-        if (config.compact === true) {
-            compact = true;
-        }
+        const lang = this._lang();
 
         function getEntitiesContent(data) {
-            var html = `<style>
-            ha-card {
-                padding: 16px;
-            }
+            var html = ``;
 
-            .header {
-                font-family: var(--paper-font-headline_-_font-family);
-                -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
-                font-size: var(--paper-font-headline_-_font-size);
-                font-weight: var(--paper-font-headline_-_font-weight);
-                letter-spacing: var(--paper-font-headline_-_letter-spacing);
-                line-height: var(--paper-font-headline_-_line-height);
-                text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
-                opacity: var(--dark-primary-opacity);
-                padding: 4px 0px 12px;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            ha-icon {
-                transition: color 0.3s ease-in-out, filter 0.3s ease-in-out;
-                width: 24px;
-                height: 24px;
-                color: var(--paper-item-icon-color);
-            }
-
-            ha-icon.alert {
-                color: red;
-            }
-
-            table.sl-table {
-                width: 100%;
-                border-spacing: 0px 8px;
-            }
-
-            th.col1, td.col1 {
-                text-align: center;
-                width: 24px;
-                height: 30px;
-            }
-
-            th.col2, td.col2 {
-                padding-left:10px;
-                text-align: left;
-                line-height: 18px;
-            }
-
-            th.col3, td.col3 {
-                text-align: right;
-                line-height: 18px;
-                min-width: 50px;
-            }
-
-            /* Icons - Default for Boats and Metro Blue Line */
-            .line-icon {
-                width: auto;
-                border-radius: 2px;
-                background: #0089ca;
-                padding: 3px 3px 0 3px;
-                color: #fff;
-                min-width: 22px;
-                height: 22px;
-                font-weight: 500;
-                display: inline-block;
-                text-align: center;
-                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            }
-
-            /* Metros */
-            .line-icon.met_green {
-                background-color: #179d4d;
-            }
-
-            /* Buses and Metro Red Line */
-            .line-icon.bus_red, .line-icon.met_red {
-                background-color: #d71d24;
-            }
-
-            /* Commuter Trains */
-            .line-icon.trn {
-                background-color: #ec619f;
-            }
-
-            /* Trams */
-            .line-icon.trm {
-                background-color: #985141;
-            }
-
-            .line-icon.trm.trm_7 {
-                background-color: #878a83;
-            }
-
-            .line-icon.trm.trm_12 {
-                background-color: #778da7;
-            }
-
-            .line-icon.trm.trm_21 {
-                background-color: #b76020;
-            }
-
-            .line-icon.trm.trm_22 {
-                background-color: #d77d00;
-            }
-
-            th.loose-icon, td.loose-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            th.loose-cell, td.loose-cell {
-                line-height: 20px;
-            }
-
-            th.loose-padding, td.loose-padding {
-                padding-left:16px;
-            }
-            </style>`;
             // Add data to table.
             var updatedDate = "";
             var culture = "";
-            if(showCardName === true) {
+            if(config.show_cardname === true) {
                 if (config.name) html += " <div class=\"header\"><div class=\"name\">" + config.name + "</div></div>"
             }
             config.language ? culture = config.language : culture = navigator.language || navigator.userLanguage
@@ -178,7 +50,7 @@ class HASLDepartureCard extends HTMLElement {
                     console.log(str)
                 }
                 else {
-                    if(showCardName === true) {
+                    if(config.show_cardname === true) {
                         if (!config.name) html += "<div class=\"header\">" + entity_data.attributes.friendly_name + "</div>"
                     }
                         html += "<table class=\"sl-table\">"
@@ -294,9 +166,9 @@ class HASLDepartureCard extends HTMLElement {
 
                                 html += `
                                     <tr>
-                                        <td class="col1 ${compact === false ? 'loose-icon' : ''}"><ha-icon icon="${entity_data.attributes.departures[j].icon}"></ha-icon></td>
-                                        <td class="col2 ${compact === false ? 'loose-cell loose-padding' : ''}"><span class="${spanClass}">${lineNumber}</span> ${entity_data.attributes.departures[j].destination}</td>
-                                        <td class="col3 ${compact === false ? 'loose-cell' : ''}">${depText}</td>
+                                        <td class="col1 ${config.compact === false ? 'loose-icon' : ''}"><ha-icon icon="${entity_data.attributes.departures[j].icon}"></ha-icon></td>
+                                        <td class="col2 ${config.compact === false ? 'loose-cell loose-padding' : ''}"><span class="${spanClass}">${lineNumber}</span> ${entity_data.attributes.departures[j].destination}</td>
+                                        <td class="col3 ${config.compact === false ? 'loose-cell' : ''}">${depText}</td>
                                     </tr>
                                 `
                             }
@@ -311,7 +183,7 @@ class HASLDepartureCard extends HTMLElement {
                             }
 
                             for (var k = 0; k < maxDeviations; k++) {
-                                if (compact === false) {
+                                if (config.compact === false) {
                                     html += `
                                         <tr>
                                             <td align="left">&nbsp;</td>
@@ -349,20 +221,190 @@ class HASLDepartureCard extends HTMLElement {
             }
             return html;
         }
-        this.content.innerHTML = getEntitiesContent(this.config.entities);
-    }
 
-    setConfig(config) {
-        if (!config.entities) {
-            throw new Error('You need to define one or more entities');
-        }
-        this.config = config;
+        this.content.innerHTML = getEntitiesContent(this.config.entities);
     }
 
     // The height of your card. Home Assistant uses this to automatically
     // distribute all cards over the available columns. This kind of works but it is very dynamic
     getCardSize() {
         return this.config.entities.length + 1;
+    }
+
+    _handleClick() {
+        switch (this.config.tap_action) {
+            case 'info':
+                this._showAttributes(this, "hass-more-info", { entityId: this.config.entity });
+                break
+            case 'service':
+                this._serviceCall(this.config.service_options.domain, this.config.service_options.service, this.config.service_options.data)
+                break
+        }
+    }
+
+    _serviceCall (domain, service, data) {
+        const hass = this._hass
+        hass.callService(domain, service, data)
+    }
+
+    _showAttributes (node, type, detail, options) {
+        options = options || {};
+        detail = (detail === null || detail === undefined) ? {} : detail;
+        const event = new Event(type, {
+            bubbles: options.bubbles === undefined ? true : options.bubbles,
+            cancelable: Boolean(options.cancelable),
+            composed: options.composed === undefined ? true : options.composed
+        });
+        event.detail = detail;
+        node.dispatchEvent(event);
+        return event;
+    }
+
+    _cssStyles() {
+        var css = `
+            ha-card {
+                padding: 16px;
+            }
+
+            .header {
+                font-family: var(--paper-font-headline_-_font-family);
+                -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
+                font-size: var(--paper-font-headline_-_font-size);
+                font-weight: var(--paper-font-headline_-_font-weight);
+                letter-spacing: var(--paper-font-headline_-_letter-spacing);
+                line-height: var(--paper-font-headline_-_line-height);
+                text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
+                opacity: var(--dark-primary-opacity);
+                padding: 4px 0px 12px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            ha-icon {
+                transition: color 0.3s ease-in-out, filter 0.3s ease-in-out;
+                width: 24px;
+                height: 24px;
+                color: var(--paper-item-icon-color);
+            }
+
+            ha-icon.alert {
+                color: red;
+            }
+
+            table.sl-table {
+                width: 100%;
+                border-spacing: 0px 8px;
+            }
+
+            th.col1, td.col1 {
+                text-align: center;
+                width: 24px;
+                height: 30px;
+            }
+
+            th.col2, td.col2 {
+                padding-left:10px;
+                text-align: left;
+                line-height: 18px;
+            }
+
+            th.col3, td.col3 {
+                text-align: right;
+                line-height: 18px;
+                min-width: 50px;
+            }
+
+            /* Icons - Default for Boats and Metro Blue Line */
+            .line-icon {
+                width: auto;
+                border-radius: 2px;
+                background: #0089ca;
+                padding: 3px 3px 0 3px;
+                color: #fff;
+                min-width: 22px;
+                height: 22px;
+                font-weight: 500;
+                display: inline-block;
+                text-align: center;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            }
+
+            /* Metros */
+            .line-icon.met_green {
+                background-color: #179d4d;
+            }
+
+            /* Buses and Metro Red Line */
+            .line-icon.bus_red, .line-icon.met_red {
+                background-color: #d71d24;
+            }
+
+            /* Commuter Trains */
+            .line-icon.trn {
+                background-color: #ec619f;
+            }
+
+            /* Trams */
+            .line-icon.trm {
+                background-color: #985141;
+            }
+
+            .line-icon.trm.trm_7 {
+                background-color: #878a83;
+            }
+
+            .line-icon.trm.trm_12 {
+                background-color: #778da7;
+            }
+
+            .line-icon.trm.trm_21 {
+                background-color: #b76020;
+            }
+
+            .line-icon.trm.trm_22 {
+                background-color: #d77d00;
+            }
+
+            th.loose-icon, td.loose-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            th.loose-cell, td.loose-cell {
+                line-height: 20px;
+            }
+
+            th.loose-padding, td.loose-padding {
+                padding-left:16px;
+            }
+        `;
+
+        return css;
+    }
+
+    _lang() {
+        return {
+            'sv-SE': {
+                entity_missing: 'Ingen data hittades',
+                line: 'Linje',
+                destination: 'Till',
+                departure: 'Avg&aring;ng',
+                min: 'min',
+                last_updated: 'Senast uppdaterad ',
+                now: 'Nu',
+                departed: 'Avg&aring;tt',
+            },
+            'en-EN': {
+                entity_missing: 'Entity data missing',
+                line: 'Line',
+                destination: 'Destination',
+                departure: 'Departure',
+                min: 'min',
+                last_updated: 'Last updated ',
+                now: 'Now',
+                departed: 'Departed',
+            }
+        }
     }
 }
 
