@@ -1,6 +1,6 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-2.4.0-green.svg)](#)
+[![version](https://img.shields.io/badge/version-2.4.1-green.svg)](#)
 [![maintained](https://img.shields.io/maintenance/yes/2019.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -40,42 +40,29 @@ cards:
 ```
 
 ## Configuration variables
-- **show_cardname**: Render card name, default `true`
-
-- **header**: Render headers in the such as "line", "destination" and "time"
-
-- **departures** (*Optional*): Render departure section, default `false`
-
-- **deviations** (*Optional*): Render deviation section, default `false`
-
-- **updated** (*Optional*): Render the last updated time section
-
-- **timeleft** (*Optional*): Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.
-
-- **adjust_times** (*Optional*): Calculate time left adjusted to last update (used in conjunction with timeleft)
-
-- **hide_departed** (*Optional*): This can hide already departured transports
-
-- **language** (*Optional*): The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`
-
-- **name** (*Optional*): If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name
-
-- **max_departures** (*Optional*): Max departures to show, default to all.
-
-- **max_deviations** (*Optional*): Max deviations to show, defaults to all.
-
-- **compact** (*Optional*): Compact style of the card, default `true`
-
-- **tap_action** (*Optional*): Action when tapping the card. Choose between `info` or `service`, default `info`
-
-- **tap_action_entity** (*Optional*): The entity that the info dialog is going to show, default is the first entity of the card
+| Name | Type | Required? | Description | Default |
+|------|------|-----------|-------------|---------|
+|name|string|optional|If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name.|`sensor-name`|
+|show_cardname|bool|optional|Render card name.|true|
+|header|bool|optional|Render headers in the such as "line", "destination" and "time".|true|
+|departures|bool|optional|Render departure section.|false|
+|max_departures|number|optional|Max departures to show, default to all.||
+|deviations|bool|optional|Render deviation section.|false|
+|max_deviations|number|optional|Max deviations to show, defaults to all.||
+|updated|bool|optional|Render the last updated time section.|false|
+|timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
+|adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
+|hide_departed|bool|optional|This can hide already departured transports.|false|
+|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`.||
+|compact|bool|optional|Compact style of the card.|true|
+|tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
+|tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
+|service_config|object|optional|If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.||
 
 ```yaml
 tap_action: info
 tap_action_entity: info
 ```
-
-- **service_config** (*Optional*): If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.
 
 ```yaml
 tap_action: service

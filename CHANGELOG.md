@@ -5,9 +5,13 @@ Changelog for HASL departure card
 The format is based on [Keep a Changelog][keep-a-changelog]
 <!-- and this project adheres to [Semantic Versioning][semantic-versioning]. -->
 
+## [2.4.1] (2019-11-19)
+
+- Fixed show always time #3
+
 ## [2.4.0] (2019-11-16)
 
-- Added tap_action
+- Added tap_action #2
 - Cleaned up a litle bit
 
 ## [2.3.0] (2019-11-09)
