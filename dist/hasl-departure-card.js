@@ -34,7 +34,6 @@ class HASLDepartureCard extends HTMLElement {
             var html = ``;
 
             // Add data to table.
-            var updatedDate = "";
             var culture = "";
             if(config.show_cardname === true) {
                 if (config.name) html += " <div class=\"header\"><div class=\"name\">" + config.name + "</div></div>"
@@ -43,39 +42,41 @@ class HASLDepartureCard extends HTMLElement {
             if (!lang.hasOwnProperty(culture)) culture = 'sv-SE'
 
             for (var i = 0; i < data.length; i++) {
-
                 const entity_data = hass.states[data[i]]
                 if (typeof entity_data === 'undefined') {
                     var str = lang[culture].entity_missing
                     console.log(str)
                 }
                 else {
+                    var minutesSinceUpdate = 0;
+                    var updatedDate = new Date(entity_data.last_updated);
+                    var updatedValue = updatedDate.toLocaleString(culture);
+                    var dateTimeNow = new Date();
+
+                    if (config.adjust_times === true) {
+                        minutesSinceUpdate = Math.floor(((dateTimeNow.getTime() - updatedDate.getTime()) / 1000 / 60));
+                        updatedValue = "" + minutesSinceUpdate + " " + lang[culture].min + " (" + updatedDate.toLocaleString(culture) + ")";
+                    }
+
                     if(config.show_cardname === true) {
                         if (!config.name) html += "<div class=\"header\">" + entity_data.attributes.friendly_name + "</div>"
                     }
-                        html += "<table class=\"sl-table\">"
 
+                    html += "<table class=\"sl-table\">"
+
+                    // Departures
                     if (config.departures === true) {
                         if (config.header === true) {
                             html += `
                                 <tr>
                                     <th class="col1">${lang[culture].line}</th>
                                     <th class="col2">${lang[culture].destination}</th>
-                                    <th class="col3">${lang[culture].departure}</th>
+                                    <th class="col3 wider">${lang[culture].departure}</th>
                                 </tr>
                         `
                         }
 
                         if (typeof entity_data.attributes.departures !== 'undefined') {
-
-                            var minutesSinceUpdate = 0;
-                            if (config.adjust_times === true && config.updated === true) {
-                                var updatedDate = new Date(entity_data.last_updated);
-                                var now = new Date();
-                                minutesSinceUpdate =
-                                    Math.floor(((now.getTime() - updatedDate.getTime()) / 1000 / 60));
-                            }
-
                             var maxDepartures = entity_data.attributes.departures.length;
 
                             if (config.max_departures && maxDepartures > config.max_departures ) {
@@ -83,43 +84,44 @@ class HASLDepartureCard extends HTMLElement {
                             }
 
                             for (var j = 0; j < maxDepartures; j++) {
-                                var depText = '';
-                                var depMin = entity_data.attributes.departures[j].time - minutesSinceUpdate;
+                                var departureInMinutes = entity_data.attributes.departures[j].time - minutesSinceUpdate;
+
+                                if (departureInMinutes < 0 && config.hide_departed) {
+                                    continue;
+                                }
+
+                                var expectedTime = new Date(entity_data.attributes.departures[j].expected);
+                                var departureTime = expectedTime.toLocaleTimeString(culture, {
+                                    hour: "numeric",
+                                    minute: "numeric"
+                                })
 
                                 if (config.timeleft === true) {
-
                                     if (config.adjust_times === true) {
                                         if (minutesSinceUpdate > 0) {
-                                            if (depMin > 0) {
-                                                depText = "" + depMin + " " + lang[culture].min;
-                                                if (entity_data.attributes.departures[j].departure.indexOf(":") > -1 || config.always_show_time === true) {
-                                                    depText += " (" + entity_data.attributes.departures[j].departure + ")";
+                                            if (departureInMinutes > 0) {
+                                                departureInMinutes = "" + departureInMinutes + " " + lang[culture].min;
+                                                if (config.always_show_time === true) {
+                                                    departureInMinutes += " (" + departureTime + ")";
                                                 }
-                                            } else if (depMin === 0) {
-                                                depText = lang[culture].now;
-                                            } else if (depMin < 0) {
-                                                if (config.hide_departed) {
-                                                    continue;
-                                                }
-                                                depText = lang[culture].departed;
                                             }
-                                        } else {
-                                            depText = entity_data.attributes.departures[j].departure.replace('min', lang[culture].min);
+                                            else if (departureInMinutes === 0) {
+                                                departureInMinutes = lang[culture].now;
+                                            }
+                                            else if (departureInMinutes < 0) {
+                                                departureInMinutes = lang[culture].departed;
+                                            }
                                         }
-                                    } else {
-                                        depText = entity_data.attributes.departures[j].departure.replace('min', lang[culture].min);
+                                        else {
+                                            departureInMinutes = "" + departureInMinutes + " " + lang[culture].min;
+                                        }
                                     }
-
-                                } else {
-                                    if (depMin < 0 && config.hide_departed) {
-                                        continue;
+                                    else {
+                                        departureInMinutes = "" + entity_data.attributes.departures[j].time + " " + lang[culture].min;
+                                        if (config.always_show_time === true) {
+                                            departureInMinutes += " (" + departureTime + ")";
+                                        }
                                     }
-
-                                    var expectedTime = new Date(entity_data.attributes.departures[j].expected);
-                                    depText = expectedTime.toLocaleTimeString(culture, {
-                                        hour: "numeric",
-                                        minute: "numeric"
-                                    })
                                 }
 
                                 var lineNumber = entity_data.attributes.departures[j].line;
@@ -168,12 +170,15 @@ class HASLDepartureCard extends HTMLElement {
                                     <tr>
                                         <td class="col1 ${config.compact === false ? 'loose-icon' : ''}"><ha-icon icon="${entity_data.attributes.departures[j].icon}"></ha-icon></td>
                                         <td class="col2 ${config.compact === false ? 'loose-cell loose-padding' : ''}"><span class="${spanClass}">${lineNumber}</span> ${entity_data.attributes.departures[j].destination}</td>
-                                        <td class="col3 ${config.compact === false ? 'loose-cell' : ''}">${depText}</td>
+                                        <td class="col3 ${config.compact === false ? 'loose-cell' : ''}">${config.timeleft === true ? departureInMinutes : departureTime}</td>
                                     </tr>
                                 `
                             }
                         }
+                        html += `</table>`;
                     }
+
+                    // Devations
                     if (config.deviations === true) {
                         if (typeof entity_data.attributes.deviations !== 'undefined') {
                             var maxDeviations = entity_data.attributes.deviations.length;
@@ -181,6 +186,8 @@ class HASLDepartureCard extends HTMLElement {
                             if (config.max_deviations && maxDeviations > config.max_deviations) {
                                 maxDeviations = config.max_deviations;
                             }
+
+                            html += `<table>`;
 
                             for (var k = 0; k < maxDeviations; k++) {
                                 if (config.compact === false) {
@@ -193,30 +200,22 @@ class HASLDepartureCard extends HTMLElement {
 
                                 html += `
                                     <tr>
-                                        <td class="col1" valign="top"><ha-icon class="alert" icon="mdi:alert-outline"></td>
-                                        <td class="col2"><b>${entity_data.attributes.deviations[k].title}</b><br/><i>${entity_data.attributes.deviations[k].details}</i></td>
+                                        <td class="col1 ${config.compact === false ? 'loose-icon' : ''}" valign="top"><ha-icon class="alert" icon="mdi:alert-outline"></td>
+                                        <td class="col2 ${config.compact === false ? 'loose-cell' : ''}"><b>${entity_data.attributes.deviations[k].title}</b><br/><i>${entity_data.attributes.deviations[k].details}</i></td>
                                     </tr>
                                 `
                             }
-                        }
-                    } //deviations
-                    if (config.updated === true) {
-                        var updatedDate = new Date(entity_data.last_updated);
-                        var updatedValue = updatedDate.toLocaleString(culture);
 
-                        if (config.adjust_times === true) {
-                            var now = new Date();
-                            var minutesSinceUpdate =
-                                Math.floor(((now.getTime() - updatedDate.getTime()) / 1000 / 60));
-                            updatedValue = "" + minutesSinceUpdate + " " + lang[culture].min + " (" + updatedDate.toLocaleString(culture) + ")";
+                            html += `</table>`;
                         }
-
-                        html += `<tr>
-                                <td colspan="3" align="left"><sub><i>${lang[culture].last_updated} ${updatedValue}</i></sub></th>
-                            </tr>`;
                     }
-                    html += `</table>`;
 
+                    // Updated
+                    if (config.updated === true) {
+                        html += `<table><tr>
+                                <td class="last-update"><sub><i>${lang[culture].last_updated} ${updatedValue}</i></sub></td>
+                            </tr></table>`;
+                    }
                 }
             }
             return html;
@@ -375,7 +374,12 @@ class HASLDepartureCard extends HTMLElement {
             }
 
             th.loose-padding, td.loose-padding {
-                padding-left:16px;
+                padding-left: 16px;
+            }
+
+            td.last-update {
+                text-align: right;
+                padding-left: 10px;
             }
         `;
 
