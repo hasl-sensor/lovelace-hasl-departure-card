@@ -33,6 +33,7 @@ resources:
 |timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
 |adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
 |hide_departed|bool|optional|This can hide already departured transports.|false|
+|offset|number|optional|Add offset to the departures, so you can hide the ones you don't have enough time catch.|0|
 |language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`.||
 |compact|bool|optional|Compact style of the card.|true|
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|

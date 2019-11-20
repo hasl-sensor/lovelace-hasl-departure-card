@@ -10,6 +10,7 @@ class HASLDepartureCard extends HTMLElement {
         if (!config.tap_action_entity) config.tap_action_entity = config.entities[0];
         config.show_cardname ? config.show_cardname = true : config.show_cardname = config.show_cardname;
         config.compact ? config.compact = false : config.compact = config.compact;
+        if (!config.offset) config.offset = 0;
     }
 
     set hass(hass) {
@@ -86,11 +87,12 @@ class HASLDepartureCard extends HTMLElement {
                             for (var j = 0; j < maxDepartures; j++) {
                                 var departureInMinutes = entity_data.attributes.departures[j].time - minutesSinceUpdate;
 
-                                if (departureInMinutes < 0 && config.hide_departed) {
+                                if (departureInMinutes - config.offset < 0 && config.hide_departed) {
                                     continue;
                                 }
 
                                 var expectedTime = new Date(entity_data.attributes.departures[j].expected);
+
                                 var departureTime = expectedTime.toLocaleTimeString(culture, {
                                     hour: "numeric",
                                     minute: "numeric"
