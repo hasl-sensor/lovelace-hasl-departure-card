@@ -1,10 +1,11 @@
+# SL Departure Lovelace Card
+
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
 [![version](https://img.shields.io/badge/version-2.4.1-green.svg)](#)
 [![maintained](https://img.shields.io/maintenance/yes/2019.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# SL Departure Lovelace Card
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
 
 ![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
@@ -21,25 +22,10 @@ resources:
     type: js
 ```
 
-and use the card through this example:
+## Configuration
 
-```yaml
-cards:
-  - type: "custom:hasl-departure-card"
-    header: false
-    departures: true
-    deviations: true
-    timeleft: false
-    updated: true
-    name: Departures
-    adjust_times: false
-    hide_departed: false
-    language: en-EN
-    entities:
-      - sensor.hasl_name
-```
+### Options
 
-## Configuration variables
 | Name | Type | Required? | Description | Default |
 |------|------|-----------|-------------|---------|
 |name|string|optional|If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name.|`sensor-name`|
@@ -58,6 +44,26 @@ cards:
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
 |tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
 |service_config|object|optional|If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.||
+
+### Basic setup
+
+```yaml
+cards:
+  - type: "custom:hasl-departure-card"
+    header: false
+    departures: true
+    deviations: true
+    timeleft: false
+    updated: true
+    name: Departures
+    adjust_times: false
+    hide_departed: false
+    language: en-EN
+    entities:
+      - sensor.hasl_name
+```
+
+### Tap action examples
 
 ```yaml
 tap_action: info
