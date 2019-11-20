@@ -31,4 +31,4 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 [keep-a-changelog]: http://keepachangelog.com/en/1.0.0/
 [Unreleased]: https://github.com/hasl-platform/lovelace-hasl-departure-card/compare/master...dev
 [2.3.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.3.0
-[2.4.2]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
+[2.4.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
