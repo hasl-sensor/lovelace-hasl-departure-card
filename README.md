@@ -2,7 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-2.4.1-green.svg)](#)
+[![version](https://img.shields.io/badge/version-2.4.0-green.svg)](#)
 [![maintained](https://img.shields.io/maintenance/yes/2019.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -39,7 +39,7 @@ resources:
 |timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
 |adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
 |hide_departed|bool|optional|This can hide already departured transports.|false|
-|offset|number|optional|Add offset to the departures, so you can hide the one you cannot catch.|0|
+|offset|number|optional|Add offset to the departures, so you can hide the ones you don't have enough time catch.|0|
 |language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`.||
 |compact|bool|optional|Compact style of the card.|true|
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
