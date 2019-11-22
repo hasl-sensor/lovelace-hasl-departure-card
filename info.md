@@ -5,6 +5,7 @@ Present departure times from HASL Combination sensors. Huge thanks to [@dimmanra
 ![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
 
 ## Manual Installation
+
 Copy [`hasl-departure-card.js`](https://github.com/hasl-platform/lovelace-hasl-departure-card/blob/master/dist/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
 
 Where `<config>` is your Home Assistant configuration directory.
