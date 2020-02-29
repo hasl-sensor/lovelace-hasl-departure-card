@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 
+## [2.5.0] (2020-03-01)
+
+- Card config fix #5
+
 ## [2.4.0] (2019-11-20)
 
 - Added tap_action #1
@@ -32,3 +36,4 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 [Unreleased]: https://github.com/hasl-platform/lovelace-hasl-departure-card/compare/master...dev
 [2.3.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.3.0
 [2.4.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
+[2.5.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.5.0

@@ -4,13 +4,14 @@ class HASLDepartureCard extends HTMLElement {
             throw new Error('You need to define one or more entities');
         }
 
-        this.config = config;
+        this.config = Object.assign({}, config)
 
-        if (!config.tap_action) config.tap_action = 'info';
-        if (!config.tap_action_entity) config.tap_action_entity = config.entities[0];
-        config.show_cardname ? config.show_cardname = true : config.show_cardname = config.show_cardname;
-        config.compact ? config.compact = false : config.compact = config.compact;
-        if (!config.offset) config.offset = 0;
+
+        if (!this.config.tap_action) this.config.tap_action = 'info';
+        if (!this.config.tap_action_entity) this.config.tap_action_entity = this.config.entities[0];
+        this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
+        this.config.compact ? this.config.compact = false : this.config.compact = this.config.compact;
+        if (!this.config.offset) this.config.offset = 0;
     }
 
     set hass(hass) {
