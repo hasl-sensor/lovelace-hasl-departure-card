@@ -409,7 +409,17 @@ class HASLDepartureCard extends HTMLElement {
                 last_updated: 'Last updated ',
                 now: 'Now',
                 departed: 'Departed',
-            }
+            },
+            'fr-FR': {
+                entity_missing: 'Aucune info trouv&eacute;e',
+                line: 'Ligne',
+                destination: 'Terminus',
+                departure: 'D&eacute;part',
+                min: 'min',
+                last_updated: 'Mis à jour ',
+                now: 'Maintenant ',
+                departed: 'Parti ',
+            }            
         }
     }
 }
