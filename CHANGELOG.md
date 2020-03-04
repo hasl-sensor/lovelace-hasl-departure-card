@@ -7,9 +7,10 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 
-## [2.5.0] (2020-03-01)
+## [2.5.0] (2020-03-04)
 
 - Card config fix #5
+- Added french translation
 
 ## [2.4.0] (2019-11-20)
 

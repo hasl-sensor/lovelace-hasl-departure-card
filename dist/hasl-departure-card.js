@@ -6,7 +6,6 @@ class HASLDepartureCard extends HTMLElement {
 
         this.config = Object.assign({}, config)
 
-
         if (!this.config.tap_action) this.config.tap_action = 'info';
         if (!this.config.tap_action_entity) this.config.tap_action_entity = this.config.entities[0];
         this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
@@ -420,7 +419,7 @@ class HASLDepartureCard extends HTMLElement {
                 last_updated: 'Mis à jour ',
                 now: 'Maintenant ',
                 departed: 'Parti ',
-            }               
+            }
         }
     }
 }
