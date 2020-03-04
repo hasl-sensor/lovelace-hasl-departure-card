@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 ## [2.5.0] (2020-03-04)
 
 - Card config fix #5
-- Added french translation
+- Added french translation [@matfouc](https://github.com/matfouc)
 
 ## [2.4.0] (2019-11-20)
 
