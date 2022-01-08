@@ -83,14 +83,16 @@ class HASLDepartureCard extends HTMLElement {
                             if (config.max_departures && maxDepartures > config.max_departures ) {
                                 maxDepartures = config.max_departures;
                             }
+                            var offset_i = 0;
 
-                            for (var j = 0; j < maxDepartures; j++) {
+                            for (var j = 0; j < entity_data.attributes.departures.length; j++) {
                                 var departureInMinutes = entity_data.attributes.departures[j].time - minutesSinceUpdate;
 
                                 if (departureInMinutes - config.offset < 0 && config.hide_departed) {
                                     continue;
                                 }
-
+                                offset_i++;
+                                
                                 var expectedTime = new Date(entity_data.attributes.departures[j].expected);
 
                                 var departureTime = expectedTime.toLocaleTimeString(culture, {
@@ -175,6 +177,9 @@ class HASLDepartureCard extends HTMLElement {
                                         <td class="col3 ${config.compact === false ? 'loose-cell' : ''}">${config.timeleft === true ? departureInMinutes : departureTime}</td>
                                     </tr>
                                 `
+                                if (offset_i >= maxDepartures) {
+                                    break;
+                                }
                             }
                         }
                         html += `</table>`;
