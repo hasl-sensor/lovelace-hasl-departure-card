@@ -12,6 +12,7 @@ class HASLDepartureCard extends HTMLElement {
         this.config.compact ? this.config.compact = false : this.config.compact = this.config.compact;
         if (!this.config.offset) this.config.offset = 0;
         if (!this.config.replace) this.config.replace = {};
+        if (!this.config.updated_minutes) this.config.updated_minutes = 0;
     }
 
     set hass(hass) {
@@ -225,6 +226,7 @@ class HASLDepartureCard extends HTMLElement {
 
                     // Updated
                     if (config.updated === true) {
+                        if (this.config.updated_minutes==0 || this.config.updated_minutes < minutesSinceUpdate )
                         html += `<table><tr>
                                 <td class="last-update"><sub><i>${lang[culture].last_updated} ${updatedValue}</i></sub></td>
                             </tr></table>`;
