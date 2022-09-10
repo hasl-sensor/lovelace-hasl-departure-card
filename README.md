@@ -49,20 +49,21 @@ resources:
 
 ### Basic setup
 
+In your lovelace dashboard, Edit Dashboard -> Add Card -> (at bottom) Manual -> Code Edit Window, paste:
+
 ```yaml
-cards:
-  - type: "custom:hasl-departure-card"
-    header: false
-    departures: true
-    deviations: true
-    timeleft: false
-    updated: true
-    name: Departures
-    adjust_times: false
-    hide_departed: false
-    language: en-EN
-    entities:
-      - sensor.hasl_name
+type: "custom:hasl-departure-card"
+header: false
+departures: true
+deviations: true
+timeleft: false
+updated: true
+name: Departures
+adjust_times: false
+hide_departed: false
+language: en-EN
+entities:
+  - sensor.hasl_name_sensor_line_blah
 ```
 
 ### Tap action examples
