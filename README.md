@@ -2,8 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-2.5.0-green.svg)](#)
-[![maintained](https://img.shields.io/maintenance/yes/2020.svg)](#)
+[![version](https://img.shields.io/badge/version-2.6.0-green.svg)](#)
+[![maintained](https://img.shields.io/maintenance/yes/2022.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
@@ -41,7 +41,7 @@ resources:
 |adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
 |hide_departed|bool|optional|This can hide already departured transports.|false|
 |offset|number|optional|Add offset to the departures, so you can hide the ones you don't have enough time catch.|0|
-|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE` or `en-EN`.||
+|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.||
 |compact|bool|optional|Compact style of the card.|true|
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
 |tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
@@ -62,6 +62,8 @@ name: Departures
 adjust_times: false
 hide_departed: false
 language: en-EN
+replace:
+  - "Hisingsängens vändplan (Jönköpings kn)": "Towards City"
 entities:
   - sensor.hasl_name_sensor_line_blah
 ```
