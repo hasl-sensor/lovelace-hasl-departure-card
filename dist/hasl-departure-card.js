@@ -11,6 +11,7 @@ class HASLDepartureCard extends HTMLElement {
         this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
         this.config.compact ? this.config.compact = false : this.config.compact = this.config.compact;
         if (!this.config.offset) this.config.offset = 0;
+        if (!this.config.replace) this.config.replace = {};
     }
 
     set hass(hass) {
@@ -168,12 +169,17 @@ class HASLDepartureCard extends HTMLElement {
                                         break;
                                 }
 
+                                var destinationName = entity_data.attributes.departures[j].destination;
+                                if (config.replace[destinationName]) {
+                                    destinationName = config.replace[destinationName];
+                                }
+
                                 var spanClass = 'line-icon' + typeClass;
 
                                 html += `
                                     <tr>
                                         <td class="col1 ${config.compact === false ? 'loose-icon' : ''}"><ha-icon icon="${entity_data.attributes.departures[j].icon}"></ha-icon></td>
-                                        <td class="col2 ${config.compact === false ? 'loose-cell loose-padding' : ''}"><span class="${spanClass}">${lineNumber}</span> ${entity_data.attributes.departures[j].destination}</td>
+                                        <td class="col2 ${config.compact === false ? 'loose-cell loose-padding' : ''}"><span class="${spanClass}">${lineNumber}</span> ${destinationName}</td>
                                         <td class="col3 ${config.compact === false ? 'loose-cell' : ''}">${config.timeleft === true ? departureInMinutes : departureTime}</td>
                                     </tr>
                                 `
