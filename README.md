@@ -1,4 +1,4 @@
-# SL Departure Lovelace Card
+# HASL Departure Lovelace Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
@@ -37,6 +37,7 @@ resources:
 |deviations|bool|optional|Render deviation section.|false|
 |max_deviations|number|optional|Max deviations to show, defaults to all.||
 |updated|bool|optional|Render the last updated time section.|false|
+|updated_minutes|number|optional|If last updated minutes is less than the specified number then hide the last updated text|0|
 |timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
 |adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
 |hide_departed|bool|optional|This can hide already departured transports.|false|

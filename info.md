@@ -1,4 +1,4 @@
-# SL Departure Lovelace Card
+# HASL Departure Lovelace Card
 
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
 
@@ -21,6 +21,8 @@ resources:
 
 ### Options
 
+### Options
+
 | Name | Type | Required? | Description | Default |
 |------|------|-----------|-------------|---------|
 |name|string|optional|If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name.|`sensor-name`|
@@ -31,11 +33,12 @@ resources:
 |deviations|bool|optional|Render deviation section.|false|
 |max_deviations|number|optional|Max deviations to show, defaults to all.||
 |updated|bool|optional|Render the last updated time section.|false|
+|updated_minutes|number|optional|If last updated minutes is less than the specified number then hide the last updated text|0|
 |timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
 |adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
 |hide_departed|bool|optional|This can hide already departured transports.|false|
 |offset|number|optional|Add offset to the departures, so you can hide the ones you don't have enough time catch.|0|
-|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN` or `fr-FR`.||
+|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.||
 |compact|bool|optional|Compact style of the card.|true|
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
 |tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
@@ -43,20 +46,23 @@ resources:
 
 ### Basic setup
 
+In your lovelace dashboard, Edit Dashboard -> Add Card -> (at bottom) Manual -> Code Edit Window, paste:
+
 ```yaml
-cards:
-  - type: "custom:hasl-departure-card"
-    header: false
-    departures: true
-    deviations: true
-    timeleft: false
-    updated: true
-    name: Departures
-    adjust_times: false
-    hide_departed: false
-    language: en-EN
-    entities:
-      - sensor.hasl_name
+type: "custom:hasl-departure-card"
+header: false
+departures: true
+deviations: true
+timeleft: false
+updated: true
+name: Departures
+adjust_times: false
+hide_departed: false
+language: en-EN
+replace:
+  - "Hisingsängens vändplan (Jönköpings kn)": "Towards City"
+entities:
+  - sensor.hasl_name_sensor_line_blah
 ```
 
 ### Tap action examples
