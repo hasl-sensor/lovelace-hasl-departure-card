@@ -226,10 +226,11 @@ class HASLDepartureCard extends HTMLElement {
 
                     // Updated
                     if (config.updated === true) {
-                        if (this.config.updated_minutes==0 || this.config.updated_minutes < minutesSinceUpdate )
-                        html += `<table><tr>
-                                <td class="last-update"><sub><i>${lang[culture].last_updated} ${updatedValue}</i></sub></td>
-                            </tr></table>`;
+                        if (this.config.updated_minutes==0 || this.config.updated_minutes < minutesSinceUpdate ) {
+                            html += `<table><tr>
+                                    <td class="last-update"><sub><i>${lang[culture].last_updated} ${updatedValue}</i></sub></td>
+                                </tr></table>`;
+                        }
                     }
                 }
             }
