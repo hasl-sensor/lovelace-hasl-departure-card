@@ -9,7 +9,7 @@ class HASLDepartureCard extends HTMLElement {
         if (!this.config.tap_action) this.config.tap_action = 'info';
         if (!this.config.tap_action_entity) this.config.tap_action_entity = this.config.entities[0];
         this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
-        this.config.compact ? this.config.compact = false : this.config.compact = this.config.compact;
+        this.config.compact ? this.config.compact = this.config.compact : this.config.compact = true;
         if (!this.config.offset) this.config.offset = 0;
         if (!this.config.replace) this.config.replace = {};
         if (!this.config.updated_minutes) this.config.updated_minutes = 0;
