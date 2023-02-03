@@ -33,6 +33,13 @@ class HASLDepartureCard extends HTMLElement {
         const config = this.config;
         const lang = this._lang();
 
+        var replace_names = [];
+        for(var i in config['replace']) {
+            for(var j in config['replace'][i]) {
+                replace_names[j] = config['replace'][i][j];
+            }
+        }
+
         function getEntitiesContent(data) {
             var html = ``;
 
@@ -171,8 +178,8 @@ class HASLDepartureCard extends HTMLElement {
                                 }
 
                                 var destinationName = entity_data.attributes.departures[j].destination;
-                                if (config.replace[destinationName]) {
-                                    destinationName = config.replace[destinationName];
+                                if (replace_names[destinationName]) {
+                                    destinationName = replace_names[destinationName];
                                 }
 
                                 var spanClass = 'line-icon' + typeClass;
