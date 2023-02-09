@@ -60,12 +60,21 @@ class HASLDepartureCard extends HTMLElement {
                 else {
                     var minutesSinceUpdate = 0;
                     var updatedDate = new Date(entity_data.last_refresh);
-                    var updatedValue = updatedDate.toLocaleString(culture);
+                    var updatedValue = '';
+                    try {
+                        updatedValue = updatedDate.toLocaleString(culture);
+                    } catch(e) {
+                        updatedValue = (updatedDate.getHours()<10?'0':'') + updatedDate.getHours() + ":" + (updatedDate.getMinutes()<10?'0':'') + updatedDate.getMinutes();
+                    }
                     var dateTimeNow = new Date();
 
                     if (config.adjust_times === true) {
                         minutesSinceUpdate = Math.floor(((dateTimeNow.getTime() - updatedDate.getTime()) / 1000 / 60));
-                        updatedValue = "" + minutesSinceUpdate + " " + lang[culture].min + " (" + updatedDate.toLocaleString(culture) + ")";
+                        try {
+                            updatedValue = "" + minutesSinceUpdate + " " + lang[culture].min + " (" + updatedDate.toLocaleString(culture) + ")";
+                        } catch(e) {
+                            updatedValue = "" + minutesSinceUpdate + " " + lang[culture].min + " (" + (updatedDate.getHours()<10?'0':'') + updatedDate.getHours() + ":" + (updatedDate.getMinutes()<10?'0':'') + updatedDate.getMinutes() + ")";
+                        }
                     }
 
                     if(config.show_cardname === true) {
