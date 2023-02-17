@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 
+## [2.6.1] (2023-02-17)
+## What's Changed
+* Reference captured `config` instead of reading from `this` by @barbatron in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/22
+* make compact true by default by @morlic in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/26
+* Fixed bus name replacements by @jockesyk in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/27
+* Fix for old browsers without support for toLocaleString by @jockesyk in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/28
+
+## New Contributors
+* @barbatron made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/22
+* @morlic made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/26
+* @jockesyk made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/27
+
 ## [2.6.0] (2022-09-10)
 
 ### Added
@@ -47,6 +59,7 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 [keep-a-changelog]: http://keepachangelog.com/en/1.0.0/
 [Unreleased]: https://github.com/hasl-platform/lovelace-hasl-departure-card/compare/master...dev
+[2.6.1]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.6.1
 [2.6.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.6.0
 [2.5.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.5.0
 [2.4.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
