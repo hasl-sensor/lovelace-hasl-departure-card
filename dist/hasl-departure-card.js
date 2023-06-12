@@ -59,7 +59,7 @@ class HASLDepartureCard extends HTMLElement {
                 }
                 else {
                     var minutesSinceUpdate = 0;
-                    var updatedDate = new Date(entity_data.last_refresh);
+                    var updatedDate = new Date(entity_data.last_updated);
                     var updatedValue = '';
                     try {
                         updatedValue = updatedDate.toLocaleString(culture);
