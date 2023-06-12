@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 
+## [2.6.2] (2023-06-12)
+## What's Changed
+* Fixed NaN and departure time calculations in https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/30 and https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/23 
+
+
 ## [2.6.1] (2023-02-17)
 ## What's Changed
 * Reference captured `config` instead of reading from `this` by @barbatron in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/22
