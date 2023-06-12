@@ -2,8 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-2.6.0-green.svg)](#)
-[![maintained](https://img.shields.io/maintenance/yes/2022.svg)](#)
+[![version](https://img.shields.io/badge/version-2.6.2-green.svg)](#)
+[![maintained](https://img.shields.io/maintenance/yes/2023.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
