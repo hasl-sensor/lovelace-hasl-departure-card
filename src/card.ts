@@ -1,21 +1,19 @@
-import { LitElement, html, nothing } from 'lit'
+import { LitElement, html, nothing, unsafeCSS, css } from 'lit'
 import type { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
 
 import type { HassEvent } from './hass'
-import { styles } from "./card.styles";
+import { styles } from "./card.styles"
+import { Departure, DepartureAttributes, TransportType } from "./models"
 
-type DepartureState = {
-    last_updated: string
-    attributes: {
-        friendly_name: string
-    }
-}
 
 type Config = {
     show_cardname: boolean
     header?: boolean
     departures?: boolean
+    max_departures?: number
+
     adjust_times?: boolean
+    offeset?: number
 
     name?: string
     language?: string
@@ -33,7 +31,10 @@ type Config = {
 
 const DEFAULT_CONFIG: Config = {
     show_cardname: true,
-    adjust_times: false
+    adjust_times: false,
+    max_departures: 5,
+    departures: true,
+    tap_action: 'info',
 }
 
 type CardConfig = LovelaceCardConfig & Config
@@ -50,7 +51,7 @@ export class HASLDepartureCard extends LitElement {
     static styles = styles
     
     private config?: CardConfig
-    private hass?: HomeAssistant
+    public hass?: HomeAssistant
 
     static properties = {
         hass: {},
@@ -63,13 +64,6 @@ export class HASLDepartureCard extends LitElement {
         }
 
         this.config = {...DEFAULT_CONFIG, ...config}
-        // if (!this.config.tap_action) this.config.tap_action = 'info';
-        // if (!this.config.tap_action_entity) this.config.tap_action_entity = this.config.entities[0];
-        // this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
-        // this.config.compact ? this.config.compact = this.config.compact : this.config.compact = true;
-        // if (!this.config.offset) this.config.offset = 0;
-        // if (!this.config.replace) this.config.replace = {};
-        // if (!this.config.updated_minutes) this.config.updated_minutes = 0;
     }
 
     getCardSize = () => this.config.entities.length + 1;
@@ -86,6 +80,35 @@ export class HASLDepartureCard extends LitElement {
     //     };
     // }
 
+    private iconForClass(type: TransportType, line: string, group: string) {
+        const iconClass = () => {
+            switch (type) {
+                case TransportType.BUS:
+                    return (group === "blåbuss" ? 'bus_blue bus_blue_' : 'bus_blue bus_blue_') + line
+                case TransportType.METRO:
+                    switch (line) {
+                        case "10":
+                        case "11":
+                            return 'met_blue met_blue_' + line
+                        case "13":
+                        case "14":
+                            return 'met_red met_red_' + line
+                        default:
+                            return 'met_green met_green_' + line
+                    }
+                    break;
+                case TransportType.TRAM:
+                    return 'trm trm_' + line 
+                case TransportType.TRAIN:
+                    return 'trn trn_' + line 
+                default:
+                    return 'mdi:bus'
+            }
+        }
+
+        return html`<span class="line-icon ${iconClass()}">${line}</span>`
+    }
+
     render() {
         console.debug('render!', this.config, this.hass)
         if (!this.config || !this.hass) return nothing
@@ -95,24 +118,68 @@ export class HASLDepartureCard extends LitElement {
             : navigator.language) ?? 'sv-SE'
 
         const _ = (key: string): string => HASLDepartureCard.translation[language][key] ?? key
+        const now = new Date()
+        const expanded = this.config?.compact === false
 
-        const departures = this.config?.entities?.map(entity => {
+        const entities = this.config?.entities?.map(entity => {
             const data = this.hass?.states[entity]
             if (data === undefined) return;
 
-            const timeStr = this.adjustTime(data.last_updated, language)
+            // const timeStr = this.adjustTime(data.last_updated, now, language)
             
             // TODO: finish card rendering
+            const header = this.config?.header ? 
+                html`
+                    <tr>
+                        <th class="col1">${_("line")}</th>
+                        <th class="col2">${_("destination")}</th>
+                        <th class="col3 wider">${_("departure")}</th>
+                    </tr>
+                ` : nothing
+            
+            const updatedTime = new Date(data.last_updated)
+            const attrs = (data.attributes as DepartureAttributes)
+            const departures = attrs.departures
+                .filter((_, i) => i <= (this.config?.max_departures || 100) )
+                .filter((d) => {
+                    // TODO: filter by 
+                    // departureInMinutes - config.offset < 0 && config.hide_departed
+                    return true
+                })
+                .map((dep) => {
+                    if (this.config?.timeleft) { 
+                        const expectedTime = new Date(dep.expected)
+                        const departureTime = expectedTime.toLocaleTimeString(
+                            language, {
+                                hour: "numeric",
+                                minute: "numeric",
+                            }
+                        )
+
+                        // TODO: calculate diff updatedTime and expectedTime
+                        const diff = 0
+                        if (diff > 0) {
+                            // leaves in
+                        } else if (diff === 0) {
+                            // now
+                        } else {
+                            // departed
+                        }
+                    }
+
+                    return html`
+                        <tr>
+                            <td class="col1 ${expanded?'': 'loose-icon'}"><ha-icon icon="${dep.icon}"></ha-icon></td>
+                            <td class="col2 ${expanded?'': 'loose-cell loose-padding'}">${this.iconForClass(dep.type, dep.line, dep.groupofline)} ${dep.destination}</td>
+                        </tr>
+                    `
+                })
+            // TODO: limit departures to config.max_departures
 
             return html`
-                ${this.config.show_cardname ? html`<tr class="header"><td span=3>${data.attributes.friendly_name}</td></tr>` : ''}
-                <tr>
-                    <td class="col1">
-                        <ha-icon class="line-icon" icon="mdi:bus"></ha-icon>
-                    </td>
-                    <td class="col2">
-                    </td>
-                </tr>
+                ${this.config.show_cardname ? html`<tr class="header"><td span=3>${attrs.friendly_name}</td></tr>` : ''}
+                ${header}
+                ${departures}
             `
         }) || nothing
 
@@ -125,14 +192,14 @@ export class HASLDepartureCard extends LitElement {
                     : nothing}
                 <table class="sl-table">
                     <tbody>
-                        ${this.config?.departures ? departures : nothing}
+                        ${this.config?.departures ? entities : nothing}
                     </tbody>
                 </table>
             </ha-card>
         `
     }
 
-    private adjustTime(timeLike: string, lang: string): string {
+    private adjustTime(timeLike: string, from: Date, lang: string): string {
         const _ = (key: string) => HASLDepartureCard.translation[lang][key] ?? key
 
         const time = new Date(timeLike);
@@ -143,17 +210,16 @@ export class HASLDepartureCard extends LitElement {
             updatedValue = `${leftPad(`${time.getHours()}`, 2, '0')}:${leftPad(`${time.getMinutes()}`, 2, '0')}`
         }
 
-        const now = new Date();
         if (this.config.adjust_times === true) {
-            const minutesSinceUpdate = Math.floor(((now.getTime() - time.getTime()) / 1000 / 60))
+            const minutesSinceUpdate = Math.floor(((from.getTime() - time.getTime()) / 1000 / 60))
             updatedValue = `${minutesSinceUpdate} ${_("min")} (${updatedValue})`
         }
 
         return updatedValue
     }
 
-    _handleClick() {
-        switch (this.config.tap_action) {
+    _handleClick(e) {
+        switch (this.config?.tap_action) {
             case 'info':
                 this._showAttributes(this, "hass-more-info", { entityId: this.config.tap_action_entity });
                 break

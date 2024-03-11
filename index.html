@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <head>
-    <script module src="./lib/card.js"></script>
+    <script module src="./dist/card.js"></script>
 </head>
 <body>
-    <hasl-departure-card id="card"/>
+    <div>
+        <hasl-departure-card id="card"/>
+    </div>
+
+    <div>
+        <button id="m"> Metro </button>
+    </div>
 
     <script>
+        const M1 = {
+            expected: "2021-01-01T00:00:00+00:00",
+            line: "13",
+            type: "METRO",
+            destination: "Test",
+            icon: "mdi:bus",
+        }
+
+        let departures = []
+
         const hass = {
             states: {
                 test: {
                     attributes: {
-                        friendly_name: 'test'
+                        friendly_name: 'test',
+                        departures: departures
                     }
                 }
             }
@@ -25,5 +42,10 @@
         const card = document.querySelector('#card');
         card.hass = hass;
         card.setConfig(config);
+
+        document.querySelector('#m').addEventListener('click', () => {
+            departures.push(M1)
+            card.hass = {...hass};
+        })
     </script>
 </body>
