@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from 'lit'
-import { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
+import type { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
 
 import type { HassEvent } from './hass'
 import { styles } from "./card.styles";
@@ -11,14 +11,16 @@ type DepartureState = {
     }
 }
 
-type Config = LovelaceCardConfig & {
+type Config = {
     show_cardname: boolean
-    adjust_times: boolean
+    header?: boolean
+    departures?: boolean
+    adjust_times?: boolean
 
     name?: string
     language?: string
 
-    entities: string[]
+    entities?: string[]
 
     tap_action?: 'info' | 'service'
     tap_action_entity?: string
@@ -28,6 +30,13 @@ type Config = LovelaceCardConfig & {
         data: object
     }
 }
+
+const DEFAULT_CONFIG: Config = {
+    show_cardname: true,
+    adjust_times: false
+}
+
+type CardConfig = LovelaceCardConfig & Config
 
 const leftPad = (s: string, width: number, char: string) => {
     if (!char) return s
@@ -40,7 +49,7 @@ const leftPad = (s: string, width: number, char: string) => {
 export class HASLDepartureCard extends LitElement {
     static styles = styles
     
-    private config?: Config
+    private config?: CardConfig
     private hass?: HomeAssistant
 
     static properties = {
@@ -48,12 +57,12 @@ export class HASLDepartureCard extends LitElement {
         config: {}
     }
 
-    setConfig(config: Config) {
+    setConfig(config: CardConfig) {
         if (!config.entities) {
             throw new Error('You need to define one or more entities');
         }
 
-        this.config = config
+        this.config = {...DEFAULT_CONFIG, ...config}
         // if (!this.config.tap_action) this.config.tap_action = 'info';
         // if (!this.config.tap_action_entity) this.config.tap_action_entity = this.config.entities[0];
         // this.config.show_cardname ? this.config.show_cardname = true : this.config.show_cardname = this.config.show_cardname;
@@ -87,7 +96,7 @@ export class HASLDepartureCard extends LitElement {
 
         const _ = (key: string): string => HASLDepartureCard.translation[language][key] ?? key
 
-        const items = this.config?.entities?.map(entity => {
+        const departures = this.config?.entities?.map(entity => {
             const data = this.hass?.states[entity]
             if (data === undefined) return;
 
@@ -116,7 +125,7 @@ export class HASLDepartureCard extends LitElement {
                     : nothing}
                 <table class="sl-table">
                     <tbody>
-                        ${items}
+                        ${this.config?.departures ? departures : nothing}
                     </tbody>
                 </table>
             </ha-card>
