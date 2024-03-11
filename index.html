@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    <script module src="./lib/card.js"></script>
+</head>
+<body>
+    <hasl-departure-card id="card"/>
+
+    <script>
+        const hass = {
+            states: {
+                test: {
+                    attributes: {
+                        friendly_name: 'test'
+                    }
+                }
+            }
+        }
+
+        const config = {
+            show_cardname: true,
+            name: 'Card name',
+            entities: ['test']
+        }
+
+        const card = document.querySelector('#card');
+        card.hass = hass;
+        card.setConfig(config);
+    </script>
+</body>
