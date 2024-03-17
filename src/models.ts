@@ -3,7 +3,9 @@ export enum TransportType {
     BUS = 'BUS',
     TRAM = 'TRAM',
     TRAIN = 'TRAIN',
-    SHIP = 'SHIP'
+    SHIP = 'SHIP',
+    FERRY = 'FETTRY',
+    TAXI = 'TAXI',
 }
 
 export type Departure = {
@@ -29,4 +31,11 @@ export type Departure = {
 export type DepartureAttributes = {
     friendly_name: string
     departures: Departure[]
+}
+
+export type Deviation = {}
+
+export type DeviationsAttributes = {
+    firendly_name: string
+    deviations: Deviation[]
 }

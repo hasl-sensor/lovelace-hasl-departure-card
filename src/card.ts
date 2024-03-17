@@ -1,47 +1,13 @@
 import { LitElement, html, nothing, css } from 'lit'
 import { property, state } from 'lit/decorators';
-import type { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
+
+import type { HomeAssistant } from "custom-card-helpers";
 
 import type { HassEvent } from './hass'
-import type { DepartureAttributes } from "./models"
+import type { DepartureAttributes, DeviationsAttributes } from "./models"
 import type { PartialEntityConfig } from './entities'
 import { t } from './translations'
-
-
-type Config = {
-    show_cardname: boolean
-    header?: boolean
-    departures?: boolean
-    max_departures?: number
-
-    adjust_times?: boolean
-    offeset?: number
-
-    name?: string
-    language?: string
-
-    entities?: string[]
-
-    hide_departed: boolean
-
-    tap_action?: 'info' | 'service'
-    tap_action_entity?: string
-    service_config?: {
-        domain: string
-        service: string
-        data: object
-    }
-}
-
-const DEFAULT_CONFIG: Config = {
-    show_cardname: true,
-    adjust_times: false,
-    departures: true,
-    tap_action: 'info',
-    hide_departed: false,
-}
-
-type CardConfig = LovelaceCardConfig & Config
+import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCardConfig'
 
 export class HASLDepartureCard extends LitElement {
     static styles = css`
@@ -57,12 +23,12 @@ export class HASLDepartureCard extends LitElement {
     `
 
     @state()
-    private config?: CardConfig
+    private config?: DepartureCardConfig
 
     @property({ attribute: false })
     public hass?: HomeAssistant
 
-    setConfig(config: CardConfig) {
+    setConfig(config: DepartureCardConfig) {
         if (!config.entities) {
             throw new Error('You need to define one or more entities');
         }
@@ -73,9 +39,9 @@ export class HASLDepartureCard extends LitElement {
     getCardSize = () => this.config.entities.length + 1;
 
     // TODO: add editor
-    // static getConfigElement() {
-    //     return document.createElement("toggle-card-typescript-editor");
-    // }
+    static getConfigElement() {
+        return document.createElement("hasl-departure-card-editor");
+    }
 
     // static getStubConfig() {
     //     return {
@@ -97,24 +63,31 @@ export class HASLDepartureCard extends LitElement {
         const entities = this.config?.entities?.map(entity => {
             const data = this.hass?.states[entity]
             if (data === undefined) return nothing;
-            const attrs = (data.attributes as DepartureAttributes)
-            if (attrs.departures === undefined) return nothing;
 
-            const config: PartialEntityConfig = {
-                lang: lang,
-                showHeader: this.config?.header,
-                friendlyName: attrs.friendly_name,
-                lastUpdated: new Date(data.last_updated),
-                lastChanged: new Date(data.last_changed),
-                hideDeparted: this.config?.hide_departed,
+            if(isDepartureAttrs(data.attributes) && this.config?.departures) {
+                const attrs = data.attributes
+                const config: PartialEntityConfig = {
+                    lang: lang,
+                    showHeader: this.config?.header,
+                    friendlyName: attrs.friendly_name,
+                    lastUpdated: new Date(data.last_updated),
+                    lastChanged: new Date(data.last_changed),
+                    hideDeparted: this.config?.hide_departed,
+                }
+
+                const maxDepartures = this.config?.max_departures || attrs.departures.length
+                const departures = attrs.departures.slice(0, maxDepartures)
+                return html`<hasl-departure-entity
+                    .config=${config}
+                    .departures=${departures}
+                />`
+            } else if (isDeviationsAttrs(data.attributes)) {
+                // TODO: figure out how to present stop deviations
+                // console.debug('deviations!', data.attributes)
             }
 
-            const maxDepartures = this.config?.max_departures || attrs.departures.length
-            const departures = attrs.departures.slice(0, maxDepartures)
-            return html`<hasl-departure-entity
-                .config=${config}
-                .departures=${departures}
-            />`
+            return nothing
+
         }) || nothing
 
         return html`
@@ -157,6 +130,14 @@ export class HASLDepartureCard extends LitElement {
         el.dispatchEvent(event);
         return event;
     }
+}
+
+function isDepartureAttrs(item: { [key:string]: any }): item is DepartureAttributes {
+    return (item as DepartureAttributes).departures !== undefined
+}
+
+function isDeviationsAttrs(item: { [key:string]: any }): item is DeviationsAttributes {
+    return (item as DeviationsAttributes).deviations !== undefined
 }
 
 declare global {

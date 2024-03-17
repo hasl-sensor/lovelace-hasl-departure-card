@@ -38,8 +38,9 @@ export class HASLDepartureEntity extends LitElement {
     static styles = [css`
         .name {
             display: flex;
+            padding: 8px 0 0 8px;
         }
-        .header {            
+        .header {
             padding: 4px 0px 12px;
 
             font-family: var(--paper-font-headline_-_font-family);
@@ -84,6 +85,9 @@ export class HASLDepartureEntity extends LitElement {
         .pl2 {
             padding-left: 16px;
         }
+        .mr1 {
+            margin-right: 8px;
+        }
 
         .center { text-align: center; }
         .left { text-align: left; }
@@ -106,6 +110,7 @@ export class HASLDepartureEntity extends LitElement {
     render() {
         const c = {...DEFAULT_CONFIG, ...this.config}
         const _ = (key: string) => t(c.lang, key)
+        // console.debug('render', c, this.departures)
 
         const filtered = this.departures?.filter((d) => {
             if (!c.hideDeparted) return true;
@@ -115,9 +120,9 @@ export class HASLDepartureEntity extends LitElement {
             return diff + c.departedOffset >= 0
         }) || []
 
-        const departureTime = (dep: Departure) => {            
+        const departureTime = (dep: Departure) => {
             const expectedAt = new Date(dep.expected)
-            
+
             const text = c.alwaysTime
                 ? expectedAt.toLocaleTimeString(
                     c.lang, {
@@ -135,8 +140,8 @@ export class HASLDepartureEntity extends LitElement {
                         : (diff > 0)
                             ? `${diff.toString()} ${_("min")}`
                             : _("departed")
-                })()    
-        
+                })()
+
             return html`<span class="leaves-in">${text}</span>`
         }
 
@@ -182,7 +187,9 @@ export class HASLDepartureEntity extends LitElement {
             [TransportType.BUS]: 'mdi:bus',
             [TransportType.TRAM]: 'mdi:tram',
             [TransportType.TRAIN]: 'mdi:train',
-            [TransportType.SHIP]: 'mdi:ferry',
+            [TransportType.SHIP]: 'mdi:ship',
+            [TransportType.FERRY]: 'mdi:ferry',
+            [TransportType.TAXI]: 'mdi:taxi',
         }[type] || 'mdi:train'
 
 
@@ -222,6 +229,6 @@ export class HASLDepartureEntity extends LitElement {
             return cls
         }
 
-        return html`<span class="line-icon ${iconClass()}">${line}</span>`
+        return html`<span class="line-icon mr1 ${iconClass()}">${line}</span>`
     }
 }
