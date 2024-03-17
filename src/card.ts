@@ -1,4 +1,5 @@
 import { LitElement, html, nothing, css } from 'lit'
+import { property, state } from 'lit/decorators';
 import type { HomeAssistant, LovelaceCardConfig } from "custom-card-helpers";
 
 import type { HassEvent } from './hass'
@@ -44,36 +45,22 @@ type CardConfig = LovelaceCardConfig & Config
 
 export class HASLDepartureCard extends LitElement {
     static styles = css`
-        ha-card {
-            display: block;
-            position: relative;
-            background-size: cover;
-
-            padding: 16px;
-        }
-
-        .header {
-            font-family: var(--paper-font-headline_-_font-family);
-            -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
-            font-size: var(--paper-font-headline_-_font-size);
-            font-weight: var(--paper-font-headline_-_font-weight);
-            letter-spacing: var(--paper-font-headline_-_letter-spacing);
-            line-height: var(--paper-font-headline_-_line-height);
-            text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
-            opacity: var(--dark-primary-opacity);
-            padding: 4px 0px 12px;
+        .card-header {
             display: flex;
             justify-content: space-between;
         }
+        .card-header .name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: elipsis;
+        }
     `
-    
-    private config?: CardConfig
-    public hass?: HomeAssistant
 
-    static properties = {
-        hass: {},
-        config: {}
-    }
+    @state()
+    private config?: CardConfig
+
+    @property({ attribute: false })
+    public hass?: HomeAssistant
 
     setConfig(config: CardConfig) {
         if (!config.entities) {
@@ -109,8 +96,9 @@ export class HASLDepartureCard extends LitElement {
 
         const entities = this.config?.entities?.map(entity => {
             const data = this.hass?.states[entity]
-            if (data === undefined) return;
+            if (data === undefined) return nothing;
             const attrs = (data.attributes as DepartureAttributes)
+            if (attrs.departures === undefined) return nothing;
 
             const config: PartialEntityConfig = {
                 lang: lang,
@@ -120,7 +108,7 @@ export class HASLDepartureCard extends LitElement {
                 lastChanged: new Date(data.last_changed),
                 hideDeparted: this.config?.hide_departed,
             }
-            
+
             const maxDepartures = this.config?.max_departures || attrs.departures.length
             const departures = attrs.departures.slice(0, maxDepartures)
             return html`<hasl-departure-entity
@@ -133,10 +121,12 @@ export class HASLDepartureCard extends LitElement {
             <ha-card @click="${this._handleClick}">
                 ${this.config?.show_cardname
                     ? (this.config?.name
-                        ? html`<div class="header"><div class="name">${this.config.name}</div></div>`
+                        ? html`<h1 class="card-header"><div class="name">${this.config.name}</div></h1>`
                         : nothing)
                     : nothing}
-                ${this.config?.departures ? entities : nothing}
+                <div id="departures" class="card-content">
+                    ${this.config?.departures ? entities : nothing}
+                </div>
             </ha-card>
         `
     }
@@ -169,3 +159,8 @@ export class HASLDepartureCard extends LitElement {
     }
 }
 
+declare global {
+    interface HTMLElementTagNameMap {
+        "hasl-departure-card": HASLDepartureCard
+    }
+}

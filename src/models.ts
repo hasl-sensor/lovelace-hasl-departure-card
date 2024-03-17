@@ -7,13 +7,23 @@ export enum TransportType {
 }
 
 export type Departure = {
-    time: number
-    expected: string 
-    line: string
-    groupofline: string
-    type: TransportType
     destination: string
-    icon: string
+    direction: string
+    direction_code: number
+    state: string
+    display: string
+    stop_point: {
+        name: string
+        designation: string
+    }
+    line: {
+        id: number
+        designation: string
+        transport_mode: TransportType
+        group_of_lines: string
+    }
+    scheduled: string
+    expected: string
 }
 
 export type DepartureAttributes = {

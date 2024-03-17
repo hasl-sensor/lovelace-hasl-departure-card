@@ -11,7 +11,7 @@ customElements.define('hasl-departure-entity', HASLDepartureEntity)
 
 window.customCards = window.customCards || []
 window.customCards.push({
-    type: "toggle-card-typescript",
+    type: "hasl-departure-card",
     name: "HASL Departure card",
     description: "Show departure times for SL Trafik",
 })
