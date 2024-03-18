@@ -9,6 +9,7 @@ const defaultTranslation = {
     departed: 'Departed',
 }
 type Translation = typeof defaultTranslation
+export type TranslationKey = keyof Translation
 
 export const translations: {[lang: string]: Translation} = {
     'sv-SE': {
@@ -33,4 +34,5 @@ export const translations: {[lang: string]: Translation} = {
     }
 }
 
-export const t = (lang: string, key: string): string => translations[lang]?.[key] ?? defaultTranslation[key]
+export const languages = Object.keys(translations)
+export const t = (lang: string, key: TranslationKey): string => translations[lang]?.[key] ?? defaultTranslation[key]

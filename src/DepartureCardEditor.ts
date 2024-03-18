@@ -3,7 +3,7 @@ import { fireEvent } from "custom-card-helpers"
 import { LitElement, css, html } from "lit"
 import { customElement, property, state } from "lit/decorators"
 
-import { DepartureCardConfig } from './DepartureCardConfig'
+import { DepartureCardConfig } from './DepartureCard/DepartureCard.config'
 
 @customElement('hasl-departure-card-editor')
 export class HASLDepartureCardEditor extends LitElement implements LovelaceCardEditor {

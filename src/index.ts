@@ -1,5 +1,4 @@
-import { HASLDepartureCard } from "./card"
-import { HASLDepartureEntity } from "./entities"
+import { HASLDepartureCard, HASLDepartureEntity } from "./DepartureCard"
 
 declare global {
     interface Window {

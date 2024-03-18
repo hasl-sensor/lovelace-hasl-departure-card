@@ -3,11 +3,12 @@ import { property, state } from 'lit/decorators';
 
 import type { HomeAssistant, LovelaceCard } from "custom-card-helpers";
 
-import type { HassEvent } from './hass'
-import type { DepartureAttributes, DeviationsAttributes } from "./models"
-import type { PartialEntityConfig } from './DepartureEntityConfig'
-import { t } from './translations'
-import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCardConfig'
+import type { DepartureAttributes, DeviationsAttributes } from "../models"
+import type { PartialEntityConfig } from './DepartureEntity.config'
+import { TranslationKey, t } from '../translations'
+import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCard.config'
+import { HASLDepartureEntity } from './DepartureEntity';
+
 
 export class HASLDepartureCard extends LitElement implements LovelaceCard {
     static styles = css`
@@ -36,8 +37,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
     // configuration card is loaded in async manner
     static async getConfigElement () {
-        await import('./editor')
-        return document.createElement("hasl-departure-card-editor")
+        return await import('../DepartureCardEditor').then(() => document.createElement("hasl-departure-card-editor"))
     }
     static getStubConfig = () => ({...DEFAULT_CONFIG})
 
@@ -49,43 +49,47 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
             ? this.config.language
             : navigator.language) ?? 'sv-SE'
 
-        const _ = (key: string): string => t(lang, key)
+        const _ = (key: TranslationKey) => t(lang, key)
 
-        const entities = this.config?.entities?.map(entity => {
-            const data = this.hass?.states[entity]
-            if (data === undefined) return nothing;
+        const missing = html`<span>${_(`entity_missing`)}</span>`
+        const entities = (this.config?.entities?.length
+            ? this.config?.entities.map(entity => {
+                const data = this.hass?.states[entity]
+                if (data === undefined) return nothing;
 
-            if(isDepartureAttrs(data.attributes) && this.config?.show_departures) {
-                const attrs = data.attributes
-                const config: PartialEntityConfig = {
-                    lang: lang,
-                    showHeader: this.config?.show_header,
-                    showUpdated: this.config?.show_updated,
-                    showName: this.config?.show_entity_name,
-                    showIcon: this.config?.show_icon,
-                    friendlyName: attrs.friendly_name,
-                    hideDeparted: this.config?.hide_departed,
-                    departedOffset: this.config?.show_departed_offeset,
-                    lastUpdated: new Date(data.last_updated),
-                    lastChanged: new Date(data.last_changed),
-                    adjustTime: this.config?.adjust_departure_time,
-                    alwaysTime: this.config?.show_time_always,
+                if(isDepartureAttrs(data.attributes) && this.config?.show_departures) {
+                    const attrs = data.attributes
+                    const config: PartialEntityConfig = {
+                        lang: lang,
+                        showHeader: this.config?.show_header,
+                        showUpdated: this.config?.show_updated,
+                        showName: this.config?.show_entity_name,
+                        showIcon: this.config?.show_icon,
+                        friendlyName: attrs.friendly_name,
+                        hideDeparted: this.config?.hide_departed,
+                        departedOffset: this.config?.show_departed_offeset,
+                        lastUpdated: new Date(data.last_updated),
+                        lastChanged: new Date(data.last_changed),
+                        adjustTime: this.config?.adjust_departure_time,
+                        alwaysTime: this.config?.show_time_always,
+                    }
+
+                    const maxDepartures = this.config?.max_departures || attrs.departures.length
+                    const departures = attrs.departures.slice(0, maxDepartures)
+                    return html`<hasl-departure-entity
+                        .config=${config}
+                        .departures=${departures}
+                    />`
+                } else if (isDeviationsAttrs(data.attributes)) {
+                    // TODO: figure out how to present stop deviations
+                    // console.debug('deviations!', data.attributes)
                 }
 
-                const maxDepartures = this.config?.max_departures || attrs.departures.length
-                const departures = attrs.departures.slice(0, maxDepartures)
-                return html`<hasl-departure-entity
-                    .config=${config}
-                    .departures=${departures}
-                />`
-            } else if (isDeviationsAttrs(data.attributes)) {
-                // TODO: figure out how to present stop deviations
-                // console.debug('deviations!', data.attributes)
-            }
+                return nothing
 
-            return nothing
-
-        }) || nothing
+            })
+            : missing
+        ) || nothing
 
         return html`
             <ha-card @click="${this._handleClick}">
@@ -122,7 +126,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
             cancelable: Boolean(options?.cancelable),
             composed: Boolean(options?.composed) || true
         });
-        (event as HassEvent).detail = detail || {};
+        event.detail = detail || {};
 
         el.dispatchEvent(event);
         return event;
@@ -139,6 +143,10 @@ function isDeviationsAttrs(item: { [key:string]: any }): item is DeviationsAttri
 
 declare global {
     interface HTMLElementTagNameMap {
-        "hasl-departure-card": HASLDepartureCard
+        "hasl-departure-card": HASLDepartureCard,
+        "hasl-departure-entity": HASLDepartureEntity,
+    }
+    interface Event {
+        detail?: object
     }
 }

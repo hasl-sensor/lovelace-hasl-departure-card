@@ -3,7 +3,7 @@
   "version": "2.6.2",
   "description": "HASL Departure Lovelace Card",
   "source": "src/index.ts",
-  "module": "dist/card.js",
+  "module": "dist/hasl-departure-card.js",
   "targets": {
     "module": {
       "includeNodeModules": true
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "NODE_ENV=production parcel build",
     "watch": "parcel watch",
-    "serve": "parcel serve",
+    "serve": "NODE_ENV=production parcel serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -23,9 +23,18 @@
     "custom-card-helpers": "^1.9.0",
     "home-assistant-js-websocket": "^8.0.1",
     "parcel": "^2.12.0",
+    "parcel-namer-rewrite": "^2.10.3-rc.2",
     "typescript": "^5.4.2"
   },
   "volta": {
     "node": "18.19.1"
+  },
+  "parcel-namer-rewrite": {
+    "chain": "@parcel/namer-default",
+    "hashing": "always",
+    "disable": false,
+    "rules": {
+      "DepartureCardEditor.(.*)": "editor.{hash}.$1"
+    }
   }
 }

@@ -1,86 +1,17 @@
 import { LitElement, html, nothing, css } from 'lit'
 import { property } from 'lit/decorators'
-import { Departure, TransportType } from './models'
-import { t } from './translations'
-import { diffMinutes } from './utils'
-import lineStyles from './lineStyles'
-import { DepartureEntityConfig, DEFAULT_CONFIG } from './DepartureEntityConfig'
+import { Departure, TransportType } from '../models'
+import { TranslationKey, t } from '../translations'
+import styles from './DepartureEntity.styles'
+import { DepartureEntityConfig, DEFAULT_CONFIG } from './DepartureEntity.config'
 
+const diffMinutes = (from: Date, to: Date) => {
+    const diffMinutes = Math.ceil((from.getTime() - to.getTime()) / 1000 / 60)
+    return diffMinutes
+}
 
 export class HASLDepartureEntity extends LitElement {
-    static styles = [css`
-        .name {
-            display: flex;
-            padding: 8px 0 0 8px;
-            font-weight: bold;
-            font-size: large;
-        }
-        .header {
-            padding: 4px 0px 12px;
-            font-size: medium;
-            font-weight: bold;
-            font-family: var(--paper-font-headline_-_font-family);
-            letter-spacing: var(--paper-font-headline_-_letter-spacing);
-            line-height: var(--paper-font-headline_-_line-height);
-            text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
-            opacity: var(--dark-primary-opacity);
-        }
-        .row {
-            height: 40px;
-        }
-
-        .table {
-            display: table;
-            width: 100%;
-        }
-        .table-header {
-            display: table-header-group;
-        }
-        .table-body {
-            display: table-row-group;
-        }
-        .table .row {
-            display: table-row;
-        }
-        .table .col {
-            display: table-cell;
-            vertical-align: middle;
-        }
-        .table .col.small {
-            width: 0;
-        }
-
-        .transport-icon {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pl2 {
-            padding-left: 16px;
-        }
-        .mr1 {
-            margin-right: 8px;
-        }
-        .updated {
-            padding-left: 16px;
-            padding-top: 8px;
-            font-size: smaller;
-        }
-
-        .center { text-align: center; }
-        .left { text-align: left; }
-        .right { text-align: right; }
-
-        ha-icon {
-            transition: color 0.3s ease-in-out, filter 0.3s ease-in-out;
-            width: 24px;
-            height: 24px;
-            color: var(--paper-item-icon-color);
-        }
-    `, lineStyles]
+    static styles = styles
 
     @property({ type: Object })
     config: DepartureEntityConfig = DEFAULT_CONFIG
@@ -90,7 +21,7 @@ export class HASLDepartureEntity extends LitElement {
 
     render() {
         const c = {...DEFAULT_CONFIG, ...this.config}
-        const _ = (key: string) => t(c.lang, key)
+        const _ = (key: TranslationKey) => t(c.lang, key)
 
         const departures = this.departures?.filter((d) => {
             if (!c.hideDeparted) return true;
@@ -118,7 +49,7 @@ export class HASLDepartureEntity extends LitElement {
                     return diff === 0
                         ? _("now")
                         : (diff > 0)
-                            ? `${diff.toString()} ${_("min")}`
+                            ?  `${diff.toString()} ${_("min")}`
                             : _("departed")
                 })()
 
