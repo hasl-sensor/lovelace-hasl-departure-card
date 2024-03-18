@@ -2,6 +2,6 @@
     "name": "HASL Departure Card",
     "filename": "hasl-departure-card.js",
     "render_readme": true,
-    "county": "SE" ,
+    "country": "SE" ,
     "homeassistant": "2024.1.0"
 }

@@ -8,7 +8,7 @@
 
 Present departure times from HASL 4 Departure sensors
 
-![card](./images/dark-card.png)
+![card](https://github.com/NecroKote/HA-hasl3-departure-card/assets/1721257/2a4208f1-9007-4888-b084-32468d734a3c)
 
 ## Manual Installation
 
@@ -31,7 +31,7 @@ In your lovelace dashboard, Edit Dashboard -> Add Card -> Search for 'HASL Depar
 
 Card fully supports configuration through the UI
 
-![card editor](./images/dark-card-editor.png)
+![card editor](https://github.com/NecroKote/HA-hasl3-departure-card/assets/1721257/9397ab6f-bd13-480e-b246-dde131ab3bc7)
 
 
 ### Options
