@@ -38,7 +38,6 @@ export class HASLDepartureCard extends LitElement {
 
     getCardSize = () => this.config.entities.length + 1;
 
-    // TODO: add editor
     static getConfigElement() {
         return document.createElement("hasl-departure-card-editor");
     }
