@@ -1,15 +1,15 @@
 import { LitElement, html, nothing, css } from 'lit'
 import { property, state } from 'lit/decorators';
 
-import type { HomeAssistant } from "custom-card-helpers";
+import type { HomeAssistant, LovelaceCard } from "custom-card-helpers";
 
 import type { HassEvent } from './hass'
 import type { DepartureAttributes, DeviationsAttributes } from "./models"
-import type { PartialEntityConfig } from './entities'
+import type { PartialEntityConfig } from './DepartureEntityConfig'
 import { t } from './translations'
 import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCardConfig'
 
-export class HASLDepartureCard extends LitElement {
+export class HASLDepartureCard extends LitElement implements LovelaceCard {
     static styles = css`
         .card-header {
             display: flex;
@@ -29,25 +29,17 @@ export class HASLDepartureCard extends LitElement {
     public hass?: HomeAssistant
 
     setConfig(config: DepartureCardConfig) {
-        if (!config.entities) {
-            throw new Error('You need to define one or more entities');
-        }
-
         this.config = {...DEFAULT_CONFIG, ...config}
     }
 
     getCardSize = () => this.config.entities.length + 1;
 
-    static getConfigElement() {
-        return document.createElement("hasl-departure-card-editor");
+    // configuration card is loaded in async manner
+    static async getConfigElement () {
+        await import('./editor')
+        return document.createElement("hasl-departure-card-editor")
     }
-
-    // static getStubConfig() {
-    //     return {
-    //         entity: "input_boolean.tcts",
-    //         header: "",
-    //     };
-    // }
+    static getStubConfig = () => ({...DEFAULT_CONFIG})
 
     render() {
         // console.debug('render!', this.config, this.hass)
@@ -63,15 +55,21 @@ export class HASLDepartureCard extends LitElement {
             const data = this.hass?.states[entity]
             if (data === undefined) return nothing;
 
-            if(isDepartureAttrs(data.attributes) && this.config?.departures) {
+            if(isDepartureAttrs(data.attributes) && this.config?.show_departures) {
                 const attrs = data.attributes
                 const config: PartialEntityConfig = {
                     lang: lang,
-                    showHeader: this.config?.header,
+                    showHeader: this.config?.show_header,
+                    showUpdated: this.config?.show_updated,
+                    showName: this.config?.show_entity_name,
+                    showIcon: this.config?.show_icon,
                     friendlyName: attrs.friendly_name,
+                    hideDeparted: this.config?.hide_departed,
+                    departedOffset: this.config?.show_departed_offeset,
                     lastUpdated: new Date(data.last_updated),
                     lastChanged: new Date(data.last_changed),
-                    hideDeparted: this.config?.hide_departed,
+                    adjustTime: this.config?.adjust_departure_time,
+                    alwaysTime: this.config?.show_time_always,
                 }
 
                 const maxDepartures = this.config?.max_departures || attrs.departures.length
@@ -91,19 +89,19 @@ export class HASLDepartureCard extends LitElement {
 
         return html`
             <ha-card @click="${this._handleClick}">
-                ${this.config?.show_cardname
+                ${this.config?.show_name
                     ? (this.config?.name
                         ? html`<h1 class="card-header"><div class="name">${this.config.name}</div></h1>`
                         : nothing)
                     : nothing}
                 <div id="departures" class="card-content">
-                    ${this.config?.departures ? entities : nothing}
+                    ${this.config?.show_departures ? entities : nothing}
                 </div>
             </ha-card>
         `
     }
 
-    _handleClick(e) {
+    private _handleClick(e) {
         switch (this.config?.tap_action) {
             case 'info':
                 this._showAttributes(this, "hass-more-info", { entityId: this.config.tap_action_entity });
@@ -114,11 +112,11 @@ export class HASLDepartureCard extends LitElement {
         }
     }
 
-    _serviceCall (domain, service, data) {
+    private _serviceCall (domain, service, data) {
         this.hass.callService(domain, service, data)
     }
 
-    _showAttributes (el: HTMLElement, type: string, detail?: object, options?: { bubbles?: boolean, cancelable?: boolean, composed?: boolean }) {
+    private _showAttributes (el: HTMLElement, type: string, detail?: object, options?: { bubbles?: boolean, cancelable?: boolean, composed?: boolean }) {
         const event = new Event(type, {
             bubbles: Boolean(options?.bubbles),
             cancelable: Boolean(options?.cancelable),

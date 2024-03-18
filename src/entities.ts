@@ -4,53 +4,29 @@ import { Departure, TransportType } from './models'
 import { t } from './translations'
 import { diffMinutes } from './utils'
 import lineStyles from './lineStyles'
+import { DepartureEntityConfig, DEFAULT_CONFIG } from './DepartureEntityConfig'
 
-type EntityConfig = {
-    lang: string
-    showHeader: boolean
-    showUpdated: boolean
-    friendlyName: string
-    hideDeparted: boolean
-    departedOffset: number
-    lastUpdated: Date
-    lastChanged: Date
-    // Departure config
-    alwaysTime: boolean
-    adjustTime: boolean
-}
-
-export type PartialEntityConfig = Partial<EntityConfig>
-
-const DEFAULT_CONFIG: EntityConfig  = {
-    lang: 'sv-SE',
-    showHeader: true,
-    showUpdated: false,
-    friendlyName: '',
-    hideDeparted: false,
-    departedOffset: 0,
-    lastUpdated: new Date(),
-    lastChanged: new Date(),
-    alwaysTime: false,
-    adjustTime: false,
-}
 
 export class HASLDepartureEntity extends LitElement {
     static styles = [css`
         .name {
             display: flex;
             padding: 8px 0 0 8px;
+            font-weight: bold;
+            font-size: large;
         }
         .header {
             padding: 4px 0px 12px;
-
+            font-size: medium;
+            font-weight: bold;
             font-family: var(--paper-font-headline_-_font-family);
-            -webkit-font-smoothing: var(--paper-font-headline_-_-webkit-font-smoothing);
-            font-size: var(--paper-font-headline_-_font-size);
-            font-weight: var(--paper-font-headline_-_font-weight);
             letter-spacing: var(--paper-font-headline_-_letter-spacing);
             line-height: var(--paper-font-headline_-_line-height);
             text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
             opacity: var(--dark-primary-opacity);
+        }
+        .row {
+            height: 40px;
         }
 
         .table {
@@ -88,6 +64,11 @@ export class HASLDepartureEntity extends LitElement {
         .mr1 {
             margin-right: 8px;
         }
+        .updated {
+            padding-left: 16px;
+            padding-top: 8px;
+            font-size: smaller;
+        }
 
         .center { text-align: center; }
         .left { text-align: left; }
@@ -102,7 +83,7 @@ export class HASLDepartureEntity extends LitElement {
     `, lineStyles]
 
     @property({ type: Object })
-    config: EntityConfig = DEFAULT_CONFIG
+    config: DepartureEntityConfig = DEFAULT_CONFIG
 
     @property({ type: Array })
     departures = new Array<Departure>()
@@ -110,9 +91,8 @@ export class HASLDepartureEntity extends LitElement {
     render() {
         const c = {...DEFAULT_CONFIG, ...this.config}
         const _ = (key: string) => t(c.lang, key)
-        // console.debug('render', c, this.departures)
 
-        const filtered = this.departures?.filter((d) => {
+        const departures = this.departures?.filter((d) => {
             if (!c.hideDeparted) return true;
 
             const diffBase = c.adjustTime ? c.lastUpdated : new Date()
@@ -147,22 +127,24 @@ export class HASLDepartureEntity extends LitElement {
 
         return html`
             <div class="entity">
-                ${c.friendlyName ? html`<div class="name">${c.friendlyName}</div` : ''}
+                ${(c.showName && c.friendlyName) ? html`<div class="name">${c.friendlyName}</div` : ''}
                 <div class="table departures">
                     ${c.showHeader ? html`
                         <div class="table-header header">
                             <div class="row">
-                                <div class="col small"></div>
-                                <div class="col left">${_("line")}</div>
+                                ${c.showIcon ? html`<div class="col small"></div>` : nothing}
+                                <div class="col left pl2">${_("line")}</div>
                                 <div class="col right">${_("departure")}</div>
                             </div>
                         </div>`: nothing}
                     <div class="table-body">
-                    ${filtered.map(dep => html`
+                    ${departures.map(dep => html`
                         <div class="row departure fade-in">
-                            <div class="col small">
-                                ${this.iconForTransport(dep.line.transport_mode)}
-                            </div>
+                            ${c.showIcon ? html`
+                                <div class="col small">
+                                    ${this.iconForTransport(dep.line.transport_mode)}
+                                </div>
+                            ` : nothing}
                             <div class="col left pl2">
                                 ${this.iconForLine(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines)} ${dep.destination}
                             </div>
@@ -173,9 +155,9 @@ export class HASLDepartureEntity extends LitElement {
                     </div>
                 </div>
                 ${(c.showUpdated && c.lastChanged) ? html`
-                    <div class="updated">
+                    <div class="updated right">
                         ${_("last_updated")}
-                        ${c.lastChanged}
+                        ${c.lastChanged.toLocaleTimeString(c.lang)}
                     </div>` : nothing}
             </div>
         `

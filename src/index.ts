@@ -1,5 +1,4 @@
 import { HASLDepartureCard } from "./card"
-import { HASLDepartureCardEditor } from "./editor"
 import { HASLDepartureEntity } from "./entities"
 
 declare global {
@@ -8,7 +7,6 @@ declare global {
     }
 }
 customElements.define('hasl-departure-card', HASLDepartureCard)
-customElements.define('hasl-departure-card-editor', HASLDepartureCardEditor)
 customElements.define('hasl-departure-entity', HASLDepartureEntity)
 
 window.customCards = window.customCards || []
