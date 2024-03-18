@@ -1,21 +1,21 @@
 # HASL Departure Lovelace Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
-[![ha_version](https://img.shields.io/badge/home%20assistant-0.92%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-2.6.2-green.svg)](#)
-[![maintained](https://img.shields.io/maintenance/yes/2023.svg)](#)
+[![ha_version](https://img.shields.io/badge/homeassistant-2024.1.0%2B-yellow.svg)](https://www.home-assistant.io)
+[![version](https://img.shields.io/badge/version-3.0.0-red.svg)](#)
+[![maintained](https://img.shields.io/maintenance/yes/2024.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Present departure times from HASL Combination sensors. Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
+Present departure times from HASL 4 Departure sensors
 
-![card](https://user-images.githubusercontent.com/8133650/56198334-0a150f00-603b-11e9-9e93-92be212d7f7b.PNG)
+![card](./images/dark-card.png)
 
 ## Manual Installation
 
-Copy [`hasl-departure-card.js`](https://github.com/hasl-platform/lovelace-hasl-departure-card/blob/master/dist/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
+Copy [`hasl-departure-card.js`](./dist/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
 
 Where `<config>` is your Home Assistant configuration directory.
-Then use the following in your ui-lovelace.yaml file:
+Then use the following in your `ui-lovelace.yaml` file:
 
 ```yaml
 resources:
@@ -23,64 +23,61 @@ resources:
     type: js
 ```
 
-## Configuration
-
-### Options
-
-| Name | Type | Required? | Description | Default |
-|------|------|-----------|-------------|---------|
-|name|string|optional|If specified it will not render titles per entitiy in the card, but rather have this as the card name. If not speficied it will render each sensors name.|`sensor-name`|
-|show_cardname|bool|optional|Render card name.|true|
-|header|bool|optional|Render headers in the such as "line", "destination" and "time".|true|
-|departures|bool|optional|Render departure section.|false|
-|max_departures|number|optional|Max departures to show, default to all.||
-|deviations|bool|optional|Render deviation section.|false|
-|max_deviations|number|optional|Max deviations to show, defaults to all.||
-|updated|bool|optional|Render the last updated time section.|false|
-|updated_minutes|number|optional|If last updated minutes is less than the specified number then hide the last updated text|0|
-|timeleft|bool|optional|Show as SL real time with minutes instead of time. If using **adjust_times** then this must be specified.|false|
-|adjust_times|bool|optional|Calculate time left adjusted to last update.|false|
-|hide_departed|bool|optional|This can hide already departured transports.|false|
-|offset|number|optional|Add offset to the departures, so you can hide the ones you don't have enough time catch.|0|
-|language|string|optional|The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.||
-|compact|bool|optional|Compact style of the card.|true|
-|tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
-|tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
-|service_config|object|optional|If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.||
-
 ### Basic setup
 
-In your lovelace dashboard, Edit Dashboard -> Add Card -> (at bottom) Manual -> Code Edit Window, paste:
+In your lovelace dashboard, Edit Dashboard -> Add Card -> Search for 'HASL Departure Card'
 
-```yaml
-type: "custom:hasl-departure-card"
-header: false
-departures: true
-deviations: true
-timeleft: false
-updated: true
-name: Departures
-adjust_times: false
-hide_departed: false
-language: en-EN
-replace:
-  - "Hisingsängens vändplan (Jönköpings kn)": "Towards City"
-entities:
-  - sensor.hasl_name_sensor_line_blah
-```
+## Configuration
 
-### Tap action examples
+Card fully supports configuration through the UI
 
-```yaml
-tap_action: info
-tap_action_entity: info
-```
+![card editor](./images/dark-card-editor.png)
 
-```yaml
-tap_action: service
-service_config:
-  domain: light
-  service: turn_on
-  data:
-    entity_id: light.living_room
-```
+
+### Options
+| Name                  | Type             | Required? | Description                                                                                                 |
+|-----------------------|------------------|-----------|-------------------------------------------------------------------------------------------------------------|
+| entities              | array            | required  | List of entities to show. 'Departure' sensor is advised.                                                    |
+| show_name             | bool             | optional  | Render card name.                                                                                           |
+| name                  | string           | optional  | If set, this will be rendered as the card name.                                                             |
+| show_entity_name      | bool             | optional  | Render an individual name for each entity section.                                                          |
+| show_header           | bool             | optional  | Render headers in each section such as "Line", "Destination" and "Departure".                               |
+| show_icon             | bool             | optional  | Render transport icon for each line.                                                                        |
+| show_departures       | bool             | optional  | Render departures section.                                                                                  |
+| max_departures        | number           | optional  | Max departures to show, default to all.                                                                     |
+| hide_departed         | bool             | optional  | If set, will hide already departured vehicles.                                                              |
+| show_departed_offset  | bool             | optional  | If set, will show some departed vehicles, which departed less than the offset minutes ago.                  |
+| adjust_departure_time | bool             | optional  | Adjust departure time taking last update into account.                                                      |
+| show_time_always      | bool             | optional  | Always present time in HH:MM form. If not set, time will be presented as "in X minutes" or "X minutes ago". |
+| show_updated          | bool             | optional  | Render the 'last updated' text                                                                              |
+| language              | string           | optional  | The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.                       |
+| click_action          | string or object | optional  | Action when tapping the card. See section `click_action` below.                                             |
+
+#### `click_action`
+
+The `click_action` option can be used to specify what happens when the card is tapped. It can be one of the following:
+
+- Display information about the entity that was clicked:
+    ```yaml
+    click_action: info
+    ```
+
+-  Display information about the specific entity
+    ```yaml
+    click_action:
+    entityId: sun.sun
+    ```
+
+- Call a service:
+    ```yaml
+    click_action:
+      domain: light
+      service: turn_on
+      data:
+        entity_id: light.living_room
+    ```
+
+
+## Credits
+- Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
+- [@DSorlov](https://github.com/DSorlov) for his work on the original card

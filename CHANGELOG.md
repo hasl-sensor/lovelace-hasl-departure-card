@@ -6,10 +6,14 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 <!-- and this project adheres to [Semantic Versioning][semantic-versioning]. -->
 
 ## [Unreleased]
+## What's Changed
+* Card is no longer compatible with HASL prior to version 4
+* Complete rewrite using Lit and TypeScript
+* Added visual editor for settings
 
 ## [2.6.2] (2023-06-12)
 ## What's Changed
-* Fixed NaN and departure time calculations in https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/30 and https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/23 
+* Fixed NaN and departure time calculations in https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/30 and https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/23
 
 
 ## [2.6.1] (2023-02-17)
