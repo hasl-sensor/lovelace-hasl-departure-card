@@ -52,13 +52,13 @@ const departureEntityStyles = css`
     .name {
         display: flex;
         padding: 8px 0 0 8px;
-        font-weight: bold;
+        font-weight: 400;
         font-size: large;
     }
     .header {
         padding: 4px 0px 12px;
         font-size: medium;
-        font-weight: bold;
+        font-weight: 400;
         font-family: var(--paper-font-headline_-_font-family);
         letter-spacing: var(--paper-font-headline_-_letter-spacing);
         line-height: var(--paper-font-headline_-_line-height);

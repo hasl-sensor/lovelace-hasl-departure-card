@@ -4,6 +4,7 @@ import { LitElement, css, html } from "lit"
 import { customElement, property, state } from "lit/decorators"
 
 import { DepartureCardConfig } from './DepartureCard/DepartureCard.config'
+import { getLanguage, translateTo, languages } from "./translations"
 
 @customElement('hasl-departure-card-editor')
 export class HASLDepartureCardEditor extends LitElement implements LovelaceCardEditor {
@@ -32,13 +33,11 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
     }
 
     .border {
-      border: 1px solid var(--primary-text-color);
       border-radius: 8px;
     }
 
     .subsection {
-      margin: 16px;
-      padding: 0 16px 16px 16px;
+      background: var(--primary-background-color);
     }
   `
 
@@ -47,13 +46,21 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
   }
 
   render() {
+    const lang = getLanguage()
+    const _ = translateTo(lang)
+
     const departureConfigs = (enabled: boolean = true) => {
       const disabled = !enabled
       return html`
-        <ha-formfield .label=${`Show departure header`}>
+        <div class="header">
+          <ha-formfield .label=${_(`editor_show_departures`)}>
+            <ha-switch .checked=${this._config?.show_departures} @change=${this.checkboxHandler} .configValue=${`show_departures`}/>
+          </ha-formfield>
+        </div>
+        <ha-formfield .label=${_(`editor_show_departure_header`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_header} @change=${this.checkboxHandler} .configValue=${`show_header`}/>
         </ha-formfield>
-        <ha-formfield .label=${`Show transport icon`}>
+        <ha-formfield .label=${_(`editor_show_transport_icon`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_icon} @change=${this.checkboxHandler} .configValue=${`show_icon`}/>
         </ha-formfield>
         <ha-textfield
@@ -62,12 +69,12 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
           min="1"
           max="10"
           .disabled=${disabled}
-          .label=${`Maximum departures to show`}
+          .label=${_(`editor_max_departures`)}
           .value=${this._config?.max_departures}
           .configValue=${`max_departures`}
           @change=${this.numHandler}>
         </ha-textfield>
-        <ha-formfield .label=${`Hide already departed`}>
+        <ha-formfield .label=${_(`editor_hide_departed`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.hide_departed} @change=${this.checkboxHandler} .configValue=${`hide_departed`}/>
         </ha-formfield>
         <ha-textfield
@@ -76,56 +83,63 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
           min="0"
           max="30"
           .disabled=${disabled || !!!this._config?.hide_departed}
-          .label=${`Show departed within ... minutes`}
+          .label=${_(`editor_show_departed_offeset`)}
           .value=${this._config?.show_departed_offeset}
           .configValue=${`show_departed_offeset`}
           @change=${this.numHandler}>
         </ha-textfield>
-        <ha-formfield .label=${`Always show departure time in HH:MM form`}>
+        <ha-formfield .label=${_(`editor_show_time_always`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_time_always} @change=${this.checkboxHandler} .configValue=${`show_time_always`}/>
         </ha-formfield>
-        <ha-formfield .label=${`Adjust departure time to update time`}>
+        <ha-formfield .label=${_(`editor_adjust_departure_time`)}>
           <ha-switch
             .checked=${this._config?.adjust_departure_time}
             .disabled=${disabled || this._config?.show_time_always}
             .configValue=${`adjust_departure_time`}
             @change=${this.checkboxHandler}/>
         </ha-formfield>
-        <ha-formfield .label=${`Show 'Last Updated'`}>
+        <ha-formfield .label=${_(`editor_show_updated`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_updated} @change=${this.checkboxHandler} .configValue=${`show_updated`}/>
         </ha-formfield>
       `
     }
 
-    // TODO: add all fields from config
     return html`
       <div class="section-flex">
         <ha-selector
           .hass=${this.hass}
-          .selector=${{ entity: { multiple: true, filter: { domain: 'sensor' }}}}
+          .required=${false}
+          .label=${_(`language`)}
+          .selector=${{ select: { mode: 'dropdown', options: languages }}}
+          .value=${this._config?.language}
+          .configValue=${'language'}
+          @value-changed=${this.pickerHandler}>
+        </ha-selector>
+      </div>
+      <div class="section-flex">
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{ entity: { multiple: true, filter: { domain: 'sensor', integration: 'hasl3' }}}}
           .value=${this._config?.entities}
           .configValue=${'entities'}
-          @value-changed=${this.pickerHandler}
-        />
+          @value-changed=${this.pickerHandler}>
+        </ha-selector>
       </div>
       <div class="section-flex mt1">
-        <ha-formfield .label=${`Show card name`}>
+        <ha-formfield .label=${_(`editor_show_name`)}>
           <ha-switch .checked=${this._config?.show_name} @change=${this.checkboxHandler} .configValue=${`show_name`}/>
         </ha-formfield>
         <ha-textfield
-          .label=${`Card name`}
+          .label=${_(`editor_card_name`)}
           .value=${this._config?.name}
           .configValue=${`name`}
           .disabled=${!!!this._config?.show_name}
           @change=${this.textHandler}>
         </ha-textfield>
-        <ha-formfield .label=${`Show entity name`}>
+        <ha-formfield .label=${_(`editor_show_entity_name`)}>
           <ha-switch .checked=${this._config?.show_entity_name} @change=${this.checkboxHandler} .configValue=${`show_entity_name`}/>
         </ha-formfield>
-        <ha-formfield .label=${`Show departures`}>
-          <ha-switch .checked=${this._config?.show_departures} @change=${this.checkboxHandler} .configValue=${`show_departures`}/>
-        </ha-formfield>
-        <div class="section-flex border subsection">
+        <div class="section-flex subsection">
           ${departureConfigs(this._config?.show_departures)}
         </div>
       </div>

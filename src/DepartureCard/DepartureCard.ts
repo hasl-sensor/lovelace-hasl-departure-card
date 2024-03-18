@@ -5,7 +5,7 @@ import type { HomeAssistant, LovelaceCard } from "custom-card-helpers";
 
 import type { DepartureAttributes, DeviationsAttributes } from "../models"
 import type { PartialEntityConfig } from './DepartureEntity.config'
-import { TranslationKey, t } from '../translations'
+import { translateTo, getLanguage } from '../translations'
 import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCard.config'
 import { HASLDepartureEntity } from './DepartureEntity';
 
@@ -44,12 +44,8 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
     render() {
         // console.debug('render!', this.config, this.hass)
         if (!this.config || !this.hass) return nothing
-
-        const lang = (this.config?.language
-            ? this.config.language
-            : navigator.language) ?? 'sv-SE'
-
-        const _ = (key: TranslationKey) => t(lang, key)
+        const lang = getLanguage(this.config?.language)
+        const _ = translateTo(lang)
 
         const missing = html`<span>${_(`entity_missing`)}</span>`
         const entities = (this.config?.entities?.length

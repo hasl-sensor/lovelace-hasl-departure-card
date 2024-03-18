@@ -1,7 +1,7 @@
 import { LitElement, html, nothing, css } from 'lit'
 import { property } from 'lit/decorators'
 import { Departure, TransportType } from '../models'
-import { TranslationKey, t } from '../translations'
+import { translateTo } from '../translations'
 import styles from './DepartureEntity.styles'
 import { DepartureEntityConfig, DEFAULT_CONFIG } from './DepartureEntity.config'
 
@@ -21,7 +21,7 @@ export class HASLDepartureEntity extends LitElement {
 
     render() {
         const c = {...DEFAULT_CONFIG, ...this.config}
-        const _ = (key: TranslationKey) => t(c.lang, key)
+        const _ = translateTo(c.lang)
 
         const departures = this.departures?.filter((d) => {
             if (!c.hideDeparted) return true;
