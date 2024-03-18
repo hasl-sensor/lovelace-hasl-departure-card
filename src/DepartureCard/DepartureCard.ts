@@ -6,7 +6,7 @@ import type { HomeAssistant, LovelaceCard } from "custom-card-helpers";
 import type { DepartureAttributes, DeviationsAttributes } from "../models"
 import type { PartialEntityConfig } from './DepartureEntity.config'
 import { translateTo, getLanguage } from '../translations'
-import { DepartureCardConfig, DEFAULT_CONFIG } from './DepartureCard.config'
+import { DepartureCardConfig, DEFAULT_CONFIG, ClickAction, EntityInfoAction, ServiceCallAction } from './DepartureCard.config'
 import { HASLDepartureEntity } from './DepartureEntity';
 
 
@@ -75,6 +75,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
                     return html`<hasl-departure-entity
                         .config=${config}
                         .departures=${departures}
+                        @click=${this.clickHandler(entity)}
                     />`
                 } else if (isDeviationsAttrs(data.attributes)) {
                     // TODO: figure out how to present stop deviations
@@ -88,7 +89,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         ) || nothing
 
         return html`
-            <ha-card @click="${this._handleClick}">
+            <ha-card @click="${this.clickHandler()}">
                 ${this.config?.show_name
                     ? (this.config?.name
                         ? html`<h1 class="card-header"><div class="name">${this.config.name}</div></h1>`
@@ -101,14 +102,22 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         `
     }
 
-    private _handleClick(e) {
-        switch (this.config?.tap_action) {
-            case 'info':
-                this._showAttributes(this, "hass-more-info", { entityId: this.config.tap_action_entity });
-                break
-            case 'service':
-                this._serviceCall(this.config.service_config.domain, this.config.service_config.service, this.config.service_config.data)
-                break
+    private clickHandler = (entity?: string) => (e: Event) => {
+        const action = this.config?.click_action
+        if (action === undefined) return
+
+        if (action == 'info' && entity) {
+            e.preventDefault()
+            this._showAttributes(this, "hass-more-info", { entityId: entity })
+            return
+        } else if (isEntityInfoAction(action)) {
+            e.preventDefault()
+            this._showAttributes(this, "hass-more-info", { entityId: action.entityId })
+            return
+        } else if (isServiceCallAction(action)) {
+            e.preventDefault()
+            this._serviceCall(action.domain, action.service, action.data)
+            return
         }
     }
 
@@ -128,6 +137,9 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         return event;
     }
 }
+
+const isEntityInfoAction = (a: ClickAction): a is EntityInfoAction => (a as any).entityId !== undefined
+const isServiceCallAction = (a: ClickAction): a is ServiceCallAction => (a as any).service !== undefined
 
 function isDepartureAttrs(item: { [key:string]: any }): item is DepartureAttributes {
     return (item as DepartureAttributes).departures !== undefined

@@ -1,5 +1,17 @@
 import { LovelaceCardConfig } from "custom-card-helpers"
 
+export type EntityInfoAction = {
+    entityId: string
+}
+
+export type ServiceCallAction = {
+    domain: string
+    service: string
+    data: object
+}
+
+export type ClickAction = 'info' | EntityInfoAction | ServiceCallAction
+
 export interface DepartureCardConfig extends LovelaceCardConfig {
     entities: string[]
 
@@ -19,13 +31,7 @@ export interface DepartureCardConfig extends LovelaceCardConfig {
 
     language?: string
 
-    tap_action?: 'info' | 'service'
-    tap_action_entity?: string
-    service_config?: {
-        domain: string
-        service: string
-        data: object
-    }
+    click_action?: ClickAction
 }
 
 export const DEFAULT_CONFIG: Partial<DepartureCardConfig> = {
