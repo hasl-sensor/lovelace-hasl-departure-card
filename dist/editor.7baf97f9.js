@@ -231,7 +231,7 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
     (0, $1ZxoT.state)()
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "_config", void 0);
 $91eb62869907e39c$export$8d2c87e174389bfd = (0, $39J5i.__decorate)([
-    (0, $1ZxoT.customElement)("hasl-departure-card-editor")
+    (0, $1ZxoT.customElement)("hasl4-departure-card-editor")
 ], $91eb62869907e39c$export$8d2c87e174389bfd);
 
 });
@@ -1060,4 +1060,4 @@ var $8944235bd8be49ac$export$f4fd60e41371f80d = {
 
 
 
-//# sourceMappingURL=editor.c447c18a.js.map
+//# sourceMappingURL=editor.7baf97f9.js.map

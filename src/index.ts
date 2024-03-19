@@ -5,12 +5,12 @@ declare global {
         customCards: Array<Object>
     }
 }
-customElements.define('hasl-departure-card', HASLDepartureCard)
-customElements.define('hasl-departure-entity', HASLDepartureEntity)
+customElements.define('hasl4-departure-card', HASLDepartureCard)
+customElements.define('hasl4-departure-entity', HASLDepartureEntity)
 
 window.customCards = window.customCards || []
 window.customCards.push({
-    type: "hasl-departure-card",
-    name: "HASL Departure card",
+    type: "hasl4-departure-card",
+    name: "HASL4 Departure card",
     description: "Show departure times for SL Trafik",
 })

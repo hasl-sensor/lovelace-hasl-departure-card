@@ -12,14 +12,14 @@ Present departure times from HASL 4 Departure sensors
 
 ## Manual Installation
 
-Copy [`hasl-departure-card.js`](./dist/hasl-departure-card.js) to `<config>/www/hasl-departure-card.js`
+Copy [`hasl4-departure-card.js`](./dist/hasl4-departure-card.js) to `<config>/www/hasl4-departure-card.js`
 
 Where `<config>` is your Home Assistant configuration directory.
 Then use the following in your `ui-lovelace.yaml` file:
 
 ```yaml
 resources:
-  - url: /local/hasl-departure-card.js
+  - url: /local/hasl4-departure-card.js
     type: js
 ```
 

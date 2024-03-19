@@ -548,9 +548,9 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 
 parcelRegister("j0ZcV", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 parcelRequire("2emM7");
 parcelRequire("l56HR");
 parcelRequire("eGUNk");
@@ -1138,10 +1138,10 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
 parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 $parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 
 $parcel$export(module.exports, "LitElement", () => $ab210b2da7b39b9d$export$3f2f9f5909897157);
 
@@ -1532,7 +1532,7 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 });
 
 parcelRegister("ldjmW", function(module, exports) {
-module.exports = import("./editor.c447c18a.js").then(()=>parcelRequire("jlj1D"));
+module.exports = import("./editor.7baf97f9.js").then(()=>parcelRequire("jlj1D"));
 
 });
 
@@ -1543,8 +1543,8 @@ var $j8KxL = parcelRequire("j8KxL");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
-var $pklEb = parcelRequire("pklEb");
 var $dsTCw = parcelRequire("dsTCw");
+var $pklEb = parcelRequire("pklEb");
 
 var $gjUL4 = parcelRequire("gjUL4");
 const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
@@ -1586,7 +1586,7 @@ class $9e3d2034089e73ca$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     // configuration card is loaded in async manner
     static async getConfigElement() {
-        return await (parcelRequire("ldjmW")).then(()=>document.createElement("hasl-departure-card-editor"));
+        return await (parcelRequire("ldjmW")).then(()=>document.createElement("hasl4-departure-card-editor"));
     }
     static{
         this.getStubConfig = ()=>({
@@ -1620,7 +1620,7 @@ class $9e3d2034089e73ca$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
                 };
                 const maxDepartures = this.config?.max_departures || attrs.departures.length;
                 const departures = attrs.departures.slice(0, maxDepartures);
-                return (0, $l56HR.html)`<hasl-departure-entity
+                return (0, $l56HR.html)`<hasl4-departure-entity
                         .config=${config}
                         .departures=${departures}
                         @click=${this.clickHandler(entity)}
@@ -1995,14 +1995,14 @@ class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
 
 
 
-customElements.define("hasl-departure-card", (0, $9e3d2034089e73ca$export$7ded24e6705f9c64));
-customElements.define("hasl-departure-entity", (0, $39b6265825b3d299$export$f53110e618b31c3));
+customElements.define("hasl4-departure-card", (0, $9e3d2034089e73ca$export$7ded24e6705f9c64));
+customElements.define("hasl4-departure-entity", (0, $39b6265825b3d299$export$f53110e618b31c3));
 window.customCards = window.customCards || [];
 window.customCards.push({
-    type: "hasl-departure-card",
-    name: "HASL Departure card",
+    type: "hasl4-departure-card",
+    name: "HASL4 Departure card",
     description: "Show departure times for SL Trafik"
 });
 
 
-//# sourceMappingURL=hasl-departure-card.js.map
+//# sourceMappingURL=hasl4-departure-card.js.map

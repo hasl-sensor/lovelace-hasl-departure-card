@@ -1,6 +1,6 @@
 {
     "name": "HASL Departure Card",
-    "filename": "hasl-departure-card.js",
+    "filename": "hasl4-departure-card.js",
     "render_readme": true,
     "country": "SE" ,
     "homeassistant": "2024.1.0"
