@@ -3,13 +3,14 @@
   "version": "2.6.2",
   "description": "HASL Departure Lovelace Card",
   "source": "src/index.ts",
-  "module": "dist/hasl-departure-card.js",
+  "module": "dist/hasl4-departure-card.js",
   "targets": {
     "module": {
       "includeNodeModules": true
     }
   },
   "scripts": {
+    "prebuild": "rm -rf dist/*",
     "build": "NODE_ENV=production parcel build",
     "watch": "parcel watch",
     "serve": "NODE_ENV=production parcel serve",

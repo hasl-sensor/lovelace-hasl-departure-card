@@ -37,7 +37,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
     // configuration card is loaded in async manner
     static async getConfigElement () {
-        return await import('../DepartureCardEditor').then(() => document.createElement("hasl-departure-card-editor"))
+        return await import('../DepartureCardEditor').then(() => document.createElement("hasl4-departure-card-editor"))
     }
     static getStubConfig = () => ({...DEFAULT_CONFIG})
 
@@ -72,7 +72,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
                     const maxDepartures = this.config?.max_departures || attrs.departures.length
                     const departures = attrs.departures.slice(0, maxDepartures)
-                    return html`<hasl-departure-entity
+                    return html`<hasl4-departure-entity
                         .config=${config}
                         .departures=${departures}
                         @click=${this.clickHandler(entity)}
@@ -151,8 +151,8 @@ function isDeviationsAttrs(item: { [key:string]: any }): item is DeviationsAttri
 
 declare global {
     interface HTMLElementTagNameMap {
-        "hasl-departure-card": HASLDepartureCard,
-        "hasl-departure-entity": HASLDepartureEntity,
+        "hasl4-departure-card": HASLDepartureCard,
+        "hasl4-departure-entity": HASLDepartureEntity,
     }
     interface Event {
         detail?: object

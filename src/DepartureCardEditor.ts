@@ -6,7 +6,7 @@ import { customElement, property, state } from "lit/decorators"
 import { DepartureCardConfig } from './DepartureCard/DepartureCard.config'
 import { getLanguage, translateTo, languages } from "./translations"
 
-@customElement('hasl-departure-card-editor')
+@customElement('hasl4-departure-card-editor')
 export class HASLDepartureCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false })
   public hass?: HomeAssistant;
