@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "clean": "rm -rf dist/*",
+    "prebuild": "rm -rf dist/*",
     "build": "NODE_ENV=production parcel build",
     "watch": "parcel watch",
     "serve": "NODE_ENV=production parcel serve",
