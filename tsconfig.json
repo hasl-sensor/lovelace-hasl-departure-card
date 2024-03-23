@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "ES2020",
+        "isolatedModules": true,
+        "target": "es2017",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+    }
+}
