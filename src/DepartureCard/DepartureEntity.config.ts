@@ -5,6 +5,7 @@ export type DepartureEntityConfig = {
     showName: boolean
     showIcon: boolean
     friendlyName: string
+    direction: number
     hideDeparted: boolean
     departedOffset: number
     lastUpdated: Date
@@ -23,6 +24,7 @@ export const DEFAULT_CONFIG: DepartureEntityConfig  = {
     showName: true,
     showIcon: true,
     friendlyName: '',
+    direction: 0,
     hideDeparted: false,
     departedOffset: 0,
     lastUpdated: new Date(),

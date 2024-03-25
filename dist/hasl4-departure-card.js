@@ -547,10 +547,10 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 });
 
 parcelRegister("j0ZcV", function(module, exports) {
-$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
 $parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
+$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 parcelRequire("2emM7");
 parcelRequire("l56HR");
 parcelRequire("eGUNk");
@@ -1139,9 +1139,9 @@ parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
 $parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
+$parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
 
 $parcel$export(module.exports, "LitElement", () => $ab210b2da7b39b9d$export$3f2f9f5909897157);
 
@@ -1473,6 +1473,10 @@ const $8ae640dd6c4226ad$var$defaultTranslation = {
     editor_show_time_always: "Always show departure time in HH:MM form",
     editor_adjust_departure_time: "Adjust departure time to update time",
     editor_show_updated: `Show 'Last Updated'`,
+    editor_direction: `Direction filter`,
+    editor_direction_all: `All`,
+    editor_direction_left: `Left`,
+    editor_direction_right: `Right`,
     language: "Language"
 };
 const $8ae640dd6c4226ad$export$150b732325d14d04 = {
@@ -1498,6 +1502,10 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         editor_show_time_always: "Visa alltid avg\xe5ngstid i HH:MM-form",
         editor_adjust_departure_time: "Justera avg\xe5ngstid till uppdateringstid",
         editor_show_updated: `Visa 'Senast uppdaterad'`,
+        editor_direction: `Riktning filter`,
+        editor_direction_all: `Alla`,
+        editor_direction_left: `V\xe4nster`,
+        editor_direction_right: `H\xf6ger`,
         language: "Spr\xe5k"
     },
     "fr-FR": {
@@ -1521,6 +1529,10 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         editor_show_time_always: "Toujours afficher l'heure de d\xe9part en HH:MM",
         editor_adjust_departure_time: "Ajuster l'heure de d\xe9part \xe0 l'heure de mise \xe0 jour",
         editor_show_updated: `Afficher 'Mis \xe0 jour'`,
+        editor_direction: `Filtre de direction`,
+        editor_direction_all: `Tous`,
+        editor_direction_left: `Gauche`,
+        editor_direction_right: `Droite`,
         language: "Langue"
     }
 };
@@ -1532,7 +1544,7 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 });
 
 parcelRegister("ldjmW", function(module, exports) {
-module.exports = import("./editor.7baf97f9.js").then(()=>parcelRequire("jlj1D"));
+module.exports = import("./editor.cf2e8dd3.js").then(()=>parcelRequire("jlj1D"));
 
 });
 
@@ -1543,8 +1555,8 @@ var $j8KxL = parcelRequire("j8KxL");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
-var $dsTCw = parcelRequire("dsTCw");
 var $pklEb = parcelRequire("pklEb");
+var $dsTCw = parcelRequire("dsTCw");
 
 var $gjUL4 = parcelRequire("gjUL4");
 const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
@@ -1555,6 +1567,7 @@ const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
     show_header: true,
     show_icon: true,
     show_departures: true,
+    direction: 0,
     max_departures: 5,
     hide_departed: true,
     show_departed_offeset: 5,
@@ -1611,6 +1624,7 @@ class $9e3d2034089e73ca$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
                     showName: this.config?.show_entity_name,
                     showIcon: this.config?.show_icon,
                     friendlyName: attrs.friendly_name,
+                    direction: this.config?.direction,
                     hideDeparted: this.config?.hide_departed,
                     departedOffset: this.config?.show_departed_offeset,
                     lastUpdated: new Date(data.last_updated),
@@ -1850,6 +1864,7 @@ const $63e83a5e62b16072$export$c2f8e0cc249a8d8f = {
     showName: true,
     showIcon: true,
     friendlyName: "",
+    direction: 0,
     hideDeparted: false,
     departedOffset: 0,
     lastUpdated: new Date(),
@@ -1874,6 +1889,9 @@ class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
         };
         const _ = (0, $gjUL4.translateTo)(c.lang);
         const departures = this.departures?.filter((d)=>{
+            if (c.direction === 0) return true;
+            return d.direction_code === c.direction;
+        }).filter((d)=>{
             if (!c.hideDeparted) return true;
             const diffBase = c.adjustTime ? c.lastUpdated : new Date();
             const diff = $39b6265825b3d299$var$diffMinutes(new Date(d.expected), diffBase);

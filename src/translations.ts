@@ -21,6 +21,10 @@ const defaultTranslation = {
     editor_show_time_always: 'Always show departure time in HH:MM form',
     editor_adjust_departure_time: 'Adjust departure time to update time',
     editor_show_updated: `Show 'Last Updated'`,
+    editor_direction: `Direction filter`,
+    editor_direction_all: `All`,
+    editor_direction_left: `Left`,
+    editor_direction_right: `Right`,
     language: 'Language',
 }
 type Translation = typeof defaultTranslation
@@ -49,6 +53,10 @@ export const translations: {[lang: string]: Translation} = {
         editor_show_time_always: 'Visa alltid avgångstid i HH:MM-form',
         editor_adjust_departure_time: 'Justera avgångstid till uppdateringstid',
         editor_show_updated: `Visa 'Senast uppdaterad'`,
+        editor_direction: `Riktning filter`,
+        editor_direction_all: `Alla`,
+        editor_direction_left: `Vänster`,
+        editor_direction_right: `Höger`,
         language: 'Språk',
     },
     'fr-FR': {
@@ -72,6 +80,10 @@ export const translations: {[lang: string]: Translation} = {
         editor_show_time_always: 'Toujours afficher l\'heure de départ en HH:MM',
         editor_adjust_departure_time: 'Ajuster l\'heure de départ à l\'heure de mise à jour',
         editor_show_updated: `Afficher 'Mis à jour'`,
+        editor_direction: `Filtre de direction`,
+        editor_direction_all: `Tous`,
+        editor_direction_left: `Gauche`,
+        editor_direction_right: `Droite`,
         language: 'Langue',
     }
 }

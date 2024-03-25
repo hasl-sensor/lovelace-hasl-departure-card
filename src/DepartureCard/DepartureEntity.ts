@@ -23,7 +23,14 @@ export class HASLDepartureEntity extends LitElement {
         const c = {...DEFAULT_CONFIG, ...this.config}
         const _ = translateTo(c.lang)
 
-        const departures = this.departures?.filter((d) => {
+        const departures = this.departures
+            // filter direction
+            ?.filter((d) => {
+                if (c.direction === 0) return true
+                return d.direction_code === c.direction
+            })
+            // filter by departure time
+            .filter((d) => {
             if (!c.hideDeparted) return true;
 
             const diffBase = c.adjustTime ? c.lastUpdated : new Date()
