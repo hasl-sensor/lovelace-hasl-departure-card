@@ -62,6 +62,7 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
                         showName: this.config?.show_entity_name,
                         showIcon: this.config?.show_icon,
                         friendlyName: attrs.friendly_name,
+                        direction: this.config?.direction,
                         hideDeparted: this.config?.hide_departed,
                         departedOffset: this.config?.show_departed_offeset,
                         lastUpdated: new Date(data.last_updated),

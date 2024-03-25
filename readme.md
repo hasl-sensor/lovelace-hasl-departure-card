@@ -45,6 +45,7 @@ Card fully supports configuration through the UI
 | show_icon             | bool             | optional  | Render transport icon for each line.                                                                        |
 | show_departures       | bool             | optional  | Render departures section.                                                                                  |
 | max_departures        | number           | optional  | Max departures to show, default to all.                                                                     |
+| direction             | number           | optional  | Render departures only in said direction                                                                    |
 | hide_departed         | bool             | optional  | If set, will hide already departured vehicles.                                                              |
 | show_departed_offset  | bool             | optional  | If set, will show some departed vehicles, which departed less than the offset minutes ago.                  |
 | adjust_departure_time | bool             | optional  | Adjust departure time taking last update into account.                                                      |

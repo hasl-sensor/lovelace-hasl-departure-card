@@ -62,6 +62,33 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
             <ha-switch .checked=${this._config?.show_departures} @change=${this.checkboxHandler} .configValue=${`show_departures`}/>
           </ha-formfield>
         </div>
+        <ha-selector
+          .hass=${this.hass}
+          .required=${false}
+          .label=${_(`editor_direction`)}
+          .selector=${{
+                select: {
+                    mode: "list",
+                    options: [
+                        {
+                            value: 0,
+                            label: _(`editor_direction_all`)
+                        },
+                        {
+                            value: 1,
+                            label: _(`editor_direction_left`)
+                        },
+                        {
+                            value: 2,
+                            label: _(`editor_direction_right`)
+                        }
+                    ]
+                }
+            }}
+          .value=${this._config?.direction}
+          .configValue=${"direction"}
+          @value-changed=${this.emptyPicketHandler}>
+        </ha-selector>
         <ha-formfield .label=${_(`editor_show_departure_header`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_header} @change=${this.checkboxHandler} .configValue=${`show_header`}/>
         </ha-formfield>
@@ -219,6 +246,14 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
                     return newConfig;
                 }
             }
+        });
+        this.emptyPicketHandler = this.inputChangedHandler((ev)=>{
+            const target = ev.target;
+            const value = ev.detail.value;
+            if (target.configValue) return {
+                ...this._config,
+                [target.configValue]: value
+            };
         });
     }
 }
@@ -1060,4 +1095,4 @@ var $8944235bd8be49ac$export$f4fd60e41371f80d = {
 
 
 
-//# sourceMappingURL=editor.7baf97f9.js.map
+//# sourceMappingURL=editor.cf2e8dd3.js.map

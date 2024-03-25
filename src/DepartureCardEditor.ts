@@ -57,6 +57,19 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
             <ha-switch .checked=${this._config?.show_departures} @change=${this.checkboxHandler} .configValue=${`show_departures`}/>
           </ha-formfield>
         </div>
+        <ha-selector
+          .hass=${this.hass}
+          .required=${false}
+          .label=${_(`editor_direction`)}
+          .selector=${{ select: { mode: 'list', options: [
+            { value: 0, label: _(`editor_direction_all`) },
+            { value: 1, label: _(`editor_direction_left`) },
+            { value: 2, label: _(`editor_direction_right`) },
+          ]}}}
+          .value=${this._config?.direction}
+          .configValue=${'direction'}
+          @value-changed=${this.emptyPicketHandler}>
+        </ha-selector>
         <ha-formfield .label=${_(`editor_show_departure_header`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_header} @change=${this.checkboxHandler} .configValue=${`show_header`}/>
         </ha-formfield>
@@ -202,6 +215,15 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
         delete newConfig[target.configValue]
         return newConfig
       }
+    }
+  })
+
+  private emptyPicketHandler = this.inputChangedHandler((ev) => {
+    const target = ev.target;
+    const value = ev.detail.value;
+
+    if (target.configValue) {
+      return {...this._config, [target.configValue]: value};
     }
   })
 }

@@ -22,6 +22,7 @@ export interface DepartureCardConfig extends LovelaceCardConfig {
     show_header?: boolean
     show_icon?: boolean
     show_departures: boolean
+    direction: number
     max_departures: number
     hide_departed: boolean
     show_departed_offeset?: number
@@ -44,6 +45,7 @@ export const DEFAULT_CONFIG: Partial<DepartureCardConfig> = {
     show_header: true,
     show_icon: true,
     show_departures: true,
+    direction: 0,
     max_departures: 5,
     hide_departed: true,
     show_departed_offeset: 5,
