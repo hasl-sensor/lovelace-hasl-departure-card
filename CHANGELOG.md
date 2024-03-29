@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 <!-- and this project adheres to [Semantic Versioning][semantic-versioning]. -->
 
 ## [Unreleased]
+## What's Changed
+* Card is no longer compatible with HASL prior to version 4
+* Complete rewrite using Lit and TypeScript
+* Added visual editor for settings
+
+## [2.6.2] (2023-06-12)
+## What's Changed
+* Fixed NaN and departure time calculations in https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/30 and https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/23
+
+
+## [2.6.1] (2023-02-17)
+## What's Changed
+* Reference captured `config` instead of reading from `this` by @barbatron in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/22
+* make compact true by default by @morlic in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/26
+* Fixed bus name replacements by @jockesyk in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/27
+* Fix for old browsers without support for toLocaleString by @jockesyk in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/28
+
+## New Contributors
+* @barbatron made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/22
+* @morlic made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/26
+* @jockesyk made their first contribution in https://github.com/hasl-sensor/lovelace-hasl-departure-card/pull/27
+
+## [2.6.0] (2022-09-10)
+
+### Added
+- Implemented [hasl-sensor/integration #42](https://github.com/hasl-sensor/integration/issues/42) Bus line directions and name of bus direction
+- Implemented [#12](https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/12) Only show "Last updated" info if it was updated longer than x minutes ago
+
+### Fixed
+- Fix [#15](https://github.com/hasl-sensor/lovelace-hasl-departure-card/issues/15) UpdatedDate and new HASL v3 doesn't work
+
+### Changed
+- Requires at least HA version 2021.12.0, which is same as hasl3
 
 ## [2.5.0] (2020-03-04)
 
@@ -35,6 +68,10 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 [keep-a-changelog]: http://keepachangelog.com/en/1.0.0/
 [Unreleased]: https://github.com/hasl-platform/lovelace-hasl-departure-card/compare/master...dev
+[2.6.1]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.6.1
+[2.6.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.6.0
+[2.5.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.5.0
+[2.4.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
 [2.3.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.3.0
 [2.4.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.4.0
 [2.5.0]: https://github.com/hasl-platform/lovelace-hasl-departure-card/releases/tag/v2.5.0
