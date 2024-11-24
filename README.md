@@ -47,6 +47,7 @@ resources:
 |tap_action|string|optional|Action when tapping the card. Choose between `info` or `service`.|info|
 |tap_action_entity|string|optional|The entity that the info dialog is going to show, default is the first entity of the card.||
 |service_config|object|optional|If service is chosen as a tap_action, service_config has to be configured and the following must be specified `domain`, `service` and `data`.||
+|hide_line_number|bool|optional|Render line number section.|false|
 
 ### Basic setup
 
