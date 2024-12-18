@@ -28,7 +28,7 @@ export class HASLDepartureEntity extends LitElement {
         const _ = translateTo(c.lang)
 
         const now = new Date()
-        const departures = this.departures
+        const departures = (this.departures
             // filter direction
             ?.filter((d) => {
                 if (c.direction === 0) return true
@@ -40,7 +40,7 @@ export class HASLDepartureEntity extends LitElement {
 
             const diff = diffMinutes(new Date(d.expected), now)
             return diff + c.departedOffset >= 0
-        }) || []
+        }) || []).slice(0, c.maxDepartures)
 
         const departureTime = (dep: Departure) => {
             const expectedAt = new Date(dep.expected)

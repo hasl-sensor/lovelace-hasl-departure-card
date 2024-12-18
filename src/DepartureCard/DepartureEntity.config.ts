@@ -12,6 +12,7 @@ export type DepartureEntityConfig = {
     lastChanged: Date
     // Departure config
     alwaysTime: boolean
+    maxDepartures: number
 }
 
 export type PartialEntityConfig = Partial<DepartureEntityConfig>
@@ -29,4 +30,5 @@ export const DEFAULT_CONFIG: DepartureEntityConfig  = {
     lastUpdated: new Date(),
     lastChanged: new Date(),
     alwaysTime: false,
+    maxDepartures: 5,
 }
