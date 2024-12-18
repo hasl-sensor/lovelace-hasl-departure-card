@@ -104,13 +104,6 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
         <ha-formfield .label=${_(`editor_show_time_always`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_time_always} @change=${this.checkboxHandler} .configValue=${`show_time_always`}/>
         </ha-formfield>
-        <ha-formfield .label=${_(`editor_adjust_departure_time`)}>
-          <ha-switch
-            .checked=${this._config?.adjust_departure_time}
-            .disabled=${disabled || this._config?.show_time_always}
-            .configValue=${`adjust_departure_time`}
-            @change=${this.checkboxHandler}/>
-        </ha-formfield>
         <ha-formfield .label=${_(`editor_show_updated`)}>
           <ha-switch .disabled=${disabled} .checked=${this._config?.show_updated} @change=${this.checkboxHandler} .configValue=${`show_updated`}/>
         </ha-formfield>

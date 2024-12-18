@@ -1629,12 +1629,12 @@ class $9e3d2034089e73ca$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
                     departedOffset: this.config?.show_departed_offeset,
                     lastUpdated: new Date(data.last_updated),
                     lastChanged: new Date(data.last_changed),
-                    adjustTime: this.config?.adjust_departure_time,
                     alwaysTime: this.config?.show_time_always
                 };
                 const maxDepartures = this.config?.max_departures || attrs.departures.length;
                 const departures = attrs.departures.slice(0, maxDepartures);
                 return (0, $l56HR.html)`<hasl4-departure-entity
+                        .hass=${this.hass}
                         .config=${config}
                         .departures=${departures}
                         @click=${this.clickHandler(entity)}
@@ -1869,8 +1869,7 @@ const $63e83a5e62b16072$export$c2f8e0cc249a8d8f = {
     departedOffset: 0,
     lastUpdated: new Date(),
     lastChanged: new Date(),
-    alwaysTime: false,
-    adjustTime: false
+    alwaysTime: false
 };
 
 
@@ -1888,13 +1887,13 @@ class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
             ...this.config
         };
         const _ = (0, $gjUL4.translateTo)(c.lang);
+        const now = new Date();
         const departures = this.departures?.filter((d)=>{
             if (c.direction === 0) return true;
             return d.direction_code === c.direction;
         }).filter((d)=>{
             if (!c.hideDeparted) return true;
-            const diffBase = c.adjustTime ? c.lastUpdated : new Date();
-            const diff = $39b6265825b3d299$var$diffMinutes(new Date(d.expected), diffBase);
+            const diff = $39b6265825b3d299$var$diffMinutes(new Date(d.expected), now);
             return diff + c.departedOffset >= 0;
         }) || [];
         const departureTime = (dep)=>{
@@ -1903,10 +1902,8 @@ class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
                 hour: "numeric",
                 minute: "numeric"
             }) : (()=>{
-                const diffBase = c.adjustTime ? c.lastUpdated : new Date();
-                if (diffBase.getTime() === 0) return "-";
-                const diff = $39b6265825b3d299$var$diffMinutes(expectedAt, diffBase);
-                return diff === 0 ? _("now") : diff > 0 ? `${diff.toString()} ${_("min")}` : _("departed");
+                const diff = $39b6265825b3d299$var$diffMinutes(expectedAt, now);
+                return diff === 0 ? _("now") : diff > 0 ? (0, $l56HR.html)`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>` : _("departed");
             })();
             return (0, $l56HR.html)`<span class="leaves-in">${text}</span>`;
         };
@@ -1999,6 +1996,11 @@ class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
         this.departures = new Array();
     }
 }
+(0, $39J5i.__decorate)([
+    (0, $dsTCw.property)({
+        attribute: false
+    })
+], $39b6265825b3d299$export$f53110e618b31c3.prototype, "hass", void 0);
 (0, $39J5i.__decorate)([
     (0, $dsTCw.property)({
         type: Object

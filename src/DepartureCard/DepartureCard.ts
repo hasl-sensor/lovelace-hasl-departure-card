@@ -67,13 +67,13 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
                         departedOffset: this.config?.show_departed_offeset,
                         lastUpdated: new Date(data.last_updated),
                         lastChanged: new Date(data.last_changed),
-                        adjustTime: this.config?.adjust_departure_time,
                         alwaysTime: this.config?.show_time_always,
                     }
 
                     const maxDepartures = this.config?.max_departures || attrs.departures.length
                     const departures = attrs.departures.slice(0, maxDepartures)
                     return html`<hasl4-departure-entity
+                        .hass=${this.hass}
                         .config=${config}
                         .departures=${departures}
                         @click=${this.clickHandler(entity)}

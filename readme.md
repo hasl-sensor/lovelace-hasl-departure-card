@@ -48,7 +48,6 @@ Card fully supports configuration through the UI
 | direction             | number           | optional  | Render departures only in said direction                                                                    |
 | hide_departed         | bool             | optional  | If set, will hide already departured vehicles.                                                              |
 | show_departed_offset  | bool             | optional  | If set, will show some departed vehicles, which departed less than the offset minutes ago.                  |
-| adjust_departure_time | bool             | optional  | Adjust departure time taking last update into account.                                                      |
 | show_time_always      | bool             | optional  | Always present time in HH:MM form. If not set, time will be presented as "in X minutes" or "X minutes ago". |
 | show_updated          | bool             | optional  | Render the 'last updated' text                                                                              |
 | language              | string           | optional  | The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.                       |

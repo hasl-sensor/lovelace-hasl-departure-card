@@ -26,7 +26,6 @@ export interface DepartureCardConfig extends LovelaceCardConfig {
     max_departures: number
     hide_departed: boolean
     show_departed_offeset?: number
-    adjust_departure_time?: boolean
     show_time_always?: boolean
     show_updated?: boolean
 

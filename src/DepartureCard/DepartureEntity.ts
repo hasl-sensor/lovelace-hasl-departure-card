@@ -1,3 +1,4 @@
+import type { HomeAssistant } from "custom-card-helpers";
 import { LitElement, html, nothing, css } from 'lit'
 import { property } from 'lit/decorators'
 import { Departure, TransportType } from '../models'
@@ -13,6 +14,9 @@ const diffMinutes = (from: Date, to: Date) => {
 export class HASLDepartureEntity extends LitElement {
     static styles = styles
 
+    @property({ attribute: false })
+    public hass?: HomeAssistant
+
     @property({ type: Object })
     config: DepartureEntityConfig = DEFAULT_CONFIG
 
@@ -23,6 +27,7 @@ export class HASLDepartureEntity extends LitElement {
         const c = {...DEFAULT_CONFIG, ...this.config}
         const _ = translateTo(c.lang)
 
+        const now = new Date()
         const departures = this.departures
             // filter direction
             ?.filter((d) => {
@@ -31,10 +36,9 @@ export class HASLDepartureEntity extends LitElement {
             })
             // filter by departure time
             .filter((d) => {
-            if (!c.hideDeparted) return true;
+            if (!c.hideDeparted) return true
 
-            const diffBase = c.adjustTime ? c.lastUpdated : new Date()
-            const diff = diffMinutes(new Date(d.expected), diffBase)
+            const diff = diffMinutes(new Date(d.expected), now)
             return diff + c.departedOffset >= 0
         }) || []
 
@@ -49,14 +53,11 @@ export class HASLDepartureEntity extends LitElement {
                     }
                 )
                 : (() => {
-                    const diffBase = c.adjustTime ? c.lastUpdated : new Date()
-                    if (diffBase.getTime() === 0) return "-"
-
-                    const diff = diffMinutes(expectedAt, diffBase)
+                    const diff = diffMinutes(expectedAt, now)
                     return diff === 0
                         ? _("now")
                         : (diff > 0)
-                            ?  `${diff.toString()} ${_("min")}`
+                            ?  html`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>`
                             : _("departed")
                 })()
 
