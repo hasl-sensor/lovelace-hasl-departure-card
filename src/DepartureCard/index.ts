@@ -2,8 +2,9 @@ import { LitElement, html, nothing, css } from 'lit'
 import { property, state } from 'lit/decorators';
 
 import type { HomeAssistant, LovelaceCard } from "custom-card-helpers";
+import type { HassEntity } from "home-assistant-js-websocket";
 
-import type { DepartureAttributes, DeviationsAttributes, Departure } from "../models"
+import type { DepartureAttributes } from "../models"
 import { TransportType } from '../models'
 import { translateTo, getLanguage } from '../translations'
 import { DepartureCardConfig, DEFAULT_CONFIG, ClickAction, EntityInfoAction, ServiceCallAction } from './DepartureCard.config'
@@ -62,23 +63,25 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         const lang = getLanguage(this.config?.language)
         const _ = translateTo(lang)
 
-        const missing = html`<span>${_(`entity_missing`)}</span>`;
-        const departures = this.config?.show_departures ? this.renderDepartures() : nothing ;
-        const deviations = nothing;
+        const entity = this.config?.entity
+        const data = this.hass?.states[entity]
 
-        // if (isDeviationsAttrs(data.attributes)) {
-            // TODO: figure out how to present stop deviations
-            // console.debug('deviations!', data.attributes)
-        // }
+        const missing = html`<span>${_(`entity_missing`)}</span>`
+        const departures = this.config?.show_departures ? this.renderDepartures(data) : nothing
 
         return html`
             <ha-card @click="${this.clickHandler()}">
                 ${this.config?.title
                     ? html`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>`
                     : nothing}
-                <div id="departures" class="card-content">
+                <div class="card-content">
                     ${departures}
-                    ${(departures === nothing) && (deviations === nothing) ? missing : nothing}
+                    ${(departures === nothing) ? missing : nothing}
+                    ${(this.config?.show_updated && data.last_updated) ? html`
+                        <div class="updated right">
+                            ${_("last_updated")}
+                            ${new Date(data.last_updated).toLocaleTimeString(lang)}
+                        </div>` : nothing}
                 </div>
             </ha-card>
         `
@@ -109,12 +112,9 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         }) || []).slice(0, this.config?.max_departures)
     }
 
-    private renderDepartures = () => {
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity]
+    private renderDepartures = (data: HassEntity) => {
         const attrs = data.attributes
 
-        if (entity === undefined) return nothing;
         if (data === undefined) return nothing;
         if (!isDepartureAttrs(attrs)) return nothing;
 
@@ -125,72 +125,69 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         const departures = this.getDepartures()
 
         return html`
-            <div class="entity">
-                <div class="departures">
-                    ${(this.config.show_entity_name && attrs.friendly_name) ? html`<div class="row name">${attrs.friendly_name}</div` : ''}
-                    ${this.config.show_header ? html`
-                        <div class="row header">
-                            ${this.config?.show_icon ? html`<div class="col icon"></div>` : nothing}
-                            <div class="col main left">${_("line")}</div>
-                            <div class="col right">${_("departure")}</div>
-                        </div>`: nothing}
+            <div class="departures">
+                ${(this.config.show_entity_name && attrs.friendly_name) ? html`<div class="row name">${attrs.friendly_name}</div` : ''}
+                ${this.config.show_header ? html`
+                    <div class="row header">
+                        ${this.config?.show_icon ? html`<div class="col icon"></div>` : nothing}
+                        <div class="col main left">${_("line")}</div>
+                        <div class="col right">${_("departure")}</div>
+                    </div>`: nothing}
 
-                    ${departures.map(dep => {
-                        const expectedAt = new Date(dep.expected)
-                        const diff = diffMinutes(expectedAt, now)
+                ${departures.map(dep => {
+                    const expectedAt = new Date(dep.expected)
+                    const diff = diffMinutes(expectedAt, now)
 
-                        const isAtThePlatform = diff === 0
-                        const isDeparted = diff < 0
+                    const isAtThePlatform = diff === 0
+                    const isDeparted = diff < 0
+                    const hasDeviations  = (dep.deviations?.length || 0) > 0;
+                    const mostImportantDeviation = dep.deviations?.sort((a, b) => b.importance_level - a.importance_level)?.[0];
 
-                        const departureTime = this.config?.show_time_always
-                            ? expectedAt.toLocaleTimeString(
-                                lang, {
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                }
-                            )
-                            : (() => {
-                                return isAtThePlatform
-                                    ? _("now")
-                                    : html`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>`
-                            })()
+                    const departureTime = this.config?.show_time_always
+                        ? expectedAt.toLocaleTimeString(
+                            lang, {
+                                hour: "numeric",
+                                minute: "numeric",
+                            }
+                        )
+                        : (() => {
+                            return isAtThePlatform
+                                ? _("now")
+                                : html`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>`
+                        })()
 
-                        const icon = {
-                            [TransportType.METRO]: 'mdi:subway',
-                            [TransportType.BUS]: 'mdi:bus',
-                            [TransportType.TRAM]: 'mdi:tram',
-                            [TransportType.TRAIN]: 'mdi:train',
-                            [TransportType.SHIP]: 'mdi:ship',
-                            [TransportType.FERRY]: 'mdi:ferry',
-                            [TransportType.TAXI]: 'mdi:taxi',
-                        }[dep.line.transport_mode] || 'mdi:train'
+                    const icon = {
+                        [TransportType.METRO]: 'mdi:subway',
+                        [TransportType.BUS]: 'mdi:bus',
+                        [TransportType.TRAM]: 'mdi:tram',
+                        [TransportType.TRAIN]: 'mdi:train',
+                        [TransportType.SHIP]: 'mdi:ship',
+                        [TransportType.FERRY]: 'mdi:ferry',
+                        [TransportType.TAXI]: 'mdi:taxi',
+                    }[dep.line.transport_mode] || 'mdi:train'
 
-                        const lineIconClass = this.lineIconClass(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines)
+                    const lineIconClass = this.lineIconClass(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines)
 
-                        return html`
-                        <div class="row departure fade-in ${isDeparted ? 'departed' : ''}">
-                            ${this.config?.show_icon ? html`
-                                <div class="col icon">
-                                    <ha-icon class="transport-icon" icon="${icon}"/>
-                                </div>
-                            ` : nothing}
-                            <div class="col">
-                                <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                    return html`
+                    <div class="row departure fade-in ${isDeparted ? 'departed' : ''}">
+                        ${this.config?.show_icon ? html`
+                            <div class="col icon">
+                                <ha-icon class="transport-icon" icon="${icon}"/>
                             </div>
-                            <div class="col main left">
-                                ${dep.destination}
-                            </div>
-                            <div class="col right">
-                                <span class="leaves-in">${departureTime}</span>
-                            </div>
-                        </div>`
-                    })}
-                </div>
-                    ${(this.config?.show_updated && data.last_updated) ? html`
-                        <div class="updated right">
-                            ${_("last_updated")}
-                            ${new Date(data.last_changed).toLocaleTimeString(lang)}
-                        </div>` : nothing}
+                        ` : nothing}
+                        <div class="col icon">
+                            <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                            ${hasDeviations ? html`<ha-icon class="warning" icon="mdi:alert"/>` : nothing}
+                        </div>
+                        <div class="col main left">
+                            ${dep.destination}
+                            ${hasDeviations ? html`<span class="warning-message">${mostImportantDeviation.message}</span>` : nothing}
+                        </div>
+                        <div class="col right">
+                            <span class="leaves-in">${departureTime}</span>
+                        </div>
+                    </div>`
+                })}
             </div>
         `
     }
@@ -268,10 +265,6 @@ const isServiceCallAction = (a: ClickAction): a is ServiceCallAction => (a as an
 
 function isDepartureAttrs(item: { [key:string]: any }): item is DepartureAttributes {
     return (item as DepartureAttributes).departures !== undefined
-}
-
-function isDeviationsAttrs(item: { [key:string]: any }): item is DeviationsAttributes {
-    return (item as DeviationsAttributes).deviations !== undefined
 }
 
 declare global {

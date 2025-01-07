@@ -1665,7 +1665,9 @@ const $57faf62096e30446$var$departureEntityStyles = (0, $j8KxL.css)`
 
     .col {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
     }
 
     .col.icon {
@@ -1701,6 +1703,19 @@ const $57faf62096e30446$var$departureEntityStyles = (0, $j8KxL.css)`
         display: inline-flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .warning {
+        color: var(--warning-color);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .warning-message {
+        color: var(--warning-color);
+        font-size: smaller;
+        text-decoration: unset;
     }
 
     .mr1 {
@@ -1777,19 +1792,21 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
         if (!this.config || !this.hass) return 0, $l56HR.nothing;
         const lang = (0, $gjUL4.getLanguage)(this.config?.language);
         const _ = (0, $gjUL4.translateTo)(lang);
+        const entity = this.config?.entity;
+        const data = this.hass?.states[entity];
         const missing = (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>`;
-        const departures = this.config?.show_departures ? this.renderDepartures() : (0, $l56HR.nothing);
-        const deviations = (0, $l56HR.nothing);
-        // if (isDeviationsAttrs(data.attributes)) {
-        // TODO: figure out how to present stop deviations
-        // console.debug('deviations!', data.attributes)
-        // }
+        const departures = this.config?.show_departures ? this.renderDepartures(data) : (0, $l56HR.nothing);
         return (0, $l56HR.html)`
             <ha-card @click="${this.clickHandler()}">
                 ${this.config?.title ? (0, $l56HR.html)`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>` : (0, $l56HR.nothing)}
-                <div id="departures" class="card-content">
+                <div class="card-content">
                     ${departures}
-                    ${departures === (0, $l56HR.nothing) && deviations === (0, $l56HR.nothing) ? missing : (0, $l56HR.nothing)}
+                    ${departures === (0, $l56HR.nothing) ? missing : (0, $l56HR.nothing)}
+                    ${this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
+                        <div class="updated right">
+                            ${_("last_updated")}
+                            ${new Date(data.last_updated).toLocaleTimeString(lang)}
+                        </div>` : (0, $l56HR.nothing)}
                 </div>
             </ha-card>
         `;
@@ -1856,11 +1873,8 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     constructor(...args){
         super(...args);
-        this.renderDepartures = ()=>{
-            const entity = this.config?.entity;
-            const data = this.hass?.states[entity];
+        this.renderDepartures = (data)=>{
             const attrs = data.attributes;
-            if (entity === undefined) return 0, $l56HR.nothing;
             if (data === undefined) return 0, $l56HR.nothing;
             if (!$66d5822390d71e6e$var$isDepartureAttrs(attrs)) return 0, $l56HR.nothing;
             const now = new Date();
@@ -1868,21 +1882,22 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
             const _ = (0, $gjUL4.translateTo)(lang);
             const departures = this.getDepartures();
             return (0, $l56HR.html)`
-            <div class="entity">
-                <div class="departures">
-                    ${this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : ""}
-                    ${this.config.show_header ? (0, $l56HR.html)`
-                        <div class="row header">
-                            ${this.config?.show_icon ? (0, $l56HR.html)`<div class="col icon"></div>` : (0, $l56HR.nothing)}
-                            <div class="col main left">${_("line")}</div>
-                            <div class="col right">${_("departure")}</div>
-                        </div>` : (0, $l56HR.nothing)}
+            <div class="departures">
+                ${this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : ""}
+                ${this.config.show_header ? (0, $l56HR.html)`
+                    <div class="row header">
+                        ${this.config?.show_icon ? (0, $l56HR.html)`<div class="col icon"></div>` : (0, $l56HR.nothing)}
+                        <div class="col main left">${_("line")}</div>
+                        <div class="col right">${_("departure")}</div>
+                    </div>` : (0, $l56HR.nothing)}
 
-                    ${departures.map((dep)=>{
+                ${departures.map((dep)=>{
                 const expectedAt = new Date(dep.expected);
                 const diff = $66d5822390d71e6e$var$diffMinutes(expectedAt, now);
                 const isAtThePlatform = diff === 0;
                 const isDeparted = diff < 0;
+                const hasDeviations = (dep.deviations?.length || 0) > 0;
+                const mostImportantDeviation = dep.deviations?.sort((a, b)=>b.importance_level - a.importance_level)?.[0];
                 const departureTime = this.config?.show_time_always ? expectedAt.toLocaleTimeString(lang, {
                     hour: "numeric",
                     minute: "numeric"
@@ -1900,29 +1915,25 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
                 }[dep.line.transport_mode] || "mdi:train";
                 const lineIconClass = this.lineIconClass(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines);
                 return (0, $l56HR.html)`
-                        <div class="row departure fade-in ${isDeparted ? "departed" : ""}">
-                            ${this.config?.show_icon ? (0, $l56HR.html)`
-                                <div class="col icon">
-                                    <ha-icon class="transport-icon" icon="${icon}"/>
-                                </div>
-                            ` : (0, $l56HR.nothing)}
-                            <div class="col">
-                                <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                    <div class="row departure fade-in ${isDeparted ? "departed" : ""}">
+                        ${this.config?.show_icon ? (0, $l56HR.html)`
+                            <div class="col icon">
+                                <ha-icon class="transport-icon" icon="${icon}"/>
                             </div>
-                            <div class="col main left">
-                                ${dep.destination}
-                            </div>
-                            <div class="col right">
-                                <span class="leaves-in">${departureTime}</span>
-                            </div>
-                        </div>`;
+                        ` : (0, $l56HR.nothing)}
+                        <div class="col icon">
+                            <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                            ${hasDeviations ? (0, $l56HR.html)`<ha-icon class="warning" icon="mdi:alert"/>` : (0, $l56HR.nothing)}
+                        </div>
+                        <div class="col main left">
+                            ${dep.destination}
+                            ${hasDeviations ? (0, $l56HR.html)`<span class="warning-message">${mostImportantDeviation.message}</span>` : (0, $l56HR.nothing)}
+                        </div>
+                        <div class="col right">
+                            <span class="leaves-in">${departureTime}</span>
+                        </div>
+                    </div>`;
             })}
-                </div>
-                    ${this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
-                        <div class="updated right">
-                            ${_("last_updated")}
-                            ${new Date(data.last_changed).toLocaleTimeString(lang)}
-                        </div>` : (0, $l56HR.nothing)}
             </div>
         `;
         };
@@ -1961,9 +1972,6 @@ const $66d5822390d71e6e$var$isEntityInfoAction = (a)=>a.entityId !== undefined;
 const $66d5822390d71e6e$var$isServiceCallAction = (a)=>a.service !== undefined;
 function $66d5822390d71e6e$var$isDepartureAttrs(item) {
     return item.departures !== undefined;
-}
-function $66d5822390d71e6e$var$isDeviationsAttrs(item) {
-    return item.deviations !== undefined;
 }
 
 

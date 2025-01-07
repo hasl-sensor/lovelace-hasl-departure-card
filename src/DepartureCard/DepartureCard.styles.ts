@@ -76,7 +76,9 @@ const departureEntityStyles = css`
 
     .col {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
     }
 
     .col.icon {
@@ -112,6 +114,19 @@ const departureEntityStyles = css`
         display: inline-flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .warning {
+        color: var(--warning-color);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .warning-message {
+        color: var(--warning-color);
+        font-size: smaller;
+        text-decoration: unset;
     }
 
     .mr1 {
