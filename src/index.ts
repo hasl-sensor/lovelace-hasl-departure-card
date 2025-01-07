@@ -1,4 +1,4 @@
-import { HASLDepartureCard, HASLDepartureEntity } from "./DepartureCard"
+import { HASLDepartureCard } from "./DepartureCard"
 
 declare global {
     interface Window {
@@ -6,7 +6,6 @@ declare global {
     }
 }
 customElements.define('hasl4-departure-card', HASLDepartureCard)
-customElements.define('hasl4-departure-entity', HASLDepartureEntity)
 
 window.customCards = window.customCards || []
 window.customCards.push({

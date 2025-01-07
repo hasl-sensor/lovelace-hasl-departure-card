@@ -23,7 +23,6 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
     { name: "language", select: { mode: 'dropdown', options: languages } },
     { name: "entity", selector: { entity: { filter: { domain: 'sensor', integration: 'hasl3' }}} },
     { name: "show_entity_name", type: "boolean" },
-    { name: "show_updated", type: "boolean" },
     {
       name: "",
       type: "expandable",
@@ -56,7 +55,8 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
           ],
         },
       ],
-    }
+    },
+    { name: "show_updated", type: "boolean" },
   ];
 
   private _valueChanged(ev: CustomEvent): void {

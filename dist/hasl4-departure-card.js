@@ -36,6 +36,13 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
+parcelRegister("8HQfp", function(module, exports) {
+
+$parcel$export(module.exports, "_", () => (parcelRequire("39J5i")).__decorate);
+
+var $39J5i = parcelRequire("39J5i");
+
+});
 parcelRegister("39J5i", function(module, exports) {
 
 $parcel$export(module.exports, "__decorate", () => $24c52f343453d62d$export$29e00dfd3077644b);
@@ -546,9 +553,10 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 
 });
 
+
 parcelRegister("j0ZcV", function(module, exports) {
-$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 parcelRequire("2emM7");
@@ -1138,8 +1146,8 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
 parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
-$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 $parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
 
@@ -1459,19 +1467,17 @@ const $8ae640dd6c4226ad$var$defaultTranslation = {
     min: "min",
     last_updated: "Last updated",
     now: "Now",
-    departed: "Departed",
     // configuration translations
     editor_show_name: "Show card name",
-    editor_card_name: "Card name",
+    editor_title: "Card name",
     editor_show_entity_name: "Show entity name",
     editor_show_departures: "Show departures",
-    editor_show_departure_header: "Show departure header",
+    editor_show_header: "Show departure header",
     editor_show_transport_icon: "Show transport icon",
     editor_max_departures: "Maximum departures to show",
     editor_hide_departed: "Hide already departed",
     editor_show_departed_offeset: "... but show departed number of minutes ago",
     editor_show_time_always: "Always show departure time in HH:MM form",
-    editor_adjust_departure_time: "Adjust departure time to update time",
     editor_show_updated: `Show 'Last Updated'`,
     editor_direction: `Direction filter`,
     editor_direction_all: `All`,
@@ -1489,18 +1495,16 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         min: "min",
         last_updated: "Senast uppdaterad",
         now: "Nu",
-        departed: "L\xe4mnade",
         editor_show_name: "Visa kortnamn",
-        editor_card_name: "Kortnamn",
+        editor_title: "Kortnamn",
         editor_show_entity_name: "Visa enhetsnamn",
         editor_show_departures: "Visa avg\xe5ngar",
-        editor_show_departure_header: "Visa avg\xe5ngshuvud",
+        editor_show_header: "Visa avg\xe5ngshuvud",
         editor_show_transport_icon: "Visa transportikon",
         editor_max_departures: "Max antal avg\xe5ngar",
         editor_hide_departed: "D\xf6lj redan avg\xe5ngna",
         editor_show_departed_offeset: "... men visa avg\xe5ngna f\xf6r antal minuter sedan",
         editor_show_time_always: "Visa alltid avg\xe5ngstid i HH:MM-form",
-        editor_adjust_departure_time: "Justera avg\xe5ngstid till uppdateringstid",
         editor_show_updated: `Visa 'Senast uppdaterad'`,
         editor_direction: `Riktning filter`,
         editor_direction_all: `Alla`,
@@ -1516,18 +1520,16 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         min: "min",
         last_updated: "Mis \xe0 jour",
         now: "Maintenant",
-        departed: "Parti",
         editor_show_name: "Afficher le nom de la carte",
-        editor_card_name: "Nom de la carte",
+        editor_title: "Nom de la carte",
         editor_show_entity_name: "Afficher le nom de l'entit\xe9",
         editor_show_departures: "Afficher les d\xe9parts",
-        editor_show_departure_header: "Afficher l'ent\xeate des d\xe9parts",
+        editor_show_header: "Afficher l'ent\xeate des d\xe9parts",
         editor_show_transport_icon: "Afficher l'ic\xf4ne de transport",
         editor_max_departures: "Nombre maximum de d\xe9parts",
         editor_hide_departed: "Masquer les d\xe9parts pass\xe9s",
         editor_show_departed_offeset: "... mais montrer les d\xe9parts depuis le nombre de minutes",
         editor_show_time_always: "Toujours afficher l'heure de d\xe9part en HH:MM",
-        editor_adjust_departure_time: "Ajuster l'heure de d\xe9part \xe0 l'heure de mise \xe0 jour",
         editor_show_updated: `Afficher 'Mis \xe0 jour'`,
         editor_direction: `Filtre de direction`,
         editor_direction_all: `Tous`,
@@ -1543,177 +1545,18 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 
 });
 
-parcelRegister("ldjmW", function(module, exports) {
-module.exports = import("./editor.cf2e8dd3.js").then(()=>parcelRequire("jlj1D"));
+parcelRegister("am1R5", function(module, exports) {
+module.exports = import("./editor.47aa0d62.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
 
 });
 
-
+parcelRequire("8HQfp");
 var $39J5i = parcelRequire("39J5i");
 parcelRequire("j0ZcV");
-var $j8KxL = parcelRequire("j8KxL");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
 var $pklEb = parcelRequire("pklEb");
-var $dsTCw = parcelRequire("dsTCw");
-
-var $gjUL4 = parcelRequire("gjUL4");
-const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
-    entities: [],
-    name: "",
-    show_name: false,
-    show_entity_name: true,
-    show_header: true,
-    show_icon: true,
-    show_departures: true,
-    direction: 0,
-    max_departures: 5,
-    hide_departed: true,
-    show_departed_offeset: 5,
-    show_updated: true,
-    tap_action: "info"
-};
-
-
-
-class $9e3d2034089e73ca$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
-    static{
-        this.styles = (0, $j8KxL.css)`
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-        }
-        .card-header .name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: elipsis;
-        }
-    `;
-    }
-    setConfig(config) {
-        this.config = {
-            ...(0, $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f),
-            ...config
-        };
-    }
-    // configuration card is loaded in async manner
-    static async getConfigElement() {
-        return await (parcelRequire("ldjmW")).then(()=>document.createElement("hasl4-departure-card-editor"));
-    }
-    static{
-        this.getStubConfig = ()=>({
-                ...(0, $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f)
-            });
-    }
-    render() {
-        // console.debug('render!', this.config, this.hass)
-        if (!this.config || !this.hass) return 0, $l56HR.nothing;
-        const lang = (0, $gjUL4.getLanguage)(this.config?.language);
-        const _ = (0, $gjUL4.translateTo)(lang);
-        const missing = (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>`;
-        const entities = (this.config?.entities?.length ? this.config?.entities.map((entity)=>{
-            const data = this.hass?.states[entity];
-            if (data === undefined) return 0, $l56HR.nothing;
-            if ($9e3d2034089e73ca$var$isDepartureAttrs(data.attributes) && this.config?.show_departures) {
-                const attrs = data.attributes;
-                const config = {
-                    lang: lang,
-                    showHeader: this.config?.show_header,
-                    showUpdated: this.config?.show_updated,
-                    showName: this.config?.show_entity_name,
-                    showIcon: this.config?.show_icon,
-                    friendlyName: attrs.friendly_name,
-                    direction: this.config?.direction,
-                    hideDeparted: this.config?.hide_departed,
-                    departedOffset: this.config?.show_departed_offeset,
-                    lastUpdated: new Date(data.last_updated),
-                    lastChanged: new Date(data.last_changed),
-                    alwaysTime: this.config?.show_time_always
-                };
-                const maxDepartures = this.config?.max_departures || attrs.departures.length;
-                const departures = attrs.departures.slice(0, maxDepartures);
-                return (0, $l56HR.html)`<hasl4-departure-entity
-                        .hass=${this.hass}
-                        .config=${config}
-                        .departures=${departures}
-                        @click=${this.clickHandler(entity)}
-                    />`;
-            } else $9e3d2034089e73ca$var$isDeviationsAttrs(data.attributes);
-            return 0, $l56HR.nothing;
-        }) : missing) || (0, $l56HR.nothing);
-        return (0, $l56HR.html)`
-            <ha-card @click="${this.clickHandler()}">
-                ${this.config?.show_name ? this.config?.name ? (0, $l56HR.html)`<h1 class="card-header"><div class="name">${this.config.name}</div></h1>` : (0, $l56HR.nothing) : (0, $l56HR.nothing)}
-                <div id="departures" class="card-content">
-                    ${this.config?.show_departures ? entities : (0, $l56HR.nothing)}
-                </div>
-            </ha-card>
-        `;
-    }
-    _serviceCall(domain, service, data) {
-        this.hass.callService(domain, service, data);
-    }
-    _showAttributes(el, type, detail, options) {
-        const event = new Event(type, {
-            bubbles: Boolean(options?.bubbles),
-            cancelable: Boolean(options?.cancelable),
-            composed: Boolean(options?.composed) || true
-        });
-        event.detail = detail || {};
-        el.dispatchEvent(event);
-        return event;
-    }
-    constructor(...args){
-        super(...args);
-        this.getCardSize = ()=>this.config.entities.length + 1;
-        this.clickHandler = (entity)=>(e)=>{
-                const action = this.config?.click_action;
-                if (action === undefined) return;
-                if (action == "info" && entity) {
-                    e.preventDefault();
-                    this._showAttributes(this, "hass-more-info", {
-                        entityId: entity
-                    });
-                    return;
-                } else if ($9e3d2034089e73ca$var$isEntityInfoAction(action)) {
-                    e.preventDefault();
-                    this._showAttributes(this, "hass-more-info", {
-                        entityId: action.entityId
-                    });
-                    return;
-                } else if ($9e3d2034089e73ca$var$isServiceCallAction(action)) {
-                    e.preventDefault();
-                    this._serviceCall(action.domain, action.service, action.data);
-                    return;
-                }
-            };
-    }
-}
-(0, $39J5i.__decorate)([
-    (0, $pklEb.state)()
-], $9e3d2034089e73ca$export$7ded24e6705f9c64.prototype, "config", void 0);
-(0, $39J5i.__decorate)([
-    (0, $dsTCw.property)({
-        attribute: false
-    })
-], $9e3d2034089e73ca$export$7ded24e6705f9c64.prototype, "hass", void 0);
-const $9e3d2034089e73ca$var$isEntityInfoAction = (a)=>a.entityId !== undefined;
-const $9e3d2034089e73ca$var$isServiceCallAction = (a)=>a.service !== undefined;
-function $9e3d2034089e73ca$var$isDepartureAttrs(item) {
-    return item.departures !== undefined;
-}
-function $9e3d2034089e73ca$var$isDeviationsAttrs(item) {
-    return item.deviations !== undefined;
-}
-
-
-
-var $39J5i = parcelRequire("39J5i");
-parcelRequire("j0ZcV");
-var $l56HR = parcelRequire("l56HR");
-var $eGUNk = parcelRequire("eGUNk");
-parcelRequire("1ZxoT");
 var $dsTCw = parcelRequire("dsTCw");
 var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 (function(TransportType) {
@@ -1729,9 +1572,25 @@ var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 
 
 var $gjUL4 = parcelRequire("gjUL4");
+const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
+    entity: "",
+    title: "",
+    show_entity_name: true,
+    show_header: true,
+    show_icon: true,
+    show_departures: true,
+    direction: 0,
+    max_departures: 5,
+    hide_departed: true,
+    show_departed_offeset: 5,
+    show_updated: true,
+    tap_action: "info"
+};
+
+
 parcelRequire("j0ZcV");
 var $j8KxL = parcelRequire("j8KxL");
-const $e99c10d0e2bf513e$var$lineColorsStyles = (0, $j8KxL.css)`
+const $57faf62096e30446$var$lineColorsStyles = (0, $j8KxL.css)`
     .line-icon {
         border-radius: 3px;
         padding: 3px 3px 0 3px;
@@ -1778,15 +1637,51 @@ const $e99c10d0e2bf513e$var$lineColorsStyles = (0, $j8KxL.css)`
         background-color: #d77d00;
     }
     `;
-const $e99c10d0e2bf513e$var$departureEntityStyles = (0, $j8KxL.css)`
-    .name {
+const $57faf62096e30446$var$departureEntityStyles = (0, $j8KxL.css)`
+    .card-header .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .departures > :first-child {
+        margin-top: 0;
+    }
+
+    .departure.departed {
+        color: var(--secondary-text-color);
+    }
+
+    .departure.departed > .main {
+        text-decoration: line-through;
+    }
+
+    .row {
+        margin-top: 8px;
+
         display: flex;
-        padding: 8px 0 0 8px;
+        justify-content: space-between;
+    }
+
+    .col {
+        display: flex;
+        align-items: center;
+    }
+
+    .col.icon {
+        flex-basis: 40px;
+    }
+
+    .row.name {
+        height: 40px;
+        padding-left: 8px;
         font-weight: 400;
         font-size: large;
+        align-items: center;
+        justify-content: center;
     }
-    .header {
-        padding: 4px 0px 12px;
+    .row.header {
+        height: 40px;
         font-size: medium;
         font-weight: 400;
         font-family: var(--paper-font-headline_-_font-family);
@@ -1795,29 +1690,9 @@ const $e99c10d0e2bf513e$var$departureEntityStyles = (0, $j8KxL.css)`
         text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
         opacity: var(--dark-primary-opacity);
     }
-    .row {
-        height: 40px;
-    }
 
-    .table {
-        display: table;
-        width: 100%;
-    }
-    .table-header {
-        display: table-header-group;
-    }
-    .table-body {
-        display: table-row-group;
-    }
-    .table .row {
-        display: table-row;
-    }
-    .table .col {
-        display: table-cell;
-        vertical-align: middle;
-    }
-    .table .col.small {
-        width: 0;
+    .main {
+        flex: 2;
     }
 
     .transport-icon {
@@ -1828,12 +1703,10 @@ const $e99c10d0e2bf513e$var$departureEntityStyles = (0, $j8KxL.css)`
         align-items: center;
     }
 
-    .pl2 {
-        padding-left: 16px;
-    }
     .mr1 {
         margin-right: 8px;
     }
+
     .updated {
         padding-left: 16px;
         padding-top: 8px;
@@ -1851,172 +1724,250 @@ const $e99c10d0e2bf513e$var$departureEntityStyles = (0, $j8KxL.css)`
         color: var(--paper-item-icon-color);
     }
 `;
-var $e99c10d0e2bf513e$export$2e2bcd8739ae039 = [
-    $e99c10d0e2bf513e$var$departureEntityStyles,
-    $e99c10d0e2bf513e$var$lineColorsStyles
+var $57faf62096e30446$export$2e2bcd8739ae039 = [
+    $57faf62096e30446$var$departureEntityStyles,
+    $57faf62096e30446$var$lineColorsStyles
 ];
 
 
-const $63e83a5e62b16072$export$c2f8e0cc249a8d8f = {
-    lang: "sv-SE",
-    showHeader: true,
-    showUpdated: false,
-    showName: true,
-    showIcon: true,
-    friendlyName: "",
-    direction: 0,
-    hideDeparted: false,
-    departedOffset: 0,
-    lastUpdated: new Date(),
-    lastChanged: new Date(),
-    alwaysTime: false
-};
-
-
-const $39b6265825b3d299$var$diffMinutes = (from, to)=>{
+const $66d5822390d71e6e$var$diffMinutes = (from, to)=>{
     const diffMinutes = Math.ceil((from.getTime() - to.getTime()) / 1000 / 60);
     return diffMinutes;
 };
-class $39b6265825b3d299$export$f53110e618b31c3 extends (0, $eGUNk.LitElement) {
+
+class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     static{
-        this.styles = (0, $e99c10d0e2bf513e$export$2e2bcd8739ae039);
+        this.styles = (0, $57faf62096e30446$export$2e2bcd8739ae039);
+    }
+    setConfig(config) {
+        this.config = {
+            ...(0, $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f),
+            ...config
+        };
+    }
+    getCardSize() {
+        const deps = this.getDepartures();
+        const entity = this.config?.entity;
+        const data = this.hass?.states[entity];
+        const attrs = data.attributes;
+        const size = [
+            !!this.config.title ? 1 : 0,
+            this.config.show_entity_name && attrs.friendly_name ? 1 : 0,
+            !!this.config.show_header ? 1 : 0,
+            deps?.length || 0
+        ].reduce((sum, entity)=>sum += entity ? entity : 0, 0);
+        return Math.max(size, 1);
+    }
+    getLayoutOptions() {
+        return {
+            grid_min_columns: 3,
+            grid_min_rows: 2
+        };
+    }
+    // configuration card is loaded in async manner
+    static async getConfigElement() {
+        return await (parcelRequire("am1R5")).then(()=>document.createElement("hasl4-departure-card-editor"));
+    }
+    static{
+        this.getStubConfig = ()=>({
+                ...(0, $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f)
+            });
     }
     render() {
-        const c = {
-            ...(0, $63e83a5e62b16072$export$c2f8e0cc249a8d8f),
-            ...this.config
-        };
-        const _ = (0, $gjUL4.translateTo)(c.lang);
-        const now = new Date();
-        const departures = this.departures?.filter((d)=>{
-            if (c.direction === 0) return true;
-            return d.direction_code === c.direction;
-        }).filter((d)=>{
-            if (!c.hideDeparted) return true;
-            const diff = $39b6265825b3d299$var$diffMinutes(new Date(d.expected), now);
-            return diff + c.departedOffset >= 0;
-        }) || [];
-        const departureTime = (dep)=>{
-            const expectedAt = new Date(dep.expected);
-            const text = c.alwaysTime ? expectedAt.toLocaleTimeString(c.lang, {
-                hour: "numeric",
-                minute: "numeric"
-            }) : (()=>{
-                const diff = $39b6265825b3d299$var$diffMinutes(expectedAt, now);
-                return diff === 0 ? _("now") : diff > 0 ? (0, $l56HR.html)`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>` : _("departed");
-            })();
-            return (0, $l56HR.html)`<span class="leaves-in">${text}</span>`;
-        };
+        if (!this.config || !this.hass) return 0, $l56HR.nothing;
+        const lang = (0, $gjUL4.getLanguage)(this.config?.language);
+        const _ = (0, $gjUL4.translateTo)(lang);
+        const missing = (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>`;
+        const departures = this.config?.show_departures ? this.renderDepartures() : (0, $l56HR.nothing);
+        const deviations = (0, $l56HR.nothing);
+        // if (isDeviationsAttrs(data.attributes)) {
+        // TODO: figure out how to present stop deviations
+        // console.debug('deviations!', data.attributes)
+        // }
         return (0, $l56HR.html)`
-            <div class="entity">
-                ${c.showName && c.friendlyName ? (0, $l56HR.html)`<div class="name">${c.friendlyName}</div` : ""}
-                <div class="table departures">
-                    ${c.showHeader ? (0, $l56HR.html)`
-                        <div class="table-header header">
-                            <div class="row">
-                                ${c.showIcon ? (0, $l56HR.html)`<div class="col small"></div>` : (0, $l56HR.nothing)}
-                                <div class="col left pl2">${_("line")}</div>
-                                <div class="col right">${_("departure")}</div>
-                            </div>
-                        </div>` : (0, $l56HR.nothing)}
-                    <div class="table-body">
-                    ${departures.map((dep)=>(0, $l56HR.html)`
-                        <div class="row departure fade-in">
-                            ${c.showIcon ? (0, $l56HR.html)`
-                                <div class="col small">
-                                    ${this.iconForTransport(dep.line.transport_mode)}
-                                </div>
-                            ` : (0, $l56HR.nothing)}
-                            <div class="col left pl2">
-                                ${this.iconForLine(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines)} ${dep.destination}
-                            </div>
-                            <div class="col right">
-                                ${departureTime(dep)}
-                            </div>
-                        </div>`)}
-                    </div>
+            <ha-card @click="${this.clickHandler()}">
+                ${this.config?.title ? (0, $l56HR.html)`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>` : (0, $l56HR.nothing)}
+                <div id="departures" class="card-content">
+                    ${departures}
+                    ${departures === (0, $l56HR.nothing) && deviations === (0, $l56HR.nothing) ? missing : (0, $l56HR.nothing)}
                 </div>
-                ${c.showUpdated && c.lastChanged ? (0, $l56HR.html)`
-                    <div class="updated right">
-                        ${_("last_updated")}
-                        ${c.lastChanged.toLocaleTimeString(c.lang)}
-                    </div>` : (0, $l56HR.nothing)}
-            </div>
+            </ha-card>
         `;
     }
-    iconForTransport(type) {
-        const icon = {
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).METRO]: "mdi:subway",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).BUS]: "mdi:bus",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAM]: "mdi:tram",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAIN]: "mdi:train",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).SHIP]: "mdi:ship",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).FERRY]: "mdi:ferry",
-            [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TAXI]: "mdi:taxi"
-        }[type] || "mdi:train";
-        return (0, $l56HR.html)`<ha-icon class="transport-icon" icon="${icon}"/>`;
+    getDepartures() {
+        const entity = this.config?.entity;
+        const data = this.hass?.states[entity];
+        if (entity === undefined) return undefined;
+        if (data === undefined) return undefined;
+        if (!$66d5822390d71e6e$var$isDepartureAttrs(data.attributes)) return undefined;
+        const now = new Date();
+        return (data.attributes.departures?.filter((d)=>{
+            if (this.config?.direction === 0) return true;
+            return d.direction_code === this.config?.direction;
+        }).filter((d)=>{
+            if (!this.config?.hide_departed) return true;
+            const diff = $66d5822390d71e6e$var$diffMinutes(new Date(d.expected), now);
+            return diff + this.config?.show_departed_offeset >= 0;
+        }) || []).slice(0, this.config?.max_departures);
     }
-    iconForLine(type, line, group) {
-        const iconClass = ()=>{
-            let cls = "";
-            switch(type){
-                case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).BUS:
-                    cls = `bus bus_${line}`;
-                    cls = group === "bl\xe5buss" ? `${cls} blue` : cls;
-                    break;
-                case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).METRO:
-                    cls = `metro metro_${line}`;
-                    switch(line){
-                        case "10":
-                        case "11":
-                            cls = `${cls} blue`;
-                            break;
-                        case "13":
-                        case "14":
-                            cls = `${cls} red`;
-                            break;
-                        default:
-                            cls = `${cls} green`;
-                    }
-                    break;
-                case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAM:
-                    cls = `tram tram_${line}`;
-                    break;
-                case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAIN:
-                    cls = `train train_${line}`;
-                    break;
-            }
-            return cls;
-        };
-        return (0, $l56HR.html)`<span class="line-icon mr1 ${iconClass()}">${line}</span>`;
+    lineIconClass(type, line, group) {
+        let cls = "";
+        switch(type){
+            case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).BUS:
+                cls = `bus bus_${line}`;
+                cls = group === "bl\xe5buss" ? `${cls} blue` : cls;
+                break;
+            case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).METRO:
+                cls = `metro metro_${line}`;
+                switch(line){
+                    case "10":
+                    case "11":
+                        cls = `${cls} blue`;
+                        break;
+                    case "13":
+                    case "14":
+                        cls = `${cls} red`;
+                        break;
+                    default:
+                        cls = `${cls} green`;
+                }
+                break;
+            case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAM:
+                cls = `tram tram_${line}`;
+                break;
+            case (0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAIN:
+                cls = `train train_${line}`;
+                break;
+        }
+        return cls;
+    }
+    _serviceCall(domain, service, data) {
+        this.hass.callService(domain, service, data);
+    }
+    _showAttributes(el, type, detail, options) {
+        const event = new Event(type, {
+            bubbles: Boolean(options?.bubbles),
+            cancelable: Boolean(options?.cancelable),
+            composed: Boolean(options?.composed) || true
+        });
+        event.detail = detail || {};
+        el.dispatchEvent(event);
+        return event;
     }
     constructor(...args){
         super(...args);
-        this.config = (0, $63e83a5e62b16072$export$c2f8e0cc249a8d8f);
-        this.departures = new Array();
+        this.renderDepartures = ()=>{
+            const entity = this.config?.entity;
+            const data = this.hass?.states[entity];
+            const attrs = data.attributes;
+            if (entity === undefined) return 0, $l56HR.nothing;
+            if (data === undefined) return 0, $l56HR.nothing;
+            if (!$66d5822390d71e6e$var$isDepartureAttrs(attrs)) return 0, $l56HR.nothing;
+            const now = new Date();
+            const lang = (0, $gjUL4.getLanguage)(this.config?.language);
+            const _ = (0, $gjUL4.translateTo)(lang);
+            const departures = this.getDepartures();
+            return (0, $l56HR.html)`
+            <div class="entity">
+                <div class="departures">
+                    ${this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : ""}
+                    ${this.config.show_header ? (0, $l56HR.html)`
+                        <div class="row header">
+                            ${this.config?.show_icon ? (0, $l56HR.html)`<div class="col icon"></div>` : (0, $l56HR.nothing)}
+                            <div class="col main left">${_("line")}</div>
+                            <div class="col right">${_("departure")}</div>
+                        </div>` : (0, $l56HR.nothing)}
+
+                    ${departures.map((dep)=>{
+                const expectedAt = new Date(dep.expected);
+                const diff = $66d5822390d71e6e$var$diffMinutes(expectedAt, now);
+                const isAtThePlatform = diff === 0;
+                const isDeparted = diff < 0;
+                const departureTime = this.config?.show_time_always ? expectedAt.toLocaleTimeString(lang, {
+                    hour: "numeric",
+                    minute: "numeric"
+                }) : (()=>{
+                    return isAtThePlatform ? _("now") : (0, $l56HR.html)`<ha-relative-time .hass=${this.hass} .datetime=${expectedAt}></ha-relative-time>`;
+                })();
+                const icon = {
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).METRO]: "mdi:subway",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).BUS]: "mdi:bus",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAM]: "mdi:tram",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TRAIN]: "mdi:train",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).SHIP]: "mdi:ship",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).FERRY]: "mdi:ferry",
+                    [(0, $829f1babd4ccc0b8$export$6d07abd9f0bba447).TAXI]: "mdi:taxi"
+                }[dep.line.transport_mode] || "mdi:train";
+                const lineIconClass = this.lineIconClass(dep.line.transport_mode, dep.line.designation, dep.line.group_of_lines);
+                return (0, $l56HR.html)`
+                        <div class="row departure fade-in ${isDeparted ? "departed" : ""}">
+                            ${this.config?.show_icon ? (0, $l56HR.html)`
+                                <div class="col icon">
+                                    <ha-icon class="transport-icon" icon="${icon}"/>
+                                </div>
+                            ` : (0, $l56HR.nothing)}
+                            <div class="col">
+                                <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                            </div>
+                            <div class="col main left">
+                                ${dep.destination}
+                            </div>
+                            <div class="col right">
+                                <span class="leaves-in">${departureTime}</span>
+                            </div>
+                        </div>`;
+            })}
+                </div>
+                    ${this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
+                        <div class="updated right">
+                            ${_("last_updated")}
+                            ${new Date(data.last_changed).toLocaleTimeString(lang)}
+                        </div>` : (0, $l56HR.nothing)}
+            </div>
+        `;
+        };
+        this.clickHandler = (entity)=>(e)=>{
+                const action = this.config?.click_action;
+                if (action === undefined) return;
+                if (action == "info" && entity) {
+                    e.preventDefault();
+                    this._showAttributes(this, "hass-more-info", {
+                        entityId: entity
+                    });
+                    return;
+                } else if ($66d5822390d71e6e$var$isEntityInfoAction(action)) {
+                    e.preventDefault();
+                    this._showAttributes(this, "hass-more-info", {
+                        entityId: action.entityId
+                    });
+                    return;
+                } else if ($66d5822390d71e6e$var$isServiceCallAction(action)) {
+                    e.preventDefault();
+                    this._serviceCall(action.domain, action.service, action.data);
+                    return;
+                }
+            };
     }
 }
+(0, $39J5i.__decorate)([
+    (0, $pklEb.state)()
+], $66d5822390d71e6e$export$7ded24e6705f9c64.prototype, "config", void 0);
 (0, $39J5i.__decorate)([
     (0, $dsTCw.property)({
         attribute: false
     })
-], $39b6265825b3d299$export$f53110e618b31c3.prototype, "hass", void 0);
-(0, $39J5i.__decorate)([
-    (0, $dsTCw.property)({
-        type: Object
-    })
-], $39b6265825b3d299$export$f53110e618b31c3.prototype, "config", void 0);
-(0, $39J5i.__decorate)([
-    (0, $dsTCw.property)({
-        type: Array
-    })
-], $39b6265825b3d299$export$f53110e618b31c3.prototype, "departures", void 0);
+], $66d5822390d71e6e$export$7ded24e6705f9c64.prototype, "hass", void 0);
+const $66d5822390d71e6e$var$isEntityInfoAction = (a)=>a.entityId !== undefined;
+const $66d5822390d71e6e$var$isServiceCallAction = (a)=>a.service !== undefined;
+function $66d5822390d71e6e$var$isDepartureAttrs(item) {
+    return item.departures !== undefined;
+}
+function $66d5822390d71e6e$var$isDeviationsAttrs(item) {
+    return item.deviations !== undefined;
+}
 
 
-
-
-customElements.define("hasl4-departure-card", (0, $9e3d2034089e73ca$export$7ded24e6705f9c64));
-customElements.define("hasl4-departure-entity", (0, $39b6265825b3d299$export$f53110e618b31c3));
+customElements.define("hasl4-departure-card", (0, $66d5822390d71e6e$export$7ded24e6705f9c64));
 window.customCards = window.customCards || [];
 window.customCards.push({
     type: "hasl4-departure-card",
