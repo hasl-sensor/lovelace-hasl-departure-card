@@ -36,13 +36,6 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
-parcelRegister("8HQfp", function(module, exports) {
-
-$parcel$export(module.exports, "_", () => (parcelRequire("39J5i")).__decorate);
-
-var $39J5i = parcelRequire("39J5i");
-
-});
 parcelRegister("39J5i", function(module, exports) {
 
 $parcel$export(module.exports, "__decorate", () => $24c52f343453d62d$export$29e00dfd3077644b);
@@ -553,12 +546,11 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 
 });
 
-
 parcelRegister("j0ZcV", function(module, exports) {
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
-$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 parcelRequire("2emM7");
 parcelRequire("l56HR");
 parcelRequire("eGUNk");
@@ -1146,10 +1138,10 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
 parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 $parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 
 $parcel$export(module.exports, "LitElement", () => $ab210b2da7b39b9d$export$3f2f9f5909897157);
 
@@ -1545,19 +1537,19 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 
 });
 
-parcelRegister("am1R5", function(module, exports) {
-module.exports = import("./editor.47aa0d62.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
+parcelRegister("ldjmW", function(module, exports) {
+module.exports = import("./editor.6f656999.js").then(()=>parcelRequire("jlj1D"));
 
 });
 
-parcelRequire("8HQfp");
+
 var $39J5i = parcelRequire("39J5i");
 parcelRequire("j0ZcV");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
-var $pklEb = parcelRequire("pklEb");
 var $dsTCw = parcelRequire("dsTCw");
+var $pklEb = parcelRequire("pklEb");
 var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 (function(TransportType) {
     TransportType["METRO"] = "METRO";
@@ -1781,7 +1773,7 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     // configuration card is loaded in async manner
     static async getConfigElement() {
-        return await (parcelRequire("am1R5")).then(()=>document.createElement("hasl4-departure-card-editor"));
+        return await (parcelRequire("ldjmW")).then(()=>document.createElement("hasl4-departure-card-editor"));
     }
     static{
         this.getStubConfig = ()=>({
