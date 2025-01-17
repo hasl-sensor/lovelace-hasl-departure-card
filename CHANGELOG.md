@@ -7,8 +7,12 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 ## What's Changed
-* Card is no longer compatible with HASL prior to version 4
-* Complete rewrite using Lit and TypeScript
+
+## [3.2.0] (2025-01-17)
+## What's Changed
+* Card is no longer compatible with HASL prior to version 3.2.0
+* Complete rewrite on TypeScript using Lit
+* Use Parcel to build the package
 * Added visual editor for settings
 
 ## [2.6.2] (2023-06-12)
