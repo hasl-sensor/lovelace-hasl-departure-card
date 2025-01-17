@@ -78,6 +78,15 @@ The `click_action` option can be used to specify what happens when the card is t
         entity_id: light.living_room
     ```
 
+## Development
+
+You'll need Node.js and npm installed on your computer.
+([Volta](https://volta.sh/) is recommended for managing Node.js versions)
+
+```sh
+npm install
+npm run build
+```
 
 ## Credits
 - Huge thanks to [@dimmanramone](https://github.com/dimmanramone) for pimping the card!
