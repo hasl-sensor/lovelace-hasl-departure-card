@@ -13,10 +13,8 @@ export type ServiceCallAction = {
 export type ClickAction = 'info' | EntityInfoAction | ServiceCallAction
 
 export interface DepartureCardConfig extends LovelaceCardConfig {
-    entities: string[]
-
-    name?: string
-    show_name: boolean
+    title?: string
+    entity: string
 
     show_entity_name?: boolean
     show_header?: boolean
@@ -35,10 +33,8 @@ export interface DepartureCardConfig extends LovelaceCardConfig {
 }
 
 export const DEFAULT_CONFIG: Partial<DepartureCardConfig> = {
-    entities: [],
-
-    name: '',
-    show_name: false,
+    entity: '',
+    title: '',
 
     show_entity_name: true,
     show_header: true,

@@ -49,14 +49,52 @@ const lineColorsStyles = css`
     `
 
 const departureEntityStyles = css`
-    .name {
+    .card-header .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .departures > :first-child {
+        margin-top: 0;
+    }
+
+    .departure.departed {
+        color: var(--secondary-text-color);
+    }
+
+    .departure.departed > .main {
+        text-decoration: line-through;
+    }
+
+    .row {
+        margin-top: 8px;
+
         display: flex;
-        padding: 8px 0 0 8px;
+        justify-content: space-between;
+    }
+
+    .col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    .col.icon {
+        flex-basis: 40px;
+    }
+
+    .row.name {
+        height: 40px;
+        padding-left: 8px;
         font-weight: 400;
         font-size: large;
+        align-items: center;
+        justify-content: center;
     }
-    .header {
-        padding: 4px 0px 12px;
+    .row.header {
+        height: 40px;
         font-size: medium;
         font-weight: 400;
         font-family: var(--paper-font-headline_-_font-family);
@@ -65,29 +103,9 @@ const departureEntityStyles = css`
         text-rendering: var(--paper-font-common-expensive-kerning_-_text-rendering);
         opacity: var(--dark-primary-opacity);
     }
-    .row {
-        height: 40px;
-    }
 
-    .table {
-        display: table;
-        width: 100%;
-    }
-    .table-header {
-        display: table-header-group;
-    }
-    .table-body {
-        display: table-row-group;
-    }
-    .table .row {
-        display: table-row;
-    }
-    .table .col {
-        display: table-cell;
-        vertical-align: middle;
-    }
-    .table .col.small {
-        width: 0;
+    .main {
+        flex: 2;
     }
 
     .transport-icon {
@@ -98,12 +116,23 @@ const departureEntityStyles = css`
         align-items: center;
     }
 
-    .pl2 {
-        padding-left: 16px;
+    .warning {
+        color: var(--warning-color);
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
+
+    .warning-message {
+        color: var(--warning-color);
+        font-size: smaller;
+        text-decoration: unset;
+    }
+
     .mr1 {
         margin-right: 8px;
     }
+
     .updated {
         padding-left: 16px;
         padding-top: 8px;

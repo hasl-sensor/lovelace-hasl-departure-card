@@ -8,8 +8,15 @@ export enum TransportType {
     TAXI = 'TAXI',
 }
 
+export type DepartureDeviation = {
+    importance_level: number
+    consequence: string
+    message: string
+}
+
 export type Departure = {
     destination: string
+    deviations?: DepartureDeviation[]
     direction: string
     direction_code: number
     state: string
@@ -31,11 +38,4 @@ export type Departure = {
 export type DepartureAttributes = {
     friendly_name: string
     departures: Departure[]
-}
-
-export type Deviation = {}
-
-export type DeviationsAttributes = {
-    firendly_name: string
-    deviations: Deviation[]
 }

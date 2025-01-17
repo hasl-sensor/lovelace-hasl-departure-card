@@ -10,7 +10,7 @@ parcelRegister("jlj1D", function(module, exports) {
 
 $parcel$export(module.exports, "HASLDepartureCardEditor", () => $91eb62869907e39c$export$8d2c87e174389bfd);
 
-var $39J5i = parcelRequire("39J5i");
+var $8HQfp = parcelRequire("8HQfp");
 
 var $krgxk = parcelRequire("krgxk");
 
@@ -20,252 +20,149 @@ var $1ZxoT = parcelRequire("1ZxoT");
 
 var $gjUL4 = parcelRequire("gjUL4");
 class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
-    static{
-        this.styles = (0, $j0ZcV.css)`
-    .mt1 {
-      margin-top: 8px;
-    }
-
-    ha-formfield {
-      margin-top: 16px;
-    }
-
-    ha-textfield {
-      margin-top: 16px;
-    }
-
-    .section-flex {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .border {
-      border-radius: 8px;
-    }
-
-    .subsection {
-      background: var(--primary-background-color);
-    }
-  `;
-    }
     setConfig(config) {
         this._config = config;
+    }
+    _valueChanged(ev) {
+        (0, $krgxk.fireEvent)(this, "config-changed", {
+            config: ev.detail.value
+        });
     }
     render() {
         const lang = (0, $gjUL4.getLanguage)();
         const _ = (0, $gjUL4.translateTo)(lang);
-        const departureConfigs = (enabled = true)=>{
-            const disabled = !enabled;
-            return (0, $j0ZcV.html)`
-        <div class="header">
-          <ha-formfield .label=${_(`editor_show_departures`)}>
-            <ha-switch .checked=${this._config?.show_departures} @change=${this.checkboxHandler} .configValue=${`show_departures`}/>
-          </ha-formfield>
-        </div>
-        <ha-selector
-          .hass=${this.hass}
-          .required=${false}
-          .label=${_(`editor_direction`)}
-          .selector=${{
-                select: {
-                    mode: "list",
-                    options: [
-                        {
-                            value: 0,
-                            label: _(`editor_direction_all`)
-                        },
-                        {
-                            value: 1,
-                            label: _(`editor_direction_left`)
-                        },
-                        {
-                            value: 2,
-                            label: _(`editor_direction_right`)
-                        }
-                    ]
-                }
-            }}
-          .value=${this._config?.direction}
-          .configValue=${"direction"}
-          @value-changed=${this.emptyPicketHandler}>
-        </ha-selector>
-        <ha-formfield .label=${_(`editor_show_departure_header`)}>
-          <ha-switch .disabled=${disabled} .checked=${this._config?.show_header} @change=${this.checkboxHandler} .configValue=${`show_header`}/>
-        </ha-formfield>
-        <ha-formfield .label=${_(`editor_show_transport_icon`)}>
-          <ha-switch .disabled=${disabled} .checked=${this._config?.show_icon} @change=${this.checkboxHandler} .configValue=${`show_icon`}/>
-        </ha-formfield>
-        <ha-textfield
-          type="number"
-          inputmode="numeric"
-          min="1"
-          max="10"
-          .disabled=${disabled}
-          .label=${_(`editor_max_departures`)}
-          .value=${this._config?.max_departures}
-          .configValue=${`max_departures`}
-          @change=${this.numHandler}>
-        </ha-textfield>
-        <ha-formfield .label=${_(`editor_hide_departed`)}>
-          <ha-switch .disabled=${disabled} .checked=${this._config?.hide_departed} @change=${this.checkboxHandler} .configValue=${`hide_departed`}/>
-        </ha-formfield>
-        <ha-textfield
-          type="number"
-          inputmode="numeric"
-          min="0"
-          max="30"
-          .disabled=${disabled || !!!this._config?.hide_departed}
-          .label=${_(`editor_show_departed_offeset`)}
-          .value=${this._config?.show_departed_offeset}
-          .configValue=${`show_departed_offeset`}
-          @change=${this.numHandler}>
-        </ha-textfield>
-        <ha-formfield .label=${_(`editor_show_time_always`)}>
-          <ha-switch .disabled=${disabled} .checked=${this._config?.show_time_always} @change=${this.checkboxHandler} .configValue=${`show_time_always`}/>
-        </ha-formfield>
-        <ha-formfield .label=${_(`editor_adjust_departure_time`)}>
-          <ha-switch
-            .checked=${this._config?.adjust_departure_time}
-            .disabled=${disabled || this._config?.show_time_always}
-            .configValue=${`adjust_departure_time`}
-            @change=${this.checkboxHandler}/>
-        </ha-formfield>
-        <ha-formfield .label=${_(`editor_show_updated`)}>
-          <ha-switch .disabled=${disabled} .checked=${this._config?.show_updated} @change=${this.checkboxHandler} .configValue=${`show_updated`}/>
-        </ha-formfield>
-      `;
-        };
         return (0, $j0ZcV.html)`
-      <div class="section-flex">
-        <ha-selector
-          .hass=${this.hass}
-          .required=${false}
-          .label=${_(`language`)}
-          .selector=${{
-            select: {
-                mode: "dropdown",
-                options: (0, $gjUL4.languages)
-            }
-        }}
-          .value=${this._config?.language}
-          .configValue=${"language"}
-          @value-changed=${this.pickerHandler}>
-        </ha-selector>
-      </div>
-      <div class="section-flex">
-        <ha-selector
-          .hass=${this.hass}
-          .selector=${{
-            entity: {
-                multiple: true,
-                filter: {
-                    domain: "sensor",
-                    integration: "hasl3"
-                }
-            }
-        }}
-          .value=${this._config?.entities}
-          .configValue=${"entities"}
-          @value-changed=${this.pickerHandler}>
-        </ha-selector>
-      </div>
-      <div class="section-flex mt1">
-        <ha-formfield .label=${_(`editor_show_name`)}>
-          <ha-switch .checked=${this._config?.show_name} @change=${this.checkboxHandler} .configValue=${`show_name`}/>
-        </ha-formfield>
-        <ha-textfield
-          .label=${_(`editor_card_name`)}
-          .value=${this._config?.name}
-          .configValue=${`name`}
-          .disabled=${!!!this._config?.show_name}
-          @change=${this.textHandler}>
-        </ha-textfield>
-        <ha-formfield .label=${_(`editor_show_entity_name`)}>
-          <ha-switch .checked=${this._config?.show_entity_name} @change=${this.checkboxHandler} .configValue=${`show_entity_name`}/>
-        </ha-formfield>
-        <div class="section-flex subsection">
-          ${departureConfigs(this._config?.show_departures)}
-        </div>
-      </div>
-      `;
-    }
-    sortObjectByKeys(object) {
-        return Object.keys(object).sort().reduce((r, k)=>(r[k] = object[k], r), {});
-    }
-    inputChangedHandler(_type) {
-        const handler = (ev)=>{
-            if (!this._config || !this.hass) return;
-            const newConfig = _type(ev);
-            if (newConfig !== undefined) {
-                this._config = {
-                    ...newConfig
-                };
-                (0, $krgxk.fireEvent)(this, "config-changed", {
-                    config: this.sortObjectByKeys(this._config)
-                });
-            }
-        };
-        return handler;
+      <ha-form
+        .hass=${this.hass}
+        .data=${this._config}
+        .schema=${this._schema(_)}
+        .computeLabel=${(item, data)=>_(`editor_${item.name}`) || item.label || item.name}
+        @value-changed=${this._valueChanged}>
+      </ha-form>
+    `;
     }
     constructor(...args){
         super(...args);
-        this.checkboxHandler = this.inputChangedHandler((ev)=>{
-            const { target: target, target: { checked: value } } = ev;
-            if (target.configValue) return {
-                ...this._config,
-                [target.configValue]: value
-            };
-        });
-        this.textHandler = this.inputChangedHandler((ev)=>{
-            const { target: target, target: { value: value } } = ev;
-            if (target.configValue) return {
-                ...this._config,
-                [target.configValue]: value
-            };
-        });
-        this.numHandler = this.inputChangedHandler((ev)=>{
-            const { target: target, target: { value: value } } = ev;
-            if (target.configValue) return {
-                ...this._config,
-                [target.configValue]: parseInt(value)
-            };
-        });
-        this.pickerHandler = this.inputChangedHandler((ev)=>{
-            const target = ev.target;
-            const value = ev.detail.value;
-            if (target.configValue) {
-                if (value) return {
-                    ...this._config,
-                    [target.configValue]: value
-                };
-                else {
-                    const newConfig = {
-                        ...this._config
-                    };
-                    delete newConfig[target.configValue];
-                    return newConfig;
+        this._schema = (_)=>[
+                {
+                    name: "title",
+                    selector: {
+                        text: {}
+                    }
+                },
+                {
+                    name: "language",
+                    select: {
+                        mode: "dropdown",
+                        options: (0, $gjUL4.languages)
+                    }
+                },
+                {
+                    name: "entity",
+                    selector: {
+                        entity: {
+                            filter: {
+                                domain: "sensor",
+                                integration: "hasl3"
+                            }
+                        }
+                    }
+                },
+                {
+                    name: "show_entity_name",
+                    type: "boolean"
+                },
+                {
+                    name: "",
+                    type: "expandable",
+                    icon: "mdi:clock",
+                    title: "Departures",
+                    schema: [
+                        {
+                            name: "show_departures",
+                            type: "boolean"
+                        },
+                        {
+                            name: "show_header",
+                            type: "boolean"
+                        },
+                        {
+                            name: "direction",
+                            selector: {
+                                select: {
+                                    options: [
+                                        {
+                                            value: 0,
+                                            label: _(`editor_direction_all`)
+                                        },
+                                        {
+                                            value: 1,
+                                            label: _(`editor_direction_left`)
+                                        },
+                                        {
+                                            value: 2,
+                                            label: _(`editor_direction_right`)
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            name: "show_icon",
+                            type: "boolean"
+                        },
+                        {
+                            name: "show_time_always",
+                            type: "boolean"
+                        },
+                        {
+                            name: "max_departures",
+                            selector: {
+                                number: {
+                                    mode: "box",
+                                    min: 1,
+                                    max: 10
+                                }
+                            }
+                        },
+                        {
+                            name: "",
+                            type: "grid",
+                            schema: [
+                                {
+                                    name: "hide_departed",
+                                    type: "boolean"
+                                },
+                                {
+                                    name: "show_departed_offeset",
+                                    selector: {
+                                        number: {
+                                            mode: "box",
+                                            min: 0,
+                                            max: 30
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "show_updated",
+                    type: "boolean"
                 }
-            }
-        });
-        this.emptyPicketHandler = this.inputChangedHandler((ev)=>{
-            const target = ev.target;
-            const value = ev.detail.value;
-            if (target.configValue) return {
-                ...this._config,
-                [target.configValue]: value
-            };
-        });
+            ];
     }
 }
-(0, $39J5i.__decorate)([
+(0, $8HQfp._)([
     (0, $1ZxoT.property)({
         attribute: false
     })
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "hass", void 0);
-(0, $39J5i.__decorate)([
+(0, $8HQfp._)([
     (0, $1ZxoT.state)()
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "_config", void 0);
-$91eb62869907e39c$export$8d2c87e174389bfd = (0, $39J5i.__decorate)([
+$91eb62869907e39c$export$8d2c87e174389bfd = (0, $8HQfp._)([
     (0, $1ZxoT.customElement)("hasl4-departure-card-editor")
 ], $91eb62869907e39c$export$8d2c87e174389bfd);
 
@@ -1095,4 +992,5 @@ var $8944235bd8be49ac$export$f4fd60e41371f80d = {
 
 
 
-//# sourceMappingURL=editor.cf2e8dd3.js.map
+
+//# sourceMappingURL=editor.47aa0d62.js.map
