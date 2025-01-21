@@ -63,11 +63,33 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         const lang = getLanguage(this.config?.language)
         const _ = translateTo(lang)
 
-        const entity = this.config?.entity
-        const data = this.hass?.states[entity]
+        const departures =
+            this.config?.show_departures
+                ? () => {
+                    const data = this.renderDepartures()
+                    return (data === nothing)
+                        ? html`<span>${_(`entity_missing`)}</span>`
+                        : data
+                }
+                : () => nothing
 
-        const missing = html`<span>${_(`entity_missing`)}</span>`
-        const departures = this.config?.show_departures ? this.renderDepartures(data) : nothing
+        const renderLastUpdated =
+            this.isManyEntitiesSet()
+                ? () => nothing
+                : () => {
+                    const entity = this.config?.entity
+                    if (!entity) return nothing;
+
+                    const data = this.hass?.states[entity]
+
+                    return (this.config?.show_updated && data.last_updated)
+                        ? html`
+                            <div class="updated right">
+                                ${_("last_updated")}
+                                ${new Date(data.last_updated).toLocaleTimeString(lang)}
+                            </div>`
+                        : nothing
+        }
 
         return html`
             <ha-card @click="${this.clickHandler()}">
@@ -75,23 +97,21 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
                     ? html`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>`
                     : nothing}
                 <div class="card-content">
-                    ${departures}
-                    ${(departures === nothing) ? missing : nothing}
-                    ${(this.config?.show_updated && data.last_updated) ? html`
-                        <div class="updated right">
-                            ${_("last_updated")}
-                            ${new Date(data.last_updated).toLocaleTimeString(lang)}
-                        </div>` : nothing}
+                    ${departures()}
+                    ${renderLastUpdated()}
                 </div>
             </ha-card>
         `
     }
 
-    private getDepartures() {
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity]
+    private isManyEntitiesSet(): boolean {
+        return this.config?.entities?.length > 0
+    }
 
+    private getDeparturesFor(entity: string) {
         if (entity === undefined) return undefined;
+
+        const data = this.hass?.states[entity]
         if (data === undefined) return undefined;
         if (!isDepartureAttrs(data.attributes)) return undefined;
 
@@ -112,21 +132,80 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         }) || []).slice(0, this.config?.max_departures)
     }
 
-    private renderDepartures = (data: HassEntity) => {
-        const attrs = data.attributes
+    private getDeparturesCombined(entities: string[]) {
+        const now = new Date()
 
-        if (data === undefined) return nothing;
-        if (!isDepartureAttrs(attrs)) return nothing;
+        return entities
+            // filter invalid entities
+            .filter(entity => {
+                if (!!entity === false) return false
+
+                const data = this.hass?.states[entity]
+                if (data === undefined) return false
+                if (!isDepartureAttrs(data.attributes)) return false
+
+                return true
+            })
+            // map entity name to departures and gather all together
+            .map(entity => {
+                const state = this.hass?.states[entity]
+                if (isDepartureAttrs(state.attributes))
+                    return state.attributes
+            })
+            .flatMap(attrs => attrs.departures)
+            // filter by departure time
+            .filter((d) => {
+                if (!this.config?.hide_departed) return true
+
+                const diff = diffMinutes(new Date(d.expected), now)
+                return diff + this.config?.show_departed_offeset >= 0
+            })
+            // filter direction
+            .filter((d) => {
+                if (this.config?.direction === 0) return true
+                return d.direction_code === this.config?.direction
+            })
+            // sort by expected departure time
+            .sort((a, b) => new Date(a.expected).getTime() - new Date(b.expected).getTime())
+            // limit to max departures
+            .slice(0, this.config?.max_departures)
+    }
+
+    private getDepartures() {
+        if (this.isManyEntitiesSet()) {
+            return this.getDeparturesCombined(this.config?.entities)
+        } else {
+            return this.getDeparturesFor(this.config?.entity)
+        }
+    }
+
+    private renderDepartures = () => {
+        const renderEntityName = () => {
+            const entity = this.config?.entity
+            if (entity === undefined) return nothing;
+
+            const data = this.hass?.states[this.config?.entity]
+            if (data === undefined) return nothing;
+
+            const attrs = data.attributes
+            if (!isDepartureAttrs(attrs)) return nothing;
+
+            return (this.config.show_entity_name && attrs.friendly_name)
+                ? html`<div class="row name">${attrs.friendly_name}</div`
+                : nothing
+        };
 
         const now = new Date()
         const lang = getLanguage(this.config?.language)
         const _ = translateTo(lang)
 
         const departures = this.getDepartures()
+        if (!departures) return nothing;
+        const isMany = this.isManyEntitiesSet()
 
         return html`
             <div class="departures">
-                ${(this.config.show_entity_name && attrs.friendly_name) ? html`<div class="row name">${attrs.friendly_name}</div` : ''}
+                ${isMany ? '' : renderEntityName()}
                 ${this.config.show_header ? html`
                     <div class="row header">
                         ${this.config?.show_icon ? html`<div class="col icon"></div>` : nothing}
