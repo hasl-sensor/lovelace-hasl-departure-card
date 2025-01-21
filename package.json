@@ -35,7 +35,7 @@
     "hashing": "always",
     "disable": false,
     "rules": {
-      "DepartureCardEditor.(.*)": "editor.{hash}.$1"
+      "DepartureCardEditor.(.*)": "hasl4-departure-card-editor.$1"
     }
   }
 }

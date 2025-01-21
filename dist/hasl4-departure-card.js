@@ -555,10 +555,10 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 
 
 parcelRegister("j0ZcV", function(module, exports) {
-$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 parcelRequire("2emM7");
 parcelRequire("l56HR");
 parcelRequire("eGUNk");
@@ -1146,10 +1146,10 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
 parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
-$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
 $parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
+$parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
 
 $parcel$export(module.exports, "LitElement", () => $ab210b2da7b39b9d$export$3f2f9f5909897157);
 
@@ -1550,8 +1550,8 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 
 });
 
-parcelRegister("am1R5", function(module, exports) {
-module.exports = import("./editor.47aa0d62.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
+parcelRegister("8ZyBY", function(module, exports) {
+module.exports = import("./hasl4-departure-card-editor.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
 
 });
 
@@ -1787,7 +1787,7 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     // configuration card is loaded in async manner
     static async getConfigElement() {
-        return await (parcelRequire("am1R5")).then(()=>document.createElement("hasl4-departure-card-editor"));
+        return await (parcelRequire("8ZyBY")).then(()=>document.createElement("hasl4-departure-card-editor"));
     }
     static{
         this.getStubConfig = ()=>({

@@ -2,7 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/homeassistant-2024.1.0%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-3.2.0b+-yellow.svg)](#)
+[![version](https://img.shields.io/badge/version-3.3.0-green.svg)](#)
 [![maintained](https://img.shields.io/maintenance/yes/2025.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -14,7 +14,7 @@ Now with deviations!
 
 ## Manual Installation
 
-Copy [`hasl4-departure-card.js`](./dist/hasl4-departure-card.js) and any `editor.*.js` files to `<config>/www/hasl4-departure-card.js`
+Copy [`hasl4-departure-card.js`](./dist/hasl4-departure-card.js) and [`hasl4-departure-card-editor.js`](./dist/hasl4-departure-card-editor.js) files to `<config>/www/hasl4-departure-card.js`
 
 Where `<config>` is your Home Assistant configuration directory.
 Then use the following in your `ui-lovelace.yaml` file:
