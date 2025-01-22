@@ -39,10 +39,9 @@ Card fully supports configuration through the UI
 ### Options
 | Name                 | Type             | Required? | Description                                                                                                 |
 |----------------------|------------------|-----------|-------------------------------------------------------------------------------------------------------------|
-| entity               | entity           | required  | The entity_id of the 'Departure' sensor.                                                                    |
-| entities             | entity[]         | required  | The array of entity_id of the 'Departure' sensors. If set, takes precedence over `entity`                   |
+| entities             | entity[]         | required  | The array of entity_id's of the 'Departure' sensors.                                                        |
 | title                | string           | optional  | If set, this will be rendered as the card name.                                                             |
-| show_entity_name     | bool             | optional  | Render a friendly name of a selected `entity`. Disabled when `entities` are set                             |
+| show_entity_name     | bool             | optional  | Render a friendly name of a selected `entity`. Disabled when `entities` are set to more than 1 entity       |
 | show_header          | bool             | optional  | Render headers in each section such as "Line", "Destination" and "Departure".                               |
 | show_icon            | bool             | optional  | Render transport icon for each line.                                                                        |
 | show_departures      | bool             | optional  | Render departures section.                                                                                  |
@@ -51,12 +50,11 @@ Card fully supports configuration through the UI
 | hide_departed        | bool             | optional  | If set, will hide already departured vehicles.                                                              |
 | show_departed_offset | bool             | optional  | If set, will show some departed vehicles, which departed less than the offset minutes ago.                  |
 | show_time_always     | bool             | optional  | Always present time in HH:MM form. If not set, time will be presented as "in X minutes" or "X minutes ago". |
-| show_updated         | bool             | optional  | Render the 'last updated' text. Disabled when `entities` are set                                            |
+| show_updated         | bool             | optional  | Render the 'last updated' text. Disabled when `entities` are set to more than 1 entity                      |
 | language             | string           | optional  | The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.                       |
 | click_action         | string or object | optional  | Action when tapping the card. See section `click_action` below.                                             |
 
-Only one of `entity` and `entities` is required to function. If both are specified, `entities` takes precedence and `entity` is ignored.
-Setting `entities` will render departures from all the sensors as one list, that is sorted by `expected` time.
+Setting `entities` to more than one entity will render departures from all of the sensors as one list sorted by `expected` time but will disable `show_entity_name` and `show_updated` options.
 
 #### `click_action`
 

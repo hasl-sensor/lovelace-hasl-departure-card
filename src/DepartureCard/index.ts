@@ -29,14 +29,20 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
     }
 
     getCardSize() {
+        const singleEntitityExtras = (this.isManyEntitiesSet()
+            ? () => 0
+            : () => {
+                const [_, attrs] = this.getFirstEntity()
+                if (!attrs) return 0
+
+                return (this.config.show_entity_name && attrs.friendly_name) ? 1 : 0
+            })()
+
         const deps = this.getDepartures();
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity]
-        const attrs = data.attributes
 
         const size = [
             !!this.config.title ? 1 : 0,
-            ((this.config.show_entity_name && attrs.friendly_name)) ? 1 : 0,
+            singleEntitityExtras,
             !!this.config.show_header ? 1 : 0,
             deps?.length || 0,
         ].reduce((sum, entity) => sum += entity ? entity : 0, 0);
@@ -46,8 +52,8 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
     getLayoutOptions() {
         return {
-          grid_min_columns: 3,
-          grid_min_rows: 2,
+            grid_min_columns: 3,
+            grid_min_rows: 2,
         };
     }
 
@@ -77,10 +83,8 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
             this.isManyEntitiesSet()
                 ? () => nothing
                 : () => {
-                    const entity = this.config?.entity
-                    if (!entity) return nothing;
-
-                    const data = this.hass?.states[entity]
+                    const [data, __] = this.getFirstEntity()
+                    if (!data) return nothing;
 
                     return (this.config?.show_updated && data.last_updated)
                         ? html`
@@ -104,20 +108,23 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         `
     }
 
-    private isManyEntitiesSet(): boolean {
-        return this.config?.entities?.length > 0
+    private isManyEntitiesSet = () => this.config?.entities?.length > 1
+
+    private getFirstEntity(): [HassEntity, DepartureAttributes] | [undefined, undefined] {
+        const data = this.hass?.states[this.config?.entities?.[0] || this.config?.entity];
+        const attrs = data?.attributes
+        if (data && attrs && isDepartureAttrs(attrs)) {
+            return [data, attrs]
+        }
+        return [undefined, undefined]
     }
 
-    private getDeparturesFor(entity: string) {
-        if (entity === undefined) return undefined;
-
-        const data = this.hass?.states[entity]
-        if (data === undefined) return undefined;
-        if (!isDepartureAttrs(data.attributes)) return undefined;
+    private getDeparturesFor(attrs: DepartureAttributes | undefined) {
+        if (!attrs) return []
 
         const now = new Date()
 
-        return (data.attributes.departures
+        return (attrs.departures
             // filter direction
             ?.filter((d) => {
                 if (this.config?.direction === 0) return true
@@ -173,22 +180,19 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
     private getDepartures() {
         if (this.isManyEntitiesSet()) {
-            return this.getDeparturesCombined(this.config?.entities)
-        } else {
-            return this.getDeparturesFor(this.config?.entity)
+            return this.getDeparturesCombined(this.config?.entities || [])
         }
+
+        const [_, attrs] = this.getFirstEntity()
+        if (!attrs) return undefined;
+
+        return this.getDeparturesFor(attrs)
     }
 
     private renderDepartures = () => {
         const renderEntityName = () => {
-            const entity = this.config?.entity
-            if (entity === undefined) return nothing;
-
-            const data = this.hass?.states[this.config?.entity]
-            if (data === undefined) return nothing;
-
-            const attrs = data.attributes
-            if (!isDepartureAttrs(attrs)) return nothing;
+            const [_, attrs] = this.getFirstEntity()
+            if (!attrs) return nothing;
 
             return (this.config.show_entity_name && attrs.friendly_name)
                 ? html`<div class="row name">${attrs.friendly_name}</div`

@@ -7,8 +7,8 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 
 ## [Unreleased]
 ## What's Changed
-
 * Card now supports setting multiple `entities` in the card configuration. This allows you to show multiple departure boards in one card.
+  * Previous configurations are still supported, but will be migrated automatically as soon as you open the card editor and save the configuration.
 * Editor bundle name changed to `hasl-departure-card-editor.js` to help with manual installation.
 
 ## [3.2.0] (2025-01-17)

@@ -19,10 +19,16 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
   public setConfig(config: DepartureCardConfig): void {
     this._config = config
     this._schema = this.getSchema(translateTo(getLanguage()))
+
+    // Migrate to multiple entities
+    if (config.entity && !config.entities?.length) {
+      const { entity, ...rest } = config
+      this._dispatchConfigChangedEvent({ ...rest, entities: [config.entity] })
+    }
   }
 
   private getSchema = (_ : (key :string) => string) => {
-    const haveMultipleEntities = this._config?.entities?.length > 0
+    const haveMultipleEntities = this._config?.entities?.length > 1
 
     return [
     { name: "title", selector: { text: {} } },
@@ -33,7 +39,6 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
       icon: "mdi:database",
       title: _("editor_entities"),
       schema: [
-        { name: "entity", disabled: haveMultipleEntities, selector: { entity: { filter: { domain: 'sensor', integration: 'hasl3' }}} },
         { name: "show_entity_name", type: "boolean", disabled: haveMultipleEntities },
         { name: "entities", selector: { entity: { multiple: true, filter: { domain: 'sensor', integration: 'hasl3' }}} },
       ],
@@ -76,8 +81,10 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
 
   private _valueChanged(ev: CustomEvent): void {
     ev.stopPropagation();
-    const newConfig = ev.detail.value
+    this._dispatchConfigChangedEvent(ev.detail.value)
+  }
 
+  private _dispatchConfigChangedEvent(newConfig) {
     const event = new Event("config-changed", { bubbles: true, composed: true});
     event.detail = { config: newConfig };
     this.dispatchEvent(event);
