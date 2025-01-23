@@ -21,7 +21,10 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
   private _schema = (_ : (key :string) => string) => [
     { name: "title", selector: { text: {} } },
     { name: "language", select: { mode: 'dropdown', options: languages } },
-    { name: "entity", selector: { entity: { filter: { domain: 'sensor', integration: 'hasl3' }}} },
+    { name: "entity", selector: { entity: { filter: [
+      { domain: 'sensor', integration: 'hasl3' },
+      { domain: 'sensor', integration: 'london_tfl' }
+    ]}} },
     { name: "show_entity_name", type: "boolean" },
     {
       name: "",

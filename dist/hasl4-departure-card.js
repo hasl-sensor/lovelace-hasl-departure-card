@@ -1538,7 +1538,7 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 });
 
 parcelRegister("ldjmW", function(module, exports) {
-module.exports = import("./editor.6f656999.js").then(()=>parcelRequire("jlj1D"));
+module.exports = import("./editor.bbdeab33.js").then(()=>parcelRequire("jlj1D"));
 
 });
 

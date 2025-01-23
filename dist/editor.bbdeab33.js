@@ -61,10 +61,16 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
                     name: "entity",
                     selector: {
                         entity: {
-                            filter: {
-                                domain: "sensor",
-                                integration: "hasl3"
-                            }
+                            filter: [
+                                {
+                                    domain: "sensor",
+                                    integration: "hasl3"
+                                },
+                                {
+                                    domain: "sensor",
+                                    integration: "london_tfl"
+                                }
+                            ]
                         }
                     }
                 },
@@ -992,4 +998,4 @@ var $8944235bd8be49ac$export$f4fd60e41371f80d = {
 
 
 
-//# sourceMappingURL=editor.6f656999.js.map
+//# sourceMappingURL=editor.bbdeab33.js.map
