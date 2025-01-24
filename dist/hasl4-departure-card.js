@@ -555,10 +555,10 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 
 
 parcelRegister("j0ZcV", function(module, exports) {
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
 $parcel$export(module.exports, "LitElement", () => (parcelRequire("eGUNk")).LitElement);
-$parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 parcelRequire("2emM7");
 parcelRequire("l56HR");
 parcelRequire("eGUNk");
@@ -1146,10 +1146,10 @@ const $f58f44579a4747ac$export$b3890eb0ae9dca99 = (t, i, s)=>{
 parcelRegister("eGUNk", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
 $parcel$export(module.exports, "ReactiveElement", () => (parcelRequire("2emM7")).ReactiveElement);
-$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
 $parcel$export(module.exports, "html", () => (parcelRequire("l56HR")).html);
-$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 $parcel$export(module.exports, "noChange", () => (parcelRequire("l56HR")).noChange);
+$parcel$export(module.exports, "nothing", () => (parcelRequire("l56HR")).nothing);
+$parcel$export(module.exports, "render", () => (parcelRequire("l56HR")).render);
 
 $parcel$export(module.exports, "LitElement", () => $ab210b2da7b39b9d$export$3f2f9f5909897157);
 
@@ -1578,9 +1578,8 @@ var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 
 var $gjUL4 = parcelRequire("gjUL4");
 const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
-    entity: "",
     title: "",
-    entities: undefined,
+    entities: [],
     show_entity_name: true,
     show_header: true,
     show_icon: true,
@@ -1767,13 +1766,15 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
         };
     }
     getCardSize() {
+        const singleEntitityExtras = (this.isManyEntitiesSet() ? ()=>0 : ()=>{
+            const [_, attrs] = this.getFirstEntity();
+            if (!attrs) return 0;
+            return this.config.show_entity_name && attrs.friendly_name ? 1 : 0;
+        })();
         const deps = this.getDepartures();
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity];
-        const attrs = data.attributes;
         const size = [
             !!this.config.title ? 1 : 0,
-            this.config.show_entity_name && attrs.friendly_name ? 1 : 0,
+            singleEntitityExtras,
             !!this.config.show_header ? 1 : 0,
             deps?.length || 0
         ].reduce((sum, entity)=>sum += entity ? entity : 0, 0);
@@ -1803,9 +1804,8 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
             return data === (0, $l56HR.nothing) ? (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>` : data;
         } : ()=>(0, $l56HR.nothing);
         const renderLastUpdated = this.isManyEntitiesSet() ? ()=>(0, $l56HR.nothing) : ()=>{
-            const entity = this.config?.entity;
-            if (!entity) return 0, $l56HR.nothing;
-            const data = this.hass?.states[entity];
+            const [data, __] = this.getFirstEntity();
+            if (!data) return 0, $l56HR.nothing;
             return this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
                             <div class="updated right">
                                 ${_("last_updated")}
@@ -1822,16 +1822,22 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
             </ha-card>
         `;
     }
-    isManyEntitiesSet() {
-        return this.config?.entities?.length > 0;
+    getFirstEntity() {
+        const data = this.hass?.states[this.config?.entities?.[0] || this.config?.entity];
+        const attrs = data?.attributes;
+        if (data && attrs && $66d5822390d71e6e$var$isDepartureAttrs(attrs)) return [
+            data,
+            attrs
+        ];
+        return [
+            undefined,
+            undefined
+        ];
     }
-    getDeparturesFor(entity) {
-        if (entity === undefined) return undefined;
-        const data = this.hass?.states[entity];
-        if (data === undefined) return undefined;
-        if (!$66d5822390d71e6e$var$isDepartureAttrs(data.attributes)) return undefined;
+    getDeparturesFor(attrs) {
+        if (!attrs) return [];
         const now = new Date();
-        return (data.attributes.departures?.filter((d)=>{
+        return (attrs.departures?.filter((d)=>{
             if (this.config?.direction === 0) return true;
             return d.direction_code === this.config?.direction;
         }).filter((d)=>{
@@ -1867,8 +1873,10 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
         .slice(0, this.config?.max_departures);
     }
     getDepartures() {
-        if (this.isManyEntitiesSet()) return this.getDeparturesCombined(this.config?.entities);
-        else return this.getDeparturesFor(this.config?.entity);
+        if (this.isManyEntitiesSet()) return this.getDeparturesCombined(this.config?.entities || []);
+        const [_, attrs] = this.getFirstEntity();
+        if (!attrs) return undefined;
+        return this.getDeparturesFor(attrs);
     }
     lineIconClass(type, line, group) {
         let cls = "";
@@ -1916,14 +1924,11 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     constructor(...args){
         super(...args);
+        this.isManyEntitiesSet = ()=>this.config?.entities?.length > 1;
         this.renderDepartures = ()=>{
             const renderEntityName = ()=>{
-                const entity = this.config?.entity;
-                if (entity === undefined) return 0, $l56HR.nothing;
-                const data = this.hass?.states[this.config?.entity];
-                if (data === undefined) return 0, $l56HR.nothing;
-                const attrs = data.attributes;
-                if (!$66d5822390d71e6e$var$isDepartureAttrs(attrs)) return 0, $l56HR.nothing;
+                const [_, attrs] = this.getFirstEntity();
+                if (!attrs) return 0, $l56HR.nothing;
                 return this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : (0, $l56HR.nothing);
             };
             const now = new Date();

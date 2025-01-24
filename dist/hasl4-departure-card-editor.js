@@ -21,10 +21,22 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
     setConfig(config) {
         this._config = config;
         this._schema = this.getSchema((0, $gjUL4.translateTo)((0, $gjUL4.getLanguage)()));
+        // Migrate to multiple entities
+        if (config.entity && !config.entities?.length) {
+            const { entity: entity, ...rest } = config;
+            this._dispatchConfigChangedEvent({
+                ...rest,
+                entities: [
+                    config.entity
+                ]
+            });
+        }
     }
     _valueChanged(ev) {
         ev.stopPropagation();
-        const newConfig = ev.detail.value;
+        this._dispatchConfigChangedEvent(ev.detail.value);
+    }
+    _dispatchConfigChangedEvent(newConfig) {
         const event = new Event("config-changed", {
             bubbles: true,
             composed: true
@@ -50,7 +62,7 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
     constructor(...args){
         super(...args);
         this.getSchema = (_)=>{
-            const haveMultipleEntities = this._config?.entities?.length > 0;
+            const haveMultipleEntities = this._config?.entities?.length > 1;
             return [
                 {
                     name: "title",
@@ -66,18 +78,6 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
                     title: _("editor_entities"),
                     schema: [
                         {
-                            name: "entity",
-                            disabled: haveMultipleEntities,
-                            selector: {
-                                entity: {
-                                    filter: {
-                                        domain: "sensor",
-                                        integration: "hasl3"
-                                    }
-                                }
-                            }
-                        },
-                        {
                             name: "show_entity_name",
                             type: "boolean",
                             disabled: haveMultipleEntities
@@ -87,10 +87,16 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
                             selector: {
                                 entity: {
                                     multiple: true,
-                                    filter: {
-                                        domain: "sensor",
-                                        integration: "hasl3"
-                                    }
+                                    filter: [
+                                        {
+                                            domain: "sensor",
+                                            integration: "hasl3"
+                                        },
+                                        {
+                                            domain: "sensor",
+                                            integration: "london_tfl"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -198,4 +204,4 @@ $91eb62869907e39c$export$8d2c87e174389bfd = (0, $8HQfp._)([
 });
 
 
-//# sourceMappingURL=editor.47aa0d62.js.map
+//# sourceMappingURL=hasl4-departure-card-editor.js.map
