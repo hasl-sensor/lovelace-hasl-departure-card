@@ -29,14 +29,20 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
     }
 
     getCardSize() {
+        const singleEntitityExtras = (this.isManyEntitiesSet()
+            ? () => 0
+            : () => {
+                const [_, attrs] = this.getFirstEntity()
+                if (!attrs) return 0
+
+                return (this.config.show_entity_name && attrs.friendly_name) ? 1 : 0
+            })()
+
         const deps = this.getDepartures();
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity]
-        const attrs = data.attributes
 
         const size = [
             !!this.config.title ? 1 : 0,
-            ((this.config.show_entity_name && attrs.friendly_name)) ? 1 : 0,
+            singleEntitityExtras,
             !!this.config.show_header ? 1 : 0,
             deps?.length || 0,
         ].reduce((sum, entity) => sum += entity ? entity : 0, 0);
@@ -46,8 +52,8 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
 
     getLayoutOptions() {
         return {
-          grid_min_columns: 3,
-          grid_min_rows: 2,
+            grid_min_columns: 3,
+            grid_min_rows: 2,
         };
     }
 
@@ -63,11 +69,31 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         const lang = getLanguage(this.config?.language)
         const _ = translateTo(lang)
 
-        const entity = this.config?.entity
-        const data = this.hass?.states[entity]
+        const departures =
+            this.config?.show_departures
+                ? () => {
+                    const data = this.renderDepartures()
+                    return (data === nothing)
+                        ? html`<span>${_(`entity_missing`)}</span>`
+                        : data
+                }
+                : () => nothing
 
-        const missing = html`<span>${_(`entity_missing`)}</span>`
-        const departures = this.config?.show_departures ? this.renderDepartures(data) : nothing
+        const renderLastUpdated =
+            this.isManyEntitiesSet()
+                ? () => nothing
+                : () => {
+                    const [data, __] = this.getFirstEntity()
+                    if (!data) return nothing;
+
+                    return (this.config?.show_updated && data.last_updated)
+                        ? html`
+                            <div class="updated right">
+                                ${_("last_updated")}
+                                ${new Date(data.last_updated).toLocaleTimeString(lang)}
+                            </div>`
+                        : nothing
+        }
 
         return html`
             <ha-card @click="${this.clickHandler()}">
@@ -75,29 +101,30 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
                     ? html`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>`
                     : nothing}
                 <div class="card-content">
-                    ${departures}
-                    ${(departures === nothing) ? missing : nothing}
-                    ${(this.config?.show_updated && data.last_updated) ? html`
-                        <div class="updated right">
-                            ${_("last_updated")}
-                            ${new Date(data.last_updated).toLocaleTimeString(lang)}
-                        </div>` : nothing}
+                    ${departures()}
+                    ${renderLastUpdated()}
                 </div>
             </ha-card>
         `
     }
 
-    private getDepartures() {
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity]
+    private isManyEntitiesSet = () => this.config?.entities?.length > 1
 
-        if (entity === undefined) return undefined;
-        if (data === undefined) return undefined;
-        if (!isDepartureAttrs(data.attributes)) return undefined;
+    private getFirstEntity(): [HassEntity, DepartureAttributes] | [undefined, undefined] {
+        const data = this.hass?.states[this.config?.entities?.[0] || this.config?.entity];
+        const attrs = data?.attributes
+        if (data && attrs && isDepartureAttrs(attrs)) {
+            return [data, attrs]
+        }
+        return [undefined, undefined]
+    }
+
+    private getDeparturesFor(attrs: DepartureAttributes | undefined) {
+        if (!attrs) return []
 
         const now = new Date()
 
-        return (data.attributes.departures
+        return (attrs.departures
             // filter direction
             ?.filter((d) => {
                 if (this.config?.direction === 0) return true
@@ -112,21 +139,77 @@ export class HASLDepartureCard extends LitElement implements LovelaceCard {
         }) || []).slice(0, this.config?.max_departures)
     }
 
-    private renderDepartures = (data: HassEntity) => {
-        const attrs = data.attributes
+    private getDeparturesCombined(entities: string[]) {
+        const now = new Date()
 
-        if (data === undefined) return nothing;
-        if (!isDepartureAttrs(attrs)) return nothing;
+        return entities
+            // filter invalid entities
+            .filter(entity => {
+                if (!!entity === false) return false
+
+                const data = this.hass?.states[entity]
+                if (data === undefined) return false
+                if (!isDepartureAttrs(data.attributes)) return false
+
+                return true
+            })
+            // map entity name to departures and gather all together
+            .map(entity => {
+                const state = this.hass?.states[entity]
+                if (isDepartureAttrs(state.attributes))
+                    return state.attributes
+            })
+            .flatMap(attrs => attrs.departures)
+            // filter by departure time
+            .filter((d) => {
+                if (!this.config?.hide_departed) return true
+
+                const diff = diffMinutes(new Date(d.expected), now)
+                return diff + this.config?.show_departed_offeset >= 0
+            })
+            // filter direction
+            .filter((d) => {
+                if (this.config?.direction === 0) return true
+                return d.direction_code === this.config?.direction
+            })
+            // sort by expected departure time
+            .sort((a, b) => new Date(a.expected).getTime() - new Date(b.expected).getTime())
+            // limit to max departures
+            .slice(0, this.config?.max_departures)
+    }
+
+    private getDepartures() {
+        if (this.isManyEntitiesSet()) {
+            return this.getDeparturesCombined(this.config?.entities || [])
+        }
+
+        const [_, attrs] = this.getFirstEntity()
+        if (!attrs) return undefined;
+
+        return this.getDeparturesFor(attrs)
+    }
+
+    private renderDepartures = () => {
+        const renderEntityName = () => {
+            const [_, attrs] = this.getFirstEntity()
+            if (!attrs) return nothing;
+
+            return (this.config.show_entity_name && attrs.friendly_name)
+                ? html`<div class="row name">${attrs.friendly_name}</div`
+                : nothing
+        };
 
         const now = new Date()
         const lang = getLanguage(this.config?.language)
         const _ = translateTo(lang)
 
         const departures = this.getDepartures()
+        if (!departures) return nothing;
+        const isMany = this.isManyEntitiesSet()
 
         return html`
             <div class="departures">
-                ${(this.config.show_entity_name && attrs.friendly_name) ? html`<div class="row name">${attrs.friendly_name}</div` : ''}
+                ${isMany ? '' : renderEntityName()}
                 ${this.config.show_header ? html`
                     <div class="row header">
                         ${this.config?.show_icon ? html`<div class="col icon"></div>` : nothing}

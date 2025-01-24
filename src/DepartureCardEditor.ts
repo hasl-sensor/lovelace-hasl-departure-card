@@ -1,5 +1,4 @@
 import type { HomeAssistant, LovelaceCardEditor } from "custom-card-helpers"
-import { fireEvent } from "custom-card-helpers"
 import { LitElement, css, html } from "lit"
 import { customElement, property, state } from "lit/decorators"
 
@@ -14,20 +13,44 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
   @state()
   private _config?: DepartureCardConfig
 
+  @state()
+  private _schema?: any
+
   public setConfig(config: DepartureCardConfig): void {
     this._config = config
+    this._schema = this.getSchema(translateTo(getLanguage()))
+
+    // Migrate to multiple entities
+    if (config.entity && !config.entities?.length) {
+      const { entity, ...rest } = config
+      this._dispatchConfigChangedEvent({ ...rest, entities: [config.entity] })
+    }
   }
 
-  private _schema = (_ : (key :string) => string) => [
+  private getSchema = (_ : (key :string) => string) => {
+    const haveMultipleEntities = this._config?.entities?.length > 1
+
+    return [
     { name: "title", selector: { text: {} } },
-    { name: "language", select: { mode: 'dropdown', options: languages } },
-    { name: "entity", selector: { entity: { filter: { domain: 'sensor', integration: 'hasl3' }}} },
-    { name: "show_entity_name", type: "boolean" },
+    // { name: "language", selector: { select: { mode: 'dropdown', options: languages } } },
+    {
+      name: "",
+      type: "expandable",
+      icon: "mdi:database",
+      title: _("editor_entities"),
+      schema: [
+        { name: "show_entity_name", type: "boolean", disabled: haveMultipleEntities },
+        { name: "entities", selector: { entity: { multiple: true, filter: [
+          { domain: 'sensor', integration: 'hasl3' },
+          { domain: 'sensor', integration: 'london_tfl' }
+        ]}} },
+      ],
+    },
     {
       name: "",
       type: "expandable",
       icon: "mdi:clock",
-      title: "Departures",
+      title: _("editor_departures"),
       schema: [
         { name: "show_departures", type: "boolean" },
         { name: "show_header", type: "boolean" },
@@ -56,11 +79,18 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
         },
       ],
     },
-    { name: "show_updated", type: "boolean" },
-  ];
+    { name: "show_updated", type: "boolean", disabled: haveMultipleEntities },
+  ]};
 
   private _valueChanged(ev: CustomEvent): void {
-    fireEvent(this, "config-changed", { config: ev.detail.value });
+    ev.stopPropagation();
+    this._dispatchConfigChangedEvent(ev.detail.value)
+  }
+
+  private _dispatchConfigChangedEvent(newConfig) {
+    const event = new Event("config-changed", { bubbles: true, composed: true});
+    event.detail = { config: newConfig };
+    this.dispatchEvent(event);
   }
 
   render() {
@@ -71,7 +101,7 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
-        .schema=${this._schema(_)}
+        .schema=${this._schema || []}
         .computeLabel=${(item, data) => _(`editor_${item.name}`) || item.label || item.name }
         @value-changed=${this._valueChanged}>
       </ha-form>

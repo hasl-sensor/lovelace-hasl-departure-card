@@ -36,6 +36,13 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
+parcelRegister("8HQfp", function(module, exports) {
+
+$parcel$export(module.exports, "_", () => (parcelRequire("39J5i")).__decorate);
+
+var $39J5i = parcelRequire("39J5i");
+
+});
 parcelRegister("39J5i", function(module, exports) {
 
 $parcel$export(module.exports, "__decorate", () => $24c52f343453d62d$export$29e00dfd3077644b);
@@ -545,6 +552,7 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 };
 
 });
+
 
 parcelRegister("j0ZcV", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
@@ -1447,7 +1455,6 @@ var $3fOhc = parcelRequire("3fOhc");
 
 parcelRegister("gjUL4", function(module, exports) {
 
-$parcel$export(module.exports, "languages", () => $8ae640dd6c4226ad$export$d0d68bb9ed2c643d);
 $parcel$export(module.exports, "getLanguage", () => $8ae640dd6c4226ad$export$64783e31db14f0ba);
 $parcel$export(module.exports, "translateTo", () => $8ae640dd6c4226ad$export$df5de7d5c552d075);
 const $8ae640dd6c4226ad$var$defaultLang = `en-US`;
@@ -1461,6 +1468,8 @@ const $8ae640dd6c4226ad$var$defaultTranslation = {
     now: "Now",
     // configuration translations
     editor_show_name: "Show card name",
+    editor_entities: "Entities",
+    editor_departures: "Departures",
     editor_title: "Card name",
     editor_show_entity_name: "Show entity name",
     editor_show_departures: "Show departures",
@@ -1488,6 +1497,8 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         last_updated: "Senast uppdaterad",
         now: "Nu",
         editor_show_name: "Visa kortnamn",
+        editor_entities: "Enheter",
+        editor_departures: "Avg\xe5ngar",
         editor_title: "Kortnamn",
         editor_show_entity_name: "Visa enhetsnamn",
         editor_show_departures: "Visa avg\xe5ngar",
@@ -1513,6 +1524,8 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         last_updated: "Mis \xe0 jour",
         now: "Maintenant",
         editor_show_name: "Afficher le nom de la carte",
+        editor_entities: "Entit\xe9s",
+        editor_departures: "D\xe9parts",
         editor_title: "Nom de la carte",
         editor_show_entity_name: "Afficher le nom de l'entit\xe9",
         editor_show_departures: "Afficher les d\xe9parts",
@@ -1537,19 +1550,19 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 
 });
 
-parcelRegister("ldjmW", function(module, exports) {
-module.exports = import("./editor.6f656999.js").then(()=>parcelRequire("jlj1D"));
+parcelRegister("8ZyBY", function(module, exports) {
+module.exports = import("./hasl4-departure-card-editor.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
 
 });
 
-
+parcelRequire("8HQfp");
 var $39J5i = parcelRequire("39J5i");
 parcelRequire("j0ZcV");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
-var $dsTCw = parcelRequire("dsTCw");
 var $pklEb = parcelRequire("pklEb");
+var $dsTCw = parcelRequire("dsTCw");
 var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 (function(TransportType) {
     TransportType["METRO"] = "METRO";
@@ -1565,8 +1578,8 @@ var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 
 var $gjUL4 = parcelRequire("gjUL4");
 const $b0717bc2acc03fc5$export$c2f8e0cc249a8d8f = {
-    entity: "",
     title: "",
+    entities: [],
     show_entity_name: true,
     show_header: true,
     show_icon: true,
@@ -1753,13 +1766,15 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
         };
     }
     getCardSize() {
+        const singleEntitityExtras = (this.isManyEntitiesSet() ? ()=>0 : ()=>{
+            const [_, attrs] = this.getFirstEntity();
+            if (!attrs) return 0;
+            return this.config.show_entity_name && attrs.friendly_name ? 1 : 0;
+        })();
         const deps = this.getDepartures();
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity];
-        const attrs = data.attributes;
         const size = [
             !!this.config.title ? 1 : 0,
-            this.config.show_entity_name && attrs.friendly_name ? 1 : 0,
+            singleEntitityExtras,
             !!this.config.show_header ? 1 : 0,
             deps?.length || 0
         ].reduce((sum, entity)=>sum += entity ? entity : 0, 0);
@@ -1773,7 +1788,7 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     // configuration card is loaded in async manner
     static async getConfigElement() {
-        return await (parcelRequire("ldjmW")).then(()=>document.createElement("hasl4-departure-card-editor"));
+        return await (parcelRequire("8ZyBY")).then(()=>document.createElement("hasl4-departure-card-editor"));
     }
     static{
         this.getStubConfig = ()=>({
@@ -1784,33 +1799,45 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
         if (!this.config || !this.hass) return 0, $l56HR.nothing;
         const lang = (0, $gjUL4.getLanguage)(this.config?.language);
         const _ = (0, $gjUL4.translateTo)(lang);
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity];
-        const missing = (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>`;
-        const departures = this.config?.show_departures ? this.renderDepartures(data) : (0, $l56HR.nothing);
+        const departures = this.config?.show_departures ? ()=>{
+            const data = this.renderDepartures();
+            return data === (0, $l56HR.nothing) ? (0, $l56HR.html)`<span>${_(`entity_missing`)}</span>` : data;
+        } : ()=>(0, $l56HR.nothing);
+        const renderLastUpdated = this.isManyEntitiesSet() ? ()=>(0, $l56HR.nothing) : ()=>{
+            const [data, __] = this.getFirstEntity();
+            if (!data) return 0, $l56HR.nothing;
+            return this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
+                            <div class="updated right">
+                                ${_("last_updated")}
+                                ${new Date(data.last_updated).toLocaleTimeString(lang)}
+                            </div>` : (0, $l56HR.nothing);
+        };
         return (0, $l56HR.html)`
             <ha-card @click="${this.clickHandler()}">
                 ${this.config?.title ? (0, $l56HR.html)`<h1 class="card-header"><div class="name">${this.config.title}</div></h1>` : (0, $l56HR.nothing)}
                 <div class="card-content">
-                    ${departures}
-                    ${departures === (0, $l56HR.nothing) ? missing : (0, $l56HR.nothing)}
-                    ${this.config?.show_updated && data.last_updated ? (0, $l56HR.html)`
-                        <div class="updated right">
-                            ${_("last_updated")}
-                            ${new Date(data.last_updated).toLocaleTimeString(lang)}
-                        </div>` : (0, $l56HR.nothing)}
+                    ${departures()}
+                    ${renderLastUpdated()}
                 </div>
             </ha-card>
         `;
     }
-    getDepartures() {
-        const entity = this.config?.entity;
-        const data = this.hass?.states[entity];
-        if (entity === undefined) return undefined;
-        if (data === undefined) return undefined;
-        if (!$66d5822390d71e6e$var$isDepartureAttrs(data.attributes)) return undefined;
+    getFirstEntity() {
+        const data = this.hass?.states[this.config?.entities?.[0] || this.config?.entity];
+        const attrs = data?.attributes;
+        if (data && attrs && $66d5822390d71e6e$var$isDepartureAttrs(attrs)) return [
+            data,
+            attrs
+        ];
+        return [
+            undefined,
+            undefined
+        ];
+    }
+    getDeparturesFor(attrs) {
+        if (!attrs) return [];
         const now = new Date();
-        return (data.attributes.departures?.filter((d)=>{
+        return (attrs.departures?.filter((d)=>{
             if (this.config?.direction === 0) return true;
             return d.direction_code === this.config?.direction;
         }).filter((d)=>{
@@ -1818,6 +1845,38 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
             const diff = $66d5822390d71e6e$var$diffMinutes(new Date(d.expected), now);
             return diff + this.config?.show_departed_offeset >= 0;
         }) || []).slice(0, this.config?.max_departures);
+    }
+    getDeparturesCombined(entities) {
+        const now = new Date();
+        return entities// filter invalid entities
+        .filter((entity)=>{
+            if (!!entity === false) return false;
+            const data = this.hass?.states[entity];
+            if (data === undefined) return false;
+            if (!$66d5822390d71e6e$var$isDepartureAttrs(data.attributes)) return false;
+            return true;
+        })// map entity name to departures and gather all together
+        .map((entity)=>{
+            const state = this.hass?.states[entity];
+            if ($66d5822390d71e6e$var$isDepartureAttrs(state.attributes)) return state.attributes;
+        }).flatMap((attrs)=>attrs.departures)// filter by departure time
+        .filter((d)=>{
+            if (!this.config?.hide_departed) return true;
+            const diff = $66d5822390d71e6e$var$diffMinutes(new Date(d.expected), now);
+            return diff + this.config?.show_departed_offeset >= 0;
+        })// filter direction
+        .filter((d)=>{
+            if (this.config?.direction === 0) return true;
+            return d.direction_code === this.config?.direction;
+        })// sort by expected departure time
+        .sort((a, b)=>new Date(a.expected).getTime() - new Date(b.expected).getTime())// limit to max departures
+        .slice(0, this.config?.max_departures);
+    }
+    getDepartures() {
+        if (this.isManyEntitiesSet()) return this.getDeparturesCombined(this.config?.entities || []);
+        const [_, attrs] = this.getFirstEntity();
+        if (!attrs) return undefined;
+        return this.getDeparturesFor(attrs);
     }
     lineIconClass(type, line, group) {
         let cls = "";
@@ -1865,17 +1924,22 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     constructor(...args){
         super(...args);
-        this.renderDepartures = (data)=>{
-            const attrs = data.attributes;
-            if (data === undefined) return 0, $l56HR.nothing;
-            if (!$66d5822390d71e6e$var$isDepartureAttrs(attrs)) return 0, $l56HR.nothing;
+        this.isManyEntitiesSet = ()=>this.config?.entities?.length > 1;
+        this.renderDepartures = ()=>{
+            const renderEntityName = ()=>{
+                const [_, attrs] = this.getFirstEntity();
+                if (!attrs) return 0, $l56HR.nothing;
+                return this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : (0, $l56HR.nothing);
+            };
             const now = new Date();
             const lang = (0, $gjUL4.getLanguage)(this.config?.language);
             const _ = (0, $gjUL4.translateTo)(lang);
             const departures = this.getDepartures();
+            if (!departures) return 0, $l56HR.nothing;
+            const isMany = this.isManyEntitiesSet();
             return (0, $l56HR.html)`
             <div class="departures">
-                ${this.config.show_entity_name && attrs.friendly_name ? (0, $l56HR.html)`<div class="row name">${attrs.friendly_name}</div` : ""}
+                ${isMany ? "" : renderEntityName()}
                 ${this.config.show_header ? (0, $l56HR.html)`
                     <div class="row header">
                         ${this.config?.show_icon ? (0, $l56HR.html)`<div class="col icon"></div>` : (0, $l56HR.nothing)}

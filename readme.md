@@ -2,7 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![ha_version](https://img.shields.io/badge/homeassistant-2024.1.0%2B-yellow.svg)](https://www.home-assistant.io)
-[![version](https://img.shields.io/badge/version-3.2.0b+-yellow.svg)](#)
+[![version](https://img.shields.io/badge/version-3.3.0-green.svg)](#)
 [![maintained](https://img.shields.io/maintenance/yes/2025.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -14,7 +14,7 @@ Now with deviations!
 
 ## Manual Installation
 
-Copy [`hasl4-departure-card.js`](./dist/hasl4-departure-card.js) and any `editor.*.js` files to `<config>/www/hasl4-departure-card.js`
+Copy [`hasl4-departure-card.js`](./dist/hasl4-departure-card.js) and [`hasl4-departure-card-editor.js`](./dist/hasl4-departure-card-editor.js) files to `<config>/www/hasl4-departure-card.js`
 
 Where `<config>` is your Home Assistant configuration directory.
 Then use the following in your `ui-lovelace.yaml` file:
@@ -39,9 +39,9 @@ Card fully supports configuration through the UI
 ### Options
 | Name                 | Type             | Required? | Description                                                                                                 |
 |----------------------|------------------|-----------|-------------------------------------------------------------------------------------------------------------|
-| entity               | entity           | required  | The entity_id of the 'Departure' sensor.                                                                    |
+| entities             | entity[]         | required  | The array of entity_id's of the 'Departure' sensors.                                                        |
 | title                | string           | optional  | If set, this will be rendered as the card name.                                                             |
-| show_entity_name     | bool             | optional  | Render an individual name for each entity section.                                                          |
+| show_entity_name     | bool             | optional  | Render a friendly name of a selected `entity`. Disabled when `entities` are set to more than 1 entity       |
 | show_header          | bool             | optional  | Render headers in each section such as "Line", "Destination" and "Departure".                               |
 | show_icon            | bool             | optional  | Render transport icon for each line.                                                                        |
 | show_departures      | bool             | optional  | Render departures section.                                                                                  |
@@ -50,9 +50,11 @@ Card fully supports configuration through the UI
 | hide_departed        | bool             | optional  | If set, will hide already departured vehicles.                                                              |
 | show_departed_offset | bool             | optional  | If set, will show some departed vehicles, which departed less than the offset minutes ago.                  |
 | show_time_always     | bool             | optional  | Always present time in HH:MM form. If not set, time will be presented as "in X minutes" or "X minutes ago". |
-| show_updated         | bool             | optional  | Render the 'last updated' text                                                                              |
+| show_updated         | bool             | optional  | Render the 'last updated' text. Disabled when `entities` are set to more than 1 entity                      |
 | language             | string           | optional  | The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.                       |
 | click_action         | string or object | optional  | Action when tapping the card. See section `click_action` below.                                             |
+
+Setting `entities` to more than one entity will render departures from all of the sensors as one list sorted by `expected` time but will disable `show_entity_name` and `show_updated` options.
 
 #### `click_action`
 
