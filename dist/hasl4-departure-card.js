@@ -36,13 +36,6 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
-parcelRegister("8HQfp", function(module, exports) {
-
-$parcel$export(module.exports, "_", () => (parcelRequire("39J5i")).__decorate);
-
-var $39J5i = parcelRequire("39J5i");
-
-});
 parcelRegister("39J5i", function(module, exports) {
 
 $parcel$export(module.exports, "__decorate", () => $24c52f343453d62d$export$29e00dfd3077644b);
@@ -552,7 +545,6 @@ var $24c52f343453d62d$export$2e2bcd8739ae039 = {
 };
 
 });
-
 
 parcelRegister("j0ZcV", function(module, exports) {
 $parcel$export(module.exports, "css", () => (parcelRequire("j8KxL")).css);
@@ -1474,11 +1466,13 @@ const $8ae640dd6c4226ad$var$defaultTranslation = {
     editor_show_entity_name: "Show entity name",
     editor_show_departures: "Show departures",
     editor_show_header: "Show departure header",
+    editor_show_icon: "Show transport icon",
     editor_show_transport_icon: "Show transport icon",
     editor_max_departures: "Maximum departures to show",
     editor_hide_departed: "Hide already departed",
     editor_show_departed_offeset: "... but show departed number of minutes ago",
     editor_show_time_always: "Always show departure time in HH:MM form",
+    editor_hide_line_number: "Hide line number",
     editor_show_updated: `Show 'Last Updated'`,
     editor_direction: `Direction filter`,
     editor_direction_all: `All`,
@@ -1503,11 +1497,13 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         editor_show_entity_name: "Visa enhetsnamn",
         editor_show_departures: "Visa avg\xe5ngar",
         editor_show_header: "Visa avg\xe5ngshuvud",
+        editor_show_icon: "Visa transportikon",
         editor_show_transport_icon: "Visa transportikon",
         editor_max_departures: "Max antal avg\xe5ngar",
         editor_hide_departed: "D\xf6lj redan avg\xe5ngna",
         editor_show_departed_offeset: "... men visa avg\xe5ngna f\xf6r antal minuter sedan",
         editor_show_time_always: "Visa alltid avg\xe5ngstid i HH:MM-form",
+        editor_hide_line_number: "D\xf6lj linjenummer",
         editor_show_updated: `Visa 'Senast uppdaterad'`,
         editor_direction: `Riktning filter`,
         editor_direction_all: `Alla`,
@@ -1530,11 +1526,13 @@ const $8ae640dd6c4226ad$export$150b732325d14d04 = {
         editor_show_entity_name: "Afficher le nom de l'entit\xe9",
         editor_show_departures: "Afficher les d\xe9parts",
         editor_show_header: "Afficher l'ent\xeate des d\xe9parts",
+        editor_show_icon: "Afficher l'ic\xf4ne de transport",
         editor_show_transport_icon: "Afficher l'ic\xf4ne de transport",
         editor_max_departures: "Nombre maximum de d\xe9parts",
         editor_hide_departed: "Masquer les d\xe9parts pass\xe9s",
         editor_show_departed_offeset: "... mais montrer les d\xe9parts depuis le nombre de minutes",
         editor_show_time_always: "Toujours afficher l'heure de d\xe9part en HH:MM",
+        editor_hide_line_number: "Masquer le num\xe9ro de ligne",
         editor_show_updated: `Afficher 'Mis \xe0 jour'`,
         editor_direction: `Filtre de direction`,
         editor_direction_all: `Tous`,
@@ -1550,19 +1548,19 @@ const $8ae640dd6c4226ad$export$df5de7d5c552d075 = (lang)=>(key)=>$8ae640dd6c4226
 
 });
 
-parcelRegister("8ZyBY", function(module, exports) {
-module.exports = import("./hasl4-departure-card-editor.js?" + Date.now()).then(()=>parcelRequire("jlj1D"));
+parcelRegister("3gXF4", function(module, exports) {
+module.exports = import("./hasl4-departure-card-editor.js").then(()=>parcelRequire("jlj1D"));
 
 });
 
-parcelRequire("8HQfp");
+
 var $39J5i = parcelRequire("39J5i");
 parcelRequire("j0ZcV");
 var $l56HR = parcelRequire("l56HR");
 var $eGUNk = parcelRequire("eGUNk");
 parcelRequire("1ZxoT");
-var $pklEb = parcelRequire("pklEb");
 var $dsTCw = parcelRequire("dsTCw");
+var $pklEb = parcelRequire("pklEb");
 var $829f1babd4ccc0b8$export$6d07abd9f0bba447;
 (function(TransportType) {
     TransportType["METRO"] = "METRO";
@@ -1788,7 +1786,7 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
     }
     // configuration card is loaded in async manner
     static async getConfigElement() {
-        return await (parcelRequire("8ZyBY")).then(()=>document.createElement("hasl4-departure-card-editor"));
+        return await (parcelRequire("3gXF4")).then(()=>document.createElement("hasl4-departure-card-editor"));
     }
     static{
         this.getStubConfig = ()=>({
@@ -1977,10 +1975,12 @@ class $66d5822390d71e6e$export$7ded24e6705f9c64 extends (0, $eGUNk.LitElement) {
                                 <ha-icon class="transport-icon" icon="${icon}"/>
                             </div>
                         ` : (0, $l56HR.nothing)}
-                        <div class="col icon">
-                            <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
-                            ${hasDeviations ? (0, $l56HR.html)`<ha-icon class="warning" icon="mdi:alert"/>` : (0, $l56HR.nothing)}
-                        </div>
+                        ${this.config?.hide_line_number ? (0, $l56HR.nothing) : (0, $l56HR.html)`
+                            <div class="col icon">
+                                <span class="line-icon mr1 ${lineIconClass}">${dep.line.designation}</span>
+                                ${hasDeviations ? (0, $l56HR.html)`<ha-icon class="warning" icon="mdi:alert"/>` : (0, $l56HR.nothing)}
+                            </div>
+                        `}
                         <div class="col main left">
                             ${dep.destination}
                             ${hasDeviations ? (0, $l56HR.html)`<span class="warning-message">${mostImportantDeviation.message}</span>` : (0, $l56HR.nothing)}
