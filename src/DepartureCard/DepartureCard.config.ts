@@ -20,6 +20,7 @@ export interface DepartureCardConfig extends LovelaceCardConfig {
     show_entity_name?: boolean
     show_header?: boolean
     show_icon?: boolean
+    hide_line_number?: boolean
     show_departures: boolean
     direction: number
     max_departures: number

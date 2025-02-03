@@ -38,7 +38,7 @@ Card fully supports configuration through the UI
 
 ### Options
 | Name                 | Type             | Required? | Description                                                                                                 |
-|----------------------|------------------|-----------|-------------------------------------------------------------------------------------------------------------|
+| -------------------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------- |
 | entities             | entity[]         | required  | The array of entity_id's of the 'Departure' sensors.                                                        |
 | title                | string           | optional  | If set, this will be rendered as the card name.                                                             |
 | show_entity_name     | bool             | optional  | Render a friendly name of a selected `entity`. Disabled when `entities` are set to more than 1 entity       |
@@ -53,6 +53,7 @@ Card fully supports configuration through the UI
 | show_updated         | bool             | optional  | Render the 'last updated' text. Disabled when `entities` are set to more than 1 entity                      |
 | language             | string           | optional  | The texts will be rendered in this language. Can be one of `sv-SE`, `en-EN`, `fr-FR`.                       |
 | click_action         | string or object | optional  | Action when tapping the card. See section `click_action` below.                                             |
+| hide_line_number     | bool             | optional  | Render the line number.                                                                                     |
 
 Setting `entities` to more than one entity will render departures from all of the sensors as one list sorted by `expected` time but will disable `show_entity_name` and `show_updated` options.
 
