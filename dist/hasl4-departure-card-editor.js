@@ -10,7 +10,7 @@ parcelRegister("jlj1D", function(module, exports) {
 
 $parcel$export(module.exports, "HASLDepartureCardEditor", () => $91eb62869907e39c$export$8d2c87e174389bfd);
 
-var $8HQfp = parcelRequire("8HQfp");
+var $39J5i = parcelRequire("39J5i");
 
 var $j0ZcV = parcelRequire("j0ZcV");
 
@@ -142,6 +142,10 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
                             type: "boolean"
                         },
                         {
+                            name: "hide_line_number",
+                            type: "boolean"
+                        },
+                        {
                             name: "show_time_always",
                             type: "boolean"
                         },
@@ -186,18 +190,18 @@ class $91eb62869907e39c$export$8d2c87e174389bfd extends (0, $j0ZcV.LitElement) {
         };
     }
 }
-(0, $8HQfp._)([
+(0, $39J5i.__decorate)([
     (0, $1ZxoT.property)({
         attribute: false
     })
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "hass", void 0);
-(0, $8HQfp._)([
+(0, $39J5i.__decorate)([
     (0, $1ZxoT.state)()
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "_config", void 0);
-(0, $8HQfp._)([
+(0, $39J5i.__decorate)([
     (0, $1ZxoT.state)()
 ], $91eb62869907e39c$export$8d2c87e174389bfd.prototype, "_schema", void 0);
-$91eb62869907e39c$export$8d2c87e174389bfd = (0, $8HQfp._)([
+$91eb62869907e39c$export$8d2c87e174389bfd = (0, $39J5i.__decorate)([
     (0, $1ZxoT.customElement)("hasl4-departure-card-editor")
 ], $91eb62869907e39c$export$8d2c87e174389bfd);
 

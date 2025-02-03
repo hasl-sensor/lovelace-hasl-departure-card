@@ -67,6 +67,7 @@ export class HASLDepartureCardEditor extends LitElement implements LovelaceCardE
           }
         },
         { name: "show_icon", type: "boolean" },
+        { name: "hide_line_number", type: "boolean" },
         { name: "show_time_always", type: "boolean" },
         { name: "max_departures", selector: { number: { mode: "box", min: 1, max: 10 } }, },
         {
