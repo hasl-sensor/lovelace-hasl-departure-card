@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog][keep-a-changelog]
 ## [Unreleased]
 ## What's Changed
 
+## [3.4.0] (2025-02-03)
+## What's Changed
+* Card now supports setting `hide_line_number` in the card configuration. This allows you to hide the line number in the card.
+* Added back `show_icon` translation string
+
 ## [3.3.0] (2025-01-24)
 ## What's Changed
 * Card now supports setting multiple `entities` in the card configuration. This allows you to show multiple departure boards in one card.
