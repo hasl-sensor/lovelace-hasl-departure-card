@@ -1603,7 +1603,12 @@ const $57faf62096e30446$var$lineColorsStyles = (0, $j8KxL.css)`
         font-weight: 500;
         display: inline-block;
         text-align: center;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        text-shadow: 1px 1px 2px var(--outline-color);
+    }
+
+    .bus {
+        border: 1px solid var(--outline-color);
+        color: var(--primary-text-color);
     }
 
     .red {
